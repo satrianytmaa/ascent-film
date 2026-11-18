@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Version 6</title>
+<link rel="stylesheet" href="style.css?v=23">
+<style>
+  :root { --card-bg: #0e2130; --deep: #123040; --tint: rgba(82,201,233,.08); }
+  .eyebrow { font-size: 11px; letter-spacing: .06em; }
+  .eyebrow.m { font-size: 13px; letter-spacing: .06em; }
+  .chip { font-size: 11px; background: none; cursor: pointer; }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .page-section { padding: var(--pad-y) var(--margin); }
+  .btn-block { display: inline-flex; }
+
+  /* nav + hero split */
+  .nav6 { border-bottom: 1px solid var(--card); }
+  .nav6 .right { display: flex; align-items: center; gap: 40px; }
+  .hero6 { display: flex; }
+  .hero6 .text { width: 50%; padding: 80px 56px 48px var(--margin); display: flex; flex-direction: column; justify-content: space-between; gap: 48px; }
+  .hero6 .text .group { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .hero6 h1 { font-size: 80px; line-height: .92; letter-spacing: -.04em; }
+  .hero6 .lead { max-width: 640px; }
+  .lead, .q p, .steps6 p, .ask p { max-width: 65ch; }
+  .hero-stats { display: flex; gap: 40px; border-top: 1px solid var(--card); padding-top: 24px; text-transform: uppercase; }
+  .hero-stats div { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .hero-stats b { font: 700 32px/1 Archivo, sans-serif; letter-spacing: -.02em; }
+  .hero-img { position: relative; width: 50%; height: 820px; padding: 24px; display: flex; align-items: flex-end; overflow: hidden; isolation: isolate; }
+  .hero-img > video, .hero-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .hero-img::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(6,17,25,0) 60%, rgba(6,17,25,.7)); }
+  .now { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: rgba(6,17,25,.75); color: var(--text); }
+  .now img { position: static; width: 8px; height: 8px; z-index: auto; }
+
+  /* about + stat cards + marquee */
+  .about { display: flex; gap: 80px; align-items: center; }
+  .about .copy { flex: 1; display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .about h2 { max-width: 640px; }
+  .about .link { text-transform: capitalize; }
+  .stat-cards { width: min(640px, 48%); flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .stat-card { background: var(--card-bg); border-radius: 8px; padding: 32px; display: flex; flex-direction: column; gap: 8px; }
+  .stat-card b { font: 500 56px/1 Archivo, sans-serif; }
+  .stat-card span { color: var(--muted); text-transform: uppercase; }
+  .marquee { margin-top: 80px; border-top: 1px solid var(--card); border-bottom: 1px solid var(--card); overflow: hidden; }
+  .marquee .track { display: flex; width: max-content; animation: slide 40s linear infinite; }
+  .marquee .set { display: flex; align-items: center; gap: 40px; padding: 24px 20px; font: 700 24px/1.1 Archivo, sans-serif; letter-spacing: -.02em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .marquee .set i { font-style: normal; font-size: 20px; color: var(--accent); }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee .track { animation: none; } }
+
+  /* services */
+  .services6 { display: flex; flex-direction: column; align-items: center; gap: 48px; }
+  .services6 .head { max-width: 800px; }
+  .services6 h2 { font-size: 72px; letter-spacing: -.02em; }
+  .tabs { display: flex; gap: 8px; padding: 6px; border: 1px solid var(--card); border-radius: 999px; }
+  .panel { display: flex; gap: 48px; align-items: center; width: 100%; }
+  .panel > img { flex: 1; min-width: 0; height: 600px; object-fit: cover; border-radius: 4px; }
+  .panel .pt { width: min(520px, 42%); flex: none; display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+  .panel h4 { font-size: 32px; letter-spacing: -.02em; }
+  .ticks { list-style: none; padding: 20px 0; width: 100%; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--card); border-bottom: 1px solid var(--card); }
+  .ticks li { display: flex; gap: 12px; }
+  .ticks li::before { content: "✓"; color: var(--accent); }
+
+  /* work index */
+  .index { border-bottom: 1px solid var(--card); }
+  .irow { display: flex; align-items: center; gap: 24px; padding: 28px 24px; border-top: 1px solid var(--card); text-transform: uppercase; }
+  .irow:hover { background: var(--tint); }
+  .irow .n { width: 56px; flex: none; font: 500 13px/1.2 "IBM Plex Mono", monospace; letter-spacing: .06em; color: var(--muted); }
+  .irow .t { flex: 1; min-width: 0; font: 700 40px/1 Archivo, sans-serif; letter-spacing: -.02em; }
+  .irow .k { width: 180px; flex: none; font: 500 11px/1.2 "IBM Plex Mono", monospace; letter-spacing: .06em; color: var(--text-2); }
+  .irow .y { width: 64px; flex: none; font: 500 11px/1.2 "IBM Plex Mono", monospace; letter-spacing: .06em; color: var(--muted); }
+  .irow .ar { font: 700 24px/1.1 Archivo, sans-serif; color: var(--muted); }
+  .irow .pv { width: 220px; height: 132px; flex: none; object-fit: cover; border-radius: 4px; }
+  .irow.on { background: var(--tint); }
+  .irow.on .t, .irow.on .ar { color: var(--accent); }
+  .irow .m, .irow .mpv { display: none; }
+
+  /* testimonial */
+  .facts { display: flex; flex-wrap: wrap; gap: 16px 48px; }
+  .facts div { display: flex; flex-direction: column; gap: 6px; }
+
+  /* process */
+  .steps6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .steps6 .step6 { display: flex; flex-direction: column; gap: 16px; }
+  .steps6 .img { position: relative; isolation: isolate; height: 300px; border-radius: 4px; overflow: hidden; padding: 20px; display: flex; align-items: flex-end; font: 500 80px/1 Archivo, sans-serif; }
+  .steps6 .img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .steps6 .img::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(6,17,25,0) 40%, rgba(6,17,25,.85)); }
+  .steps6 .when { color: var(--accent); }
+  .steps6 p:last-child { color: var(--text-2); }
+  .turn { display: flex; align-items: center; justify-content: space-between; gap: 24px; background: var(--tint); border: 1px solid var(--accent); border-radius: 8px; padding: 24px 32px; }
+  .turn b { font: 700 20px/1.1 Archivo, sans-serif; letter-spacing: -.01em; text-transform: uppercase; }
+
+  /* faq */
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; align-items: start; }
+  .q { border-top: 1px solid var(--card); padding: 28px 0 32px; display: flex; flex-direction: column; gap: 12px; }
+  .q h6 { font: 500 21px/1.4 Inter, sans-serif; }
+  .q p { color: var(--text-2); }
+  .ask { background: var(--tint); border: 1px solid var(--accent); border-radius: 8px; padding: 28px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+  .ask p { color: var(--text-2); }
+
+  /* cta */
+  .cta-card { display: flex; gap: 80px; align-items: center; background: var(--deep); border: 1px solid var(--accent); border-radius: 12px; padding: 64px; }
+  .cta-card .l { flex: 1; display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+  .cta-card h2 { font-size: 64px; letter-spacing: -.02em; }
+  .cta-steps { width: min(460px, 42%); flex: none; }
+  .cta-steps > div { display: flex; gap: 20px; padding: 20px 0; border-top: 1px solid var(--text); }
+  .cta-steps b { display: block; font: 700 20px/1.1 Archivo, sans-serif; letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 4px; }
+  .cta-steps .small { color: var(--text-2); }
+
+  /* footer */
+  .foot6 { display: flex; flex-direction: column; gap: 80px; padding-top: 96px; padding-bottom: 128px; }
+  .foot-split { display: flex; gap: 80px; align-items: flex-start; }
+  .foot-l { width: min(480px, 40%); flex: none; display: flex; flex-direction: column; gap: 24px; }
+  .foot-l .info { border-top: 1px solid var(--card); padding-top: 24px; display: flex; flex-direction: column; gap: 8px; color: var(--text); }
+  .enq { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+  .enq fieldset { border: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .enq legend { padding: 0; margin-bottom: 12px; color: var(--muted); }
+  .enq .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .enq .opts label { display: inline-flex; }
+  .enq .opts input { position: absolute; opacity: 0; pointer-events: none; }
+  .enq .opts input:checked + .chip { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .enq .opts input:focus-visible + .chip { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .enq .two { display: flex; gap: 16px; }
+  .enq label.f { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .enq input.t, .enq textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; color: var(--text); font: 400 16px/1.75 Inter, sans-serif; }
+  .enq textarea { height: 120px; resize: vertical; }
+  .enq ::placeholder { color: var(--muted); }
+  .enq .send { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .wordmark { font: 700 min(12.5vw, 165px)/.9 Archivo, sans-serif; letter-spacing: -.04em; text-transform: uppercase; color: var(--border); white-space: nowrap; overflow: hidden; }
+  .bottom .eyebrow { color: var(--muted); }
+
+  /* polish */
+  .nav-links a { position: relative; }
+  .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .enq input.t:focus-visible, .enq textarea:focus-visible { border-color: var(--accent); }
+  .stat-card, .ask, .turn { transition: transform .3s, border-color .3s; }
+  .stat-card:hover, .ask:hover { transform: translateY(-4px); }
+  .steps6 .img img { transition: transform .4s; }
+  .steps6 .step6:hover .img img { transform: scale(1.04); }
+  .irow { transition: background-color .25s, padding-left .25s; }
+  .irow:hover { padding-left: 32px; }
+  .irow .ar { transition: transform .25s; }
+  .irow:hover .ar { transform: translateX(4px); }
+  .enq .opts .chip { transition: background-color .2s, border-color .2s, color .2s; }
+  @media (prefers-reduced-motion: reduce) { .irow:hover { padding-left: 24px; } .stat-card:hover, .ask:hover { transform: none; } }
+
+  @media (max-width: 900px) {
+    .irow:hover { padding-left: 0; }
+    .nav6 { padding: 16px var(--margin); }
+    .nav6 .right { gap: 16px; }
+    .bts { width: 100%; }
+    .chip { padding: 12px 16px; }
+    .hero6 { flex-direction: column; }
+    .hero6 .text, .hero-img { width: 100%; }
+    .hero6 .text { padding: 40px var(--margin); }
+    .hero6 h1 { font-size: 44px; letter-spacing: -.04em; }
+    .hero-stats { gap: 16px; }
+    .hero-img { height: 440px; }
+    .about { flex-direction: column; align-items: flex-start; gap: 40px; }
+    .stat-cards { width: 100%; }
+    .stat-card { padding: 24px; }
+    .stat-card b { font-size: 44px; }
+    .marquee { margin-top: 48px; }
+    .services6 { gap: 32px; }
+    .services6 h2 { font-size: 44px; }
+    .panel { flex-direction: column; align-items: stretch; gap: 24px; }
+    .panel > img { flex: none; width: 100%; height: 320px; }
+    .panel .pt { width: 100%; }
+    .irow { flex-wrap: wrap; gap: 12px; padding: 20px 0; }
+    .irow > .n, .irow > .k, .irow > .y, .irow > .pv { display: none; }
+    .irow .t { font-size: 22px; letter-spacing: -.02em; }
+    .irow .m { display: block; flex-basis: 100%; order: 3; font: 500 11px/1.2 "IBM Plex Mono", monospace; letter-spacing: .06em; color: var(--muted); }
+    .irow .mpv { display: block; order: 4; flex-basis: 100%; height: 200px; object-fit: cover; border-radius: 4px; }
+    .irow .ar { order: 2; }
+    .steps6 { grid-template-columns: 1fr; gap: 24px; }
+    .steps6 .img { height: 220px; font-size: 56px; }
+    #process { gap: 40px !important; }
+    .bts { height: 360px; }
+    .turn { flex-direction: column; align-items: flex-start; padding: 24px; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .ask { margin-top: 24px; }
+    .cta-card { flex-direction: column; align-items: flex-start; gap: 40px; padding: 28px; }
+    .cta-card h2 { font-size: 40px; }
+    .cta-steps { width: 100%; }
+    .foot6 { gap: 56px; padding-top: 72px; padding-bottom: 96px; }
+    .foot-split { flex-direction: column; gap: 48px; }
+    .foot-l { width: 100%; }
+    .enq { width: 100%; }
+    .enq .two { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back" href="index.html">← All versions</a>
+
+<!-- 01 Hero: nav + editorial split -->
+<nav class="nav nav6">
+  <img class="logo" src="assets/logo-icon-nav.svg" alt="Ascent Film">
+  <div class="right">
+    <div class="nav-links" id="nl">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <div class="menu-foot"><div class="socials"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+    </div>
+    <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+    <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><i></i></button>
+  </div>
+</nav>
+<header id="top">
+  <div class="hero6">
+    <div class="text">
+      <div class="group">
+        <p class="eyebrow">[ Ascent Films — Burleigh Heads, QLD ]</p>
+        <h1 class="display">We film where others <span class="hl">can't.</span></h1>
+        <p class="lead">Brand films and social content for adventure, lifestyle and event brands. One crew from first call to final cut — on land, on water and in the air.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+          <a class="btn btn-outline" href="#work">See our work</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div><b>50+</b><span class="eyebrow">Campaigns</span></div>
+        <div><b>30+</b><span class="eyebrow">Brands</span></div>
+        <div><b>5M+</b><span class="eyebrow">Views</span></div>
+      </div>
+    </div>
+    <div class="hero-img">
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true"><source src="assets/hero.mp4" type="video/mp4"></video>
+      <span class="now eyebrow"><img src="assets/v6-dot.svg" alt="">Now showing — Behind the Shot · Moto campaign</span>
+    </div>
+  </div>
+</header>
+
+<!-- 02 About + stats + clients -->
+<section class="page-section" id="about">
+  <div class="about">
+    <div class="copy">
+      <p class="eyebrow">[ About Ascent ]</p>
+      <h2>At Ascent Films, we bring <span class="hl">adventure to life.</span></h2>
+      <p class="lead">Renowned outdoor expertise with media strategy built in. We deliver stories that move culture — and a library of content your team can keep using long after launch.</p>
+      <a class="link" href="#process">Meet the crew →</a>
+    </div>
+    <div class="stat-cards">
+      <div class="stat-card"><b>50+</b><span class="eyebrow">Campaigns delivered</span></div>
+      <div class="stat-card"><b>30+</b><span class="eyebrow">Brands partnered</span></div>
+      <div class="stat-card"><b>5M+</b><span class="eyebrow">Collective views</span></div>
+      <div class="stat-card"><b>3</b><span class="eyebrow">Elements — land, water, air</span></div>
+    </div>
+  </div>
+  <div class="marquee" aria-label="Clients">
+    <div class="track">
+      <div class="set"><span>Skydive Australia</span><i>✦</i><span>Bacardí</span><i>✦</i><span>Cairns Canyoning</span><i>✦</i><span>High Fly</span><i>✦</i><span>Dekunu</span><i>✦</i><span>Lifecykel</span><i>✦</i><span>Mara</span><i>✦</i><span>Mask</span><i>✦</i></div>
+      <div class="set" aria-hidden="true"><span>Skydive Australia</span><i>✦</i><span>Bacardí</span><i>✦</i><span>Cairns Canyoning</span><i>✦</i><span>High Fly</span><i>✦</i><span>Dekunu</span><i>✦</i><span>Lifecykel</span><i>✦</i><span>Mara</span><i>✦</i><span>Mask</span><i>✦</i></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 Services: land / water / air -->
+<section class="page-section services6" id="services">
+  <div class="head center">
+    <p class="eyebrow">[ Where we film ]</p>
+    <h2>Land. <span class="hl">Water.</span> Air.</h2>
+    <p class="lead">Renowned outdoor expertise means we get the shot other crews can't reach — safely, on schedule, and on brand.</p>
+  </div>
+  <div class="tabs" role="tablist">
+    <span class="chip" role="tab">Land</span>
+    <span class="chip on" role="tab" aria-selected="true">Water</span>
+    <span class="chip" role="tab">Air</span>
+  </div>
+  <div class="panel">
+    <img src="assets/v6-panel-water.png" alt="">
+    <div class="pt">
+      <p class="eyebrow hl">[ 02 — Water ]</p>
+      <h4>On the water</h4>
+      <p class="lead">Surf, sail and swim content shot from the lineup, the boat and the drone — with the safety plan to match.</p>
+      <ul class="ticks">
+        <li>In-water and surf-lineup filming</li>
+        <li>Boat and jet-ski tracking shots</li>
+        <li>Drone coverage over open water</li>
+        <li>Water safety crew on every shoot</li>
+      </ul>
+      <p class="eyebrow">[ Kit — drones · underwater housings · gimbal rigs ]</p>
+      <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Plan a water shoot</a>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Work index -->
+<section class="page-section" id="work" style="display:flex;flex-direction:column;gap:40px;align-items:flex-start">
+  <div class="row-head" style="width:100%">
+    <div class="head">
+      <p class="eyebrow">[ Work index ]</p>
+      <h2 style="display:flex;gap:12px;align-items:flex-start">All projects <span class="eyebrow m hl" style="font-weight:500">(12)</span></h2>
+    </div>
+    <div class="actions" style="gap:8px">
+      <span class="chip on">All</span><span class="chip">Film</span><span class="chip">Social</span><span class="chip">Events</span>
+    </div>
+  </div>
+  <div class="index" style="width:100%">
+    <a class="irow" href="#work"><span class="n">01</span><span class="t">Dekunu</span><span class="k">Brand film</span><span class="y">2026</span><span class="ar">→</span><span class="m">Brand film · 2026</span></a>
+    <a class="irow on" href="#work"><span class="n">02</span><span class="t">Splendour in the Grass</span><img class="pv" src="assets/v6-splendour.png" alt=""><span class="k">Event recap</span><span class="y">2025</span><span class="ar">→</span><span class="m">Event recap · 2025</span><img class="mpv" src="assets/v6-splendour.png" alt=""></a>
+    <a class="irow" href="#work"><span class="n">03</span><span class="t">Skydive Australia</span><span class="k">Campaign</span><span class="y">2026</span><span class="ar">→</span><span class="m">Campaign · 2026</span></a>
+    <a class="irow" href="#work"><span class="n">04</span><span class="t">ExperienceCo</span><span class="k">Social series</span><span class="y">2025</span><span class="ar">→</span><span class="m">Social series · 2025</span></a>
+    <a class="irow" href="#work"><span class="n">05</span><span class="t">Bacardí</span><span class="k">Product film</span><span class="y">2025</span><span class="ar">→</span><span class="m">Product film · 2025</span></a>
+    <a class="irow" href="#work"><span class="n">06</span><span class="t">High Fly</span><span class="k">Adventure</span><span class="y">2026</span><span class="ar">→</span><span class="m">Adventure · 2026</span></a>
+  </div>
+  <a class="btn btn-outline" href="#work">View all 12 projects</a>
+</section>
+
+<!-- 05 Testimonial: story split -->
+<section class="page-section">
+  <div class="split">
+    <div class="bts"><img src="assets/behind-the-scenes.png" alt=""><span class="eyebrow">On set — Dekunu brand film</span></div>
+    <div class="quote">
+      <p class="eyebrow">[ Client words ]</p>
+      <blockquote>“The crew got our product and the lifestyle around it. From the first call they knew what we were selling — and who to.”</blockquote>
+      <div class="person">
+        <img src="assets/avatar.png" alt="">
+        <div><b>Client name</b><span class="eyebrow">Role, Company</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="facts">
+        <div><span class="eyebrow">Project</span><span>Brand film + 12 social cuts</span></div>
+        <div><span class="eyebrow">Shoot</span><span>2 days, land + water</span></div>
+        <div><span class="eyebrow">Delivered</span><span>4 weeks</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 How we work -->
+<section class="page-section" id="process" style="display:flex;flex-direction:column;gap:56px">
+  <div class="row-head">
+    <div class="head">
+      <p class="eyebrow">[ Process ]</p>
+      <h2>Three steps. One crew.</h2>
+    </div>
+    <a class="link" href="#contact">See a sample shoot plan →</a>
+  </div>
+  <div class="steps6">
+    <div class="step6">
+      <div class="img"><img src="assets/behind-the-scenes.png" alt="">01</div>
+      <p class="eyebrow when">Week 1</p>
+      <h5>Discovery &amp; game plan</h5>
+      <p>A no-pressure call to lock goals, audience and message — then a shoot plan and shot list.</p>
+    </div>
+    <div class="step6">
+      <div class="img"><img src="assets/v6-step-2.png" alt="">02</div>
+      <p class="eyebrow when">Weeks 2–3</p>
+      <h5>Full package production</h5>
+      <p>Concept, casting, locations and permits handled. We shoot on land, on water and in the air.</p>
+    </div>
+    <div class="step6">
+      <div class="img"><img src="assets/v6-step-3.png" alt="">03</div>
+      <p class="eyebrow when">Week 4+</p>
+      <h5>Delivery &amp; expansion</h5>
+      <p>Launch-ready masters plus cut-downs for every platform — and a plan for what comes next.</p>
+    </div>
+  </div>
+  <div class="turn">
+    <b>Typical turnaround: 3–6 weeks from first call to final files.</b>
+    <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Get a timeline</a>
+  </div>
+</section>
+
+<!-- 07 FAQ: open grid -->
+<section class="page-section" id="faq" style="display:flex;flex-direction:column;gap:56px">
+  <div class="row-head">
+    <div class="head">
+      <p class="eyebrow">[ FAQ ]</p>
+      <h2>Before you ask.</h2>
+    </div>
+    <p class="lead" style="width:420px">The six things clients ask on every first call.</p>
+  </div>
+  <div class="faq-grid">
+    <div class="q"><h6>What does a project with Ascent look like?</h6><p>It starts with a no-pressure discovery call. We build a game plan, run the full production, then deliver cut-downs for every platform.</p></div>
+    <div class="q"><h6>Do you only film outdoor and adventure brands?</h6><p>No. Adventure is our home turf, but we shoot lifestyle, hospitality, events and product for any brand that wants content people actually watch.</p></div>
+    <div class="q"><h6>Can you keep content coming after the first shoot?</h6><p>Yes. Many clients move onto a monthly retainer — we plan shoots ahead and deliver a steady stream of platform-ready cuts.</p></div>
+    <div class="q"><h6>Where are you based?</h6><p>Burleigh Heads on the Gold Coast, QLD. We travel Australia-wide, and further for the right project.</p></div>
+    <div class="q"><h6>How much does it cost?</h6><p>Every project is scoped to your goals and channels. Book a call and we'll send a clear, itemised quote.</p></div>
+    <div class="ask">
+      <h5>Didn't see yours?</h5>
+      <p>Send it through — a producer will answer within two working days.</p>
+      <a class="btn btn-primary" href="#contact">Ask a question</a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CTA card -->
+<section class="page-section">
+  <div class="cta-card">
+    <div class="l">
+      <p class="eyebrow hl">[ Next step ]</p>
+      <h2>Ready when you are.</h2>
+      <p class="lead">Three small steps to a shoot plan — no obligation until you approve the quote.</p>
+      <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+    </div>
+    <div class="cta-steps">
+      <div><span class="eyebrow m hl">01</span><div><b>Pick a time</b><span class="small">Choose a 20-minute slot that suits you.</span></div></div>
+      <div><span class="eyebrow m hl">02</span><div><b>Quick chat</b><span class="small">Goals, audience, timeline and budget.</span></div></div>
+      <div><span class="eyebrow m hl">03</span><div><b>Clear proposal</b><span class="small">A shoot plan and itemised quote.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 Footer + contact -->
+<footer class="page-section foot6" id="contact">
+  <div class="foot-split">
+    <div class="foot-l">
+      <p class="eyebrow">[ Start a project ]</p>
+      <h2>Tell us about <span class="hl">your project.</span></h2>
+      <p class="lead">Two minutes now saves a week of back-and-forth. Prefer to talk? Book a call instead.</p>
+      <div class="info"><span>connect@ascent.film</span><span>Burleigh Heads, QLD, Australia</span><span>Instagram · TikTok · YouTube</span></div>
+    </div>
+    <form class="enq" onsubmit="return false">
+      <fieldset>
+        <legend class="eyebrow">What do you need?</legend>
+        <div class="opts">
+          <label><input type="radio" name="need" checked><span class="chip">Brand film</span></label>
+          <label><input type="radio" name="need"><span class="chip">Social content</span></label>
+          <label><input type="radio" name="need"><span class="chip">Event coverage</span></label>
+          <label><input type="radio" name="need"><span class="chip">Something else</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class="eyebrow">Budget range</legend>
+        <div class="opts">
+          <label><input type="radio" name="budget" checked><span class="chip">Under $10k</span></label>
+          <label><input type="radio" name="budget"><span class="chip">$10–25k</span></label>
+          <label><input type="radio" name="budget"><span class="chip">$25–50k</span></label>
+          <label><input type="radio" name="budget"><span class="chip">$50k+</span></label>
+        </div>
+      </fieldset>
+      <div class="two">
+        <label class="f"><span class="eyebrow">Name</span><input class="t" placeholder="Your name"></label>
+        <label class="f"><span class="eyebrow">Email</span><input class="t" type="email" placeholder="you@brand.com"></label>
+      </div>
+      <label class="f"><span class="eyebrow">Message</span><textarea placeholder="Goal, audience, timing — anything helps."></textarea></label>
+      <div class="send">
+        <button class="btn btn-primary" type="submit">Send enquiry</button>
+        <a class="link" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Prefer to talk? Book a call →</a>
+      </div>
+    </form>
+  </div>
+  <div class="wordmark" aria-hidden="true">Ascent Films</div>
+  <div class="bottom">
+    <div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films · Privacy · Terms</span></div>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="site.js?v=20" defer></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Version 7 · All projects</title>
+<link rel="stylesheet" href="style.css?v=23">
+<style>
+  .nav-links a.on { color: var(--accent); }
+  .work-head { display: flex; flex-direction: column; gap: 16px; padding-bottom: 0; }
+  .work-head .lead { max-width: 640px; }
+  .work-all .cards { margin-top: 32px; row-gap: 48px; }
+  /* name + year sit on the image, over a progressive blur (blur layer = shared rule in style.css) */
+  .work-all .card { position: relative; isolation: isolate; display: block; border-radius: 4px; overflow: hidden; transition: transform .4s cubic-bezier(.2,.7,.2,1); }
+  .work-all .card:hover { transform: translateY(-4px); }
+  .work-all .card .thumb { height: 420px; margin: 0; border-radius: 0; }
+  .work-all .card:hover .thumb { transform: none; }
+  .work-all .card::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(6,17,25,0) 50%, rgba(6,17,25,.85)); }
+  .work-all .card::after { z-index: 1; }
+  .work-all .card .cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 24px; align-items: flex-end; }
+  .work-all .card .cap .eyebrow { color: var(--text-2); }
+  @media (max-width: 900px) { .work-all .card .thumb { height: 320px; } .work-all .cards { row-gap: 16px; } .work-all .card .cap { padding: 20px; } }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="side"><a href="v7-home.html"><img class="logo" src="assets/logo-icon-nav.svg" alt="Ascent Film"></a></div>
+  <div class="nav-links">
+    <a class="on" href="v7-work.html" aria-current="page">Portfolio</a>
+    <a href="v7-home.html#services">Services</a>
+    <a href="v7-about.html">About</a>
+    <a href="v7-home.html#contact">Contact</a>
+    <div class="menu-foot"><div class="socials"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+  </div>
+  <div class="side end"><a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><i></i></button></div>
+</nav>
+
+<!-- 01 Page head -->
+<header class="section work-head">
+  <p class="eyebrow">[ Portfolio ]</p>
+  <h1 class="display">All projects</h1>
+  <p class="lead">Every film we’ve made on land, on water and in the air — filter by the kind of work you need.</p>
+</header>
+
+<!-- 02 Every project -->
+<section class="section work-all">
+  <div class="filters work-filters" role="group" aria-label="Filter projects" data-filters="#all-work">
+    <button class="chip" type="button" data-filter="all" aria-pressed="true">All (9)</button><button class="chip" type="button" data-filter="promo" aria-pressed="false">Promotional (2)</button><button class="chip" type="button" data-filter="social" aria-pressed="false">Social (3)</button><button class="chip" type="button" data-filter="brand" aria-pressed="false">Brand film (2)</button><button class="chip" type="button" data-filter="tvc" aria-pressed="false">TVC (1)</button><button class="chip" type="button" data-filter="event" aria-pressed="false">Event (1)</button>
+  </div>
+  <div class="cards" id="all-work">
+    <a class="card" href="v7-project.html" data-tags="promo" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/featured-case.png" alt=""></div>
+      <div class="cap"><b>Skydive Australia</b><span class="eyebrow">Promotional · 2026</span></div>
+    </a>
+    <a class="card" href="v7-project.html" data-tags="social" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/thumb-1.png" alt=""></div>
+      <div class="cap"><b>Dekunu</b><span class="eyebrow">Social content · 2025</span></div>
+    </a>
+    <a class="card" href="v7-project.html" data-tags="brand" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/thumb-2.png" alt=""></div>
+      <div class="cap"><b>ExperienceCo</b><span class="eyebrow">Brand film · 2025</span></div>
+    </a>
+    <a class="card" href="v7-project.html" data-tags="tvc" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/thumb-3.png" alt=""></div>
+      <div class="cap"><b>Bacardí</b><span class="eyebrow">TVC · 2024</span></div>
+    </a>
+    <a class="card" href="v7-project.html" data-tags="event" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/v3-tile-splendour.png" alt=""></div>
+      <div class="cap"><b>Splendour in the Grass</b><span class="eyebrow">Event film · 2025</span></div>
+    </a>
+    <a class="card" href="v7-project.html" data-tags="social" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/v6-panel-water.png" alt=""></div>
+      <div class="cap"><b>Mask</b><span class="eyebrow">Social content · 2025</span></div>
+    </a>
+    <a class="card" href="v7-project.html" data-tags="promo" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/v4-tile-skydive.png" alt=""></div>
+      <div class="cap"><b>High Fly</b><span class="eyebrow">Promotional · 2024</span></div>
+    </a>
+    <a class="card" href="v7-project.html" data-tags="brand" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/v6-step-3.png" alt=""></div>
+      <div class="cap"><b>Lifecykel</b><span class="eyebrow">Brand film · 2024</span></div>
+    </a>
+    <a class="card" href="v7-project.html" data-tags="social" data-cursor="View">
+      <div class="thumb" data-hover-video="assets/hero.mp4"><img src="assets/v6-step-2.png" alt=""></div>
+      <div class="cap"><b>Mara</b><span class="eyebrow">Social content · 2024</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- 08 CTA -->
+<section class="section raised stack center cta">
+  <p class="eyebrow">[ Connect with us ]</p>
+  <h2 class="display">Book with the crew who <span class="hl">live and breathe media.</span></h2>
+  <p class="lead">We take the time to understand your needs, starting with a no-pressure discovery call — then build a custom package around your goals.</p>
+  <div class="actions" style="justify-content:center">
+    <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+    <a class="btn btn-outline" href="v7-work.html">See our work</a>
+  </div>
+  <div class="reassure eyebrow"><span>✓ No-pressure discovery call</span><span>✓ Custom package for your goals</span><span>✓ One crew — land, water and air</span></div>
+</section>
+
+<!-- 09 Contact + footer -->
+<footer class="section footer" id="contact">
+  <div class="pitch">
+    <div class="head">
+      <p class="eyebrow">[ Our details ]</p>
+      <h2>Hit us up — we'd <span class="hl">love to hear from you.</span></h2>
+    </div>
+    <div class="mail"><span class="eyebrow">Email us</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+  </div>
+  <div class="footer-body">
+    <div class="details">
+      <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><span>Australia</span></div>
+      <div><span class="eyebrow">Contact</span><span>connect@ascent.film</span><span>Message us to set up a call</span></div>
+      <div><span class="eyebrow">Follow</span><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      <div><span class="eyebrow">Sitemap</span><a href="v7-work.html">Portfolio</a><a href="v7-home.html#services">Services</a><a href="v7-about.html">About</a><a href="v7-home.html#contact">Contact</a></div>
+    </div>
+    <form class="form" onsubmit="return false">
+      <div class="two">
+        <label><span class="eyebrow">Name</span><input name="name" autocomplete="name" placeholder="Your name"></label>
+        <label><span class="eyebrow">Email</span><input type="email" name="email" autocomplete="email" placeholder="you@brand.com"></label>
+      </div>
+      <div class="two">
+        <label><span class="eyebrow">Project type</span><select name="project"><option>Brand film, social, event…</option><option>Brand film</option><option>Social content</option><option>Event</option></select></label>
+        <label><span class="eyebrow">Budget range</span><select name="budget"><option>Select a range</option><option>Under $5k</option><option>$5k – $15k</option><option>$15k+</option></select></label>
+      </div>
+      <label><span class="eyebrow">Message</span><textarea name="message" placeholder="Tell us about the product, the audience and your timing."></textarea></label>
+      <div class="form-foot"><span class="small">We reply within two working days.</span><button class="btn btn-primary" type="submit">Send enquiry</button></div>
+    </form>
+  </div>
+  <div class="bottom">
+    <div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films</span></div>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="site.js?v=20" defer></script>
+</body>
+</html>

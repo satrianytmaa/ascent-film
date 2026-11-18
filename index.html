@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Films — Website demo</title>
+<link rel="stylesheet" href="style.css?v=23">
+<style>
+  .hub { padding: 120px var(--margin); }
+  .hub h1 { font-size: 64px; letter-spacing: -.03em; line-height: 1.05; margin: 16px 0; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 64px; }
+  .vcard { display: flex; flex-direction: column; background: var(--raised); border: 1px solid var(--card); border-radius: 4px; overflow: hidden; transition: border-color .2s, transform .2s; }
+  .vcard:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .vcard.final { border-color: var(--accent); }
+  .vcard img { width: 100%; height: 270px; object-fit: cover; }
+  .vcard div { padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+  .vcard h5 { font-size: 22px; }
+  .vcard p.d { font-size: 15px; line-height: 1.6; color: var(--text-2); }
+  .badge { margin-left: 10px; padding: 2px 10px; border-radius: 999px; background: var(--accent); color: var(--on-accent); }
+  @media (max-width: 900px) { .hub { padding: 64px var(--margin); } .hub h1 { font-size: 40px; } .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main class="hub">
+  <p class="eyebrow hl">[ Ascent Films · website demo ]</p>
+  <h1>Choose a version.</h1>
+  <p class="lead" style="font-size:15px">Click a version to open it. Every page has an "All versions" button to come back here.</p>
+
+  <div class="grid">
+    <a class="vcard" href="v2-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 2</span><h5>Redesign</h5><p class="d">Portfolio, services, process, testimonial, FAQ and contact in one flow.</p></div></a>
+    <a class="vcard" href="v3-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 3</span><h5>Redesign + team feedback</h5><p class="d">Clearer headline, centred menu, bigger proof, real services, About page.</p></div></a>
+    <a class="vcard" href="v4-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 4</span><h5>Option A — Booking-first</h5><p class="d">Booking button and proof in the very first screen.</p></div></a>
+    <a class="vcard" href="v5-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 5</span><h5>Option B — Cinematic</h5><p class="d">Showreel-led opening; the work comes straight after.</p></div></a>
+    <a class="vcard" href="v6-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 6</span><h5>Option C — Story-first</h5><p class="d">The story and the team up top.</p></div></a>
+    <a class="vcard final" href="v7-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 7 <span class="badge">★ Final</span></span><h5>Final</h5><p class="d">Your chosen sections in one consistent style, with a project page.</p></div></a>
+  </div>
+</main>
+<script src="site.js?v=20" defer></script>
+</body>
+</html>

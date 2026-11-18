@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Version 2</title>
+<link rel="stylesheet" href="style.css?v=23">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500&display=swap">
+<style>
+/* Version 2 "Redesign" — page-specific styles (shared tokens come from style.css) */
+:root { --tint: rgba(82,201,233,.04); --line: rgba(82,201,233,.08); --box: #1a2b38; }
+body { overflow-x: hidden; }
+.v2 .tinted { background: linear-gradient(var(--tint), var(--tint)), var(--bg); }
+.v2 h1, .v2 h2, .v2 h3, .v2 h4 { text-transform: uppercase; }
+.v2 .h48 { font: 700 48px/1 Archivo, sans-serif; letter-spacing: -.02em; text-transform: uppercase; }
+.v2 .h56 { font: 700 56px/1 Archivo, sans-serif; letter-spacing: -.04em; text-transform: uppercase; }
+.v2 .body18 { font: 400 18px/1.75 Inter, sans-serif; color: var(--text-2); }
+.v2 .link21 { font: 500 21px/1.75 Inter, sans-serif; text-transform: capitalize; }
+.v2 .ctr { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 80px var(--margin); }
+.v2 .ctr .h48, .v2 .ctr .h56, .v2 .ctr .body18 { max-width: 100%; }
+.v2 .btn { font-family: Archivo, sans-serif; padding: 16px 32px; }
+.v2 .btn-outline { border-color: var(--text); }
+
+/* hero */
+.v2-hero { position: relative; isolation: isolate; height: 1024px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+.v2-hero-bg { position: absolute; inset: 0; z-index: -1; }
+.v2-hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+.v2-hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,17,25,.64) 0, rgba(6,17,25,0) 200px); }
+.v2-nav { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 24px var(--margin); }
+.v2-nav .logo { width: 40px; height: 40px; }
+.v2-links { display: flex; align-items: center; gap: 24px; font: 400 16px/1 Archivo, sans-serif; letter-spacing: -.02em; text-transform: uppercase; }
+.v2-links a:not(.btn):hover { color: var(--accent); }
+.v2-nav-r { display: flex; align-items: center; gap: 24px; }
+.v2-hero-text { padding: 40px var(--margin) 44px; display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.v2-hero-text > * { width: 400px; max-width: 100%; }
+.v2-hero-text h1 { font: 700 56px/1 Archivo, sans-serif; letter-spacing: -.04em; }
+.v2-hero-text .l { font: 400 18px/1.75 Inter, sans-serif; text-transform: capitalize; }
+.v2-hero-text .s { font: 500 21px/1.75 Inter, sans-serif; text-transform: capitalize; }
+.v2-bar { height: 4px; background: var(--text); }
+.v2-bar i { display: block; height: 100%; width: 640px; background: var(--accent); }
+
+/* trusted by */
+.v2-trust { padding: 80px 0 0; display: flex; flex-direction: column; gap: 64px; }
+.v2-trust > .eyebrow { text-align: center; }
+.v2-marquee { display: flex; justify-content: center; overflow: hidden; }
+.v2-logos { display: flex; gap: 24px; flex: none; }
+.v2-logos div { width: 252.8px; height: 80px; border: 1px solid var(--box); border-radius: 4px; display: grid; place-items: center; text-align: center; padding: 0 34px; font: 500 15px/1.35 Unbounded, sans-serif; color: var(--text-2); }
+
+/* statement + stats */
+.v2-statement { position: relative; padding: 80px var(--margin) 0; text-align: center; }
+.v2-statement::before { content: ""; position: absolute; left: 0; right: 0; top: 96px; height: 1px; background: #53c9e9; opacity: .08; }
+.v2-statement p { position: relative; max-width: 920px; margin: 0 auto; font: 700 48px/1 Archivo, sans-serif; letter-spacing: -.02em; text-transform: uppercase; }
+.v2-stats { margin-top: 80px; padding: 40px var(--margin); display: flex; justify-content: center; align-items: center; }
+.v2-stat { flex: 1 1 0; max-width: 320px; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+.v2-stat b { font: 500 72px/1 Archivo, sans-serif; color: var(--accent); padding: 0 0 4px; }
+.v2-stat span { font: 400 16px/1.75 Inter, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+.v2-vl.mid { display: none; }
+.v2-vl { width: 1px; height: 100px; background: var(--line); flex: none; }
+
+/* selected work */
+.v2-work { padding: 80px var(--margin); display: flex; flex-direction: column; gap: 56px; }
+.v2-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.v2-head .t { display: flex; flex-direction: column; gap: 24px; max-width: 800px; }
+.v2-grid { display: flex; flex-direction: column; gap: 24px; }
+.v2-row { display: flex; gap: 24px; }
+.v2-tile { position: relative; isolation: isolate; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; overflow: hidden; }
+.v2-row.two .v2-tile { height: 520px; }
+.v2-row.three .v2-tile { height: 560px; }
+.v2-tile > img, .v2-strip > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; transition: transform .4s; }
+.v2-tile:hover > img { transform: scale(1.03); }
+.v2-tile::after, .v2-strip::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(5,18,26,0) 45%, rgba(5,18,26,.8)); }
+.cap { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "t w" "g w"; gap: 16px 16px; align-items: end; }
+.v2-row.three .cap { grid-template-columns: minmax(0,1fr) auto; grid-template-areas: "t t" "g w"; align-items: center; }
+.cap h4 { grid-area: t; font: 700 32px/1 Archivo, sans-serif; letter-spacing: -.02em; }
+.cap .tag { grid-area: g; font: 500 11px/1.2 "IBM Plex Mono", monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); white-space: pre; }
+.cap .watch { grid-area: w; display: flex; align-items: center; gap: 8px; font: 500 11px/1.2 "IBM Plex Mono", monospace; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.cap .watch b { font: 400 14px/1.5 Inter, sans-serif; }
+
+/* services / process / testimonial / connect */
+.v2-services { gap: 40px; }
+.v2-services .h48 { width: 920px; }
+.v2-how { gap: 56px; }
+.v2-steps { display: flex; width: 100%; text-align: left; }
+.v2-step { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 24px; padding: 0 40px; }
+.v2-step .n { color: var(--accent); }
+.v2-step h4 { font: 700 32px/1 Archivo, sans-serif; letter-spacing: -.02em; }
+.v2-step ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; font: 400 18px/1.75 Inter, sans-serif; color: var(--text-2); }
+.v2-step li { display: flex; gap: 12px; }
+.v2-step li::before { content: "—"; color: var(--accent); }
+.v2-vd { width: 1px; background: var(--line); flex: none; }
+.v2-quote { gap: 40px; }
+.v2-quote .h48 { width: 920px; }
+.v2-quote .body18 { width: 65ch; }
+.v2-person { display: flex; align-items: center; gap: 16px; text-align: left; }
+.v2-person img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+.v2-person b { display: block; font: 400 16px/1 Archivo, sans-serif; letter-spacing: -.02em; text-transform: uppercase; margin-bottom: 8px; }
+.v2-person .eyebrow { font-size: 11px; letter-spacing: .06em; }
+.v2-ctl { display: flex; gap: 16px; }
+.v2-ctl button { width: 48px; height: 48px; border: 1px solid var(--box); border-radius: 4px; background: none; color: var(--text); font: 400 18px/1 Inter, sans-serif; cursor: pointer; }
+.v2-ctl button:hover { border-color: var(--accent); color: var(--accent); }
+.v2-connect { gap: 40px; }
+.v2-connect .h56 { width: 920px; }
+.v2-connect .body18 { width: 65ch; }
+.v2-actions { display: flex; gap: 16px; align-items: center; }
+
+/* faq */
+.v2-faq { padding: 80px var(--margin); display: flex; gap: 24px; align-items: flex-start; }
+.v2-faq-head { width: 448px; flex: none; display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.v2-faq-head .body18 { color: var(--text); text-transform: capitalize; }
+.v2-faq-list { flex: 1; min-width: 0; border-bottom: 1px solid var(--line); }
+.v2-faq-list details { border-top: 1px solid var(--line); padding: 24px 0; }
+.v2-faq-list summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 24px; cursor: pointer; font: 500 21px/1.75 Inter, sans-serif; text-transform: capitalize; }
+.v2-faq-list summary::-webkit-details-marker { display: none; }
+.v2-faq-list summary::after { content: "+"; flex: none; font: 700 24px/1.1 Archivo, sans-serif; color: var(--accent); }
+.v2-faq-list details[open] summary::after { content: "–"; }
+.v2-faq-list p { margin-top: 16px; max-width: 65ch; font: 400 18px/1.75 Inter, sans-serif; color: var(--text-2); }
+
+/* footage strip */
+.v2-strip { position: relative; isolation: isolate; height: 440px; padding: 0 var(--margin) 40px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.v2-strip .cap h4 { font-size: 56px; letter-spacing: -.04em; max-width: 400px; }
+.v2-strip.sky { display: none; }
+
+/* footer */
+.v2-footer { padding: 80px var(--margin) 104px; display: flex; flex-direction: column; gap: 56px; }
+.v2-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.v2-pitch { width: 640px; max-width: 100%; display: flex; flex-direction: column; gap: 24px; }
+.v2-mail { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+.v2-mail a { font: 700 32px/1 Archivo, sans-serif; letter-spacing: -.02em; color: var(--accent); }
+.v2-hr { height: 1px; background: var(--line); }
+.v2-cols { display: flex; gap: 24px; align-items: flex-start; }
+.v2-cols > .c { flex: 1 1 0; min-width: 0; }
+.v2-details { display: flex; flex-direction: column; gap: 24px; }
+.v2-details div { display: flex; flex-direction: column; gap: 8px; }
+.v2-details span:last-child { font: 400 18px/1.75 Inter, sans-serif; }
+.v2-map { display: flex; flex-direction: column; gap: 16px; }
+.v2-map a { font: 400 16px/1 Archivo, sans-serif; letter-spacing: -.02em; text-transform: uppercase; }
+.v2-map a:hover, .v2-soc a:hover, .v2-mail a:hover, .v2-top-link:hover { color: var(--accent); }
+.v2-soc { display: flex; flex-direction: column; gap: 16px; }
+.v2-soc > div { display: flex; gap: 8px; }
+.v2-soc a { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--box); border-radius: 4px; font: 500 13px/1.2 "IBM Plex Mono", monospace; letter-spacing: .06em; text-transform: uppercase; }
+.v2-form { flex: 0 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+.v2-form .two { display: flex; gap: 16px; }
+.v2-form label { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.v2-form .eyebrow { font-size: 11px; letter-spacing: .06em; }
+.v2-form input, .v2-form select, .v2-form textarea { width: 100%; height: 56px; background: none; border: 1px solid var(--box); border-radius: 4px; padding: 0 16px; color: var(--text); font: 400 16px/1.75 Inter, sans-serif; }
+.v2-form select { color: var(--muted); }
+.v2-form select option { background: var(--bg); color: var(--text); }
+.v2-form textarea { height: 128px; padding: 14px 16px; resize: vertical; }
+.v2-form ::placeholder { color: var(--muted); }
+.v2-form input:focus, .v2-form select:focus, .v2-form textarea:focus { outline: none; border-color: var(--accent); }
+.v2-form .foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.v2-form .foot span { color: var(--muted); }
+.v2-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.v2-bottom .l { display: flex; align-items: center; gap: 16px; }
+.v2-bottom .logo { width: 32px; height: 32px; }
+.v2-bottom .eyebrow { font-size: 11px; letter-spacing: .06em; white-space: pre-wrap; }
+.v2 .m-div { display: none; }
+
+/* focus, motion polish */
+.v2 a:focus-visible, .v2 button:focus-visible, .v2 summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.v2-form input:focus-visible, .v2-form select:focus-visible, .v2-form textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.v2-links a:not(.btn), .v2-map a { position: relative; }
+.v2-links a:not(.btn)::after, .v2-map a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+.v2-links a:not(.btn):hover::after, .v2-map a:hover::after, .v2-links a:not(.btn):focus-visible::after { transform: scaleX(1); }
+.v2-tile { transition: transform .3s ease, box-shadow .3s ease; }
+.v2-tile:hover, .v2-tile:focus-visible { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.35); }
+.v2-strip > img { transition: transform .4s; }
+.v2-strip:hover > img { transform: scale(1.03); }
+.v2-step { transition: transform .3s ease; }
+.v2-step:hover { transform: translateY(-3px); }
+.v2-soc a, .v2-ctl button { transition: border-color .2s, color .2s, transform .2s; }
+.v2-soc a:hover, .v2-ctl button:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.v2-form input, .v2-form select, .v2-form textarea { transition: border-color .2s; }
+.v2-faq-list summary { transition: color .2s; }
+.v2-faq-list summary:hover { color: var(--accent); }
+.v2-faq-list summary::after { transition: transform .3s ease; }
+.v2-faq-list details[open] p { animation: v2-open .3s ease; }
+@keyframes v2-open { from { opacity: 0; transform: translateY(-6px); } }
+.v2-form input, .v2-form select, .v2-form textarea { min-height: 44px; }
+@media (prefers-reduced-motion: reduce) {
+  .v2 *, .v2 *::before, .v2 *::after { animation: none !important; transition: none !important; }
+  .v2-tile:hover, .v2-tile:focus-visible, .v2-step:hover, .v2-soc a:hover, .v2-ctl button:hover, .v2-tile:hover > img, .v2-strip:hover > img { transform: none; }
+}
+
+@media (max-width: 1100px) {
+  .v2-cols { flex-wrap: wrap; }
+  .v2-form { flex: 1 1 100%; }
+}
+
+/* mobile (matches Figma V2 / Home / Mobile, 390 wide) */
+@media (max-width: 900px) {
+  .v2 .m-div { display: block; height: 1px; background: var(--line); }
+  .v2 .h48, .v2 .h56 { font-size: 32px; letter-spacing: -.02em; }
+  .v2 .body18 { font-size: 16px; }
+  .v2 .link21 { font-size: 18px; }
+  .v2 .ctr { padding: 56px 20px; }
+  .v2 .ctr > * { max-width: 100%; }
+  .v2-services .h48, .v2-quote .h48, .v2-connect .h56, .v2-quote .body18, .v2-connect .body18 { width: 100%; }
+  .v2-hero { height: 780px; }
+  .v2-hero-bg::after { background: linear-gradient(180deg, #061119 0, rgba(6,17,25,0) 25.6%); }
+  .v2-nav { padding: 16px; }
+  .v2-nav .logo { width: 32px; height: 32px; }
+  .v2-nav .btn { padding: 12px 20px; }
+  .v2-nav-r { gap: 12px; }
+  .v2-hero-text { padding: 0 20px 32px; }
+  .v2-hero-text > * { width: 100%; }
+  .v2-hero-text h1 { font-size: 40px; letter-spacing: -.02em; }
+  .v2-hero-text .l { font-size: 16px; }
+  .v2-hero-text .s { font-size: 18px; }
+  .v2-bar i { width: 44%; }
+  .v2-trust { padding: 56px 0; gap: 40px; }
+  .v2-logos { gap: 16px; }
+  .v2-logos div { width: 160px; height: 64px; padding: 0 20px; }
+  .v2-logos div:nth-child(n+8) { display: none; }
+  .v2-statement { padding: 56px 20px; }
+  .v2-statement::before { display: none; }
+  .v2-statement p { font-size: 32px; letter-spacing: -.02em; }
+  .v2-stats { margin-top: 0; padding: 16px 20px; flex-direction: column; }
+  .v2-stat { width: 100%; max-width: none; padding: 24px 0; gap: 16px; }
+  .v2-stat b { font-size: 48px; padding: 0; }
+  .v2-vl { width: 100%; height: 1px; }
+  .v2-vl.mid { display: block; }
+  .v2-vl.end { display: none; }
+  .v2-strip { height: 360px; padding: 0 20px 32px; }
+  .v2-strip.sky { display: flex; }
+  .v2-strip.moto { order: 0; }
+  .v2-strip .cap { grid-template-columns: 1fr auto; grid-template-areas: "t t" "g w"; }
+  .v2-strip .cap h4 { font-size: 40px; letter-spacing: -.02em; max-width: none; }
+  .v2-work { padding: 56px 20px; gap: 40px; }
+  .v2-head { flex-direction: column; align-items: flex-start; }
+  .v2-grid, .v2-row { gap: 16px; }
+  .v2-row { flex-direction: column; }
+  .v2-row.two .v2-tile, .v2-row.three .v2-tile { height: 280px; flex: none; width: 100%; padding: 20px; border-radius: 4px; }
+  .v2-tile::after { background: linear-gradient(180deg, rgba(5,18,26,0) 40%, rgba(5,18,26,.85)); }
+  .cap { grid-template-areas: "t t" "g w"; gap: 12px; align-items: center; }
+  .cap h4 { font-size: 24px; line-height: 1.1; letter-spacing: -.02em; }
+  .v2-services { gap: 32px; }
+  .v2-how { gap: 32px; align-items: stretch; }
+  .v2-how .head { align-items: center; }
+  .v2-steps { flex-direction: column; }
+  .v2-vd { display: none; }
+  .v2-step { padding: 24px 0; gap: 16px; border-top: 1px solid var(--line); }
+  .v2-step h4 { font-size: 24px; line-height: 1.1; letter-spacing: -.02em; }
+  .v2-step ul { font-size: 16px; }
+  .v2-quote { gap: 32px; padding: 80px 20px; }
+  .v2-person img { width: 48px; height: 48px; }
+  .v2-connect { gap: 32px; padding: 80px 20px; }
+  .v2-connect .h56 { font-size: 40px; letter-spacing: -.02em; }
+  .v2-actions { flex-direction: column; width: 100%; }
+  .v2-actions .btn { width: 100%; justify-content: center; }
+  .v2-faq { padding: 56px 20px; flex-direction: column; gap: 40px; }
+  .v2-faq-head { width: 100%; }
+  .v2-faq-list { width: 100%; }
+  .v2-faq-list summary { font-size: 18px; line-height: 1.75; align-items: flex-start; }
+  .v2-faq-list p { font-size: 16px; }
+  .v2-footer { padding: 56px 20px 96px; gap: 40px; }
+  .v2-top { flex-direction: column; align-items: flex-start; gap: 32px; }
+  .v2-pitch .h56 { font-size: 40px; letter-spacing: -.02em; }
+  .v2-mail { align-items: flex-start; gap: 12px; }
+  .v2-mail a { font-size: 24px; letter-spacing: -.02em; }
+  .v2-cols { flex-direction: column; gap: 32px; }
+  .v2-cols > .c, .v2-form { flex: none; width: 100%; }
+  .v2-details .em { display: none; }
+  .v2-details span:last-child { font-size: 16px; }
+  .v2-form .two { flex-direction: column; }
+  .v2-form .foot { flex-direction: column; align-items: stretch; }
+  .v2-form .foot .btn { justify-content: center; }
+  .v2-bottom { flex-direction: column; align-items: flex-start; gap: 0; }
+  .v2-bottom .top { margin-top: 0; }
+}
+</style>
+</head>
+<body class="v2" id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<!-- 01 Hero -->
+<header class="v2-hero">
+  <div class="v2-hero-bg"><video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true"><source src="assets/hero.mp4" type="video/mp4"></video></div>
+  <nav class="nav v2-nav" id="nav">
+    <img class="logo" src="assets/v2-logo-nav.svg" alt="Ascent Film">
+    <div class="v2-nav-r">
+      <div class="nav-links v2-links">
+        <a href="#top">Home</a>
+        <a href="#work">Work</a>
+        <a href="#process">About</a>
+        <a href="#contact">Contact</a>
+        <div class="menu-foot"><div class="socials"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+      </div>
+      <a class="btn btn-primary navcta" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><i></i></button>
+    </div>
+  </nav>
+  <div>
+    <div class="v2-hero-text">
+      <h1>Speed, precision, and impact.</h1>
+      <p class="l">[ High Impact promotional content and branded films that blends ]</p>
+      <a class="s" href="#work">Scroll To Explore →</a>
+    </div>
+    <div class="v2-bar"><i></i></div>
+  </div>
+</header>
+
+<!-- 02 Trusted by -->
+<section class="v2-trust">
+  <p class="eyebrow">[ Trusted by ]</p>
+  <div class="v2-marquee"><div class="v2-logos">
+    <div>SKYDIVE AUSTRALIA</div><div>BACARDÍ</div><div>CAIRNS CANYONING</div><div>HIGH FLY</div><div>DEKUNU</div>
+    <div>LIFECYKEL</div><div>LIFECYKEL</div><div>MARA</div><div>MASK</div><div>MASK</div>
+  </div></div>
+</section>
+<div class="m-div"></div>
+
+<!-- 03 Statement + stats -->
+<section class="v2-statement">
+  <p>We create high-impact <span class="hl">promotional content</span> and <span class="hl">branded films</span> that blend <span class="hl">awe-inspiring emotion</span> with strategic product integration.</p>
+</section>
+<div class="v2-stats tinted">
+  <div class="v2-stat"><b>50+</b><span>Successful Campaign</span></div>
+  <div class="v2-vl"></div>
+  <div class="v2-stat"><b>300+</b><span>Happy Clients</span></div>
+  <div class="v2-vl mid"></div>
+  <div class="v2-stat"><b>5M+</b><span>Collective Views</span></div>
+  <div class="v2-vl end"></div>
+</div>
+
+<!-- mobile-only footage strip -->
+<a class="v2-strip sky" href="#work">
+  <img src="assets/v2-footage-skydive.png" alt="">
+  <div class="cap"><h4>Skydive madness.</h4><span class="tag">Promotional  ·  2026</span><span class="watch"><b>▶</b>Watch film</span></div>
+</a>
+<div class="m-div"></div>
+
+<!-- 04 Selected work -->
+<section class="v2-work" id="work">
+  <div class="v2-head">
+    <div class="t">
+      <p class="eyebrow">[ Selected work ]</p>
+      <h2 class="h48">Content that <span class="hl">gets watched,</span> not skipped.</h2>
+    </div>
+    <a class="link21" href="#work">View All Work →</a>
+  </div>
+  <div class="v2-grid">
+    <div class="v2-row two">
+      <a class="v2-tile" href="#work"><img src="assets/thumb-1.png" alt=""><div class="cap"><h4>Dekunu</h4><span class="tag">Social content  ·  2025</span><span class="watch"><b>▶</b>Watch film</span></div></a>
+      <a class="v2-tile" href="#work"><img src="assets/v3-tile-splendour.png" alt=""><div class="cap"><h4>Splendour in the Grass</h4><span class="tag">Event film  ·  2025</span><span class="watch"><b>▶</b>Watch film</span></div></a>
+    </div>
+    <div class="v2-row three">
+      <a class="v2-tile" href="#work"><img src="assets/featured-case.png" alt=""><div class="cap"><h4>Skydive Australia</h4><span class="tag">Promotional  ·  2026</span><span class="watch"><b>▶</b>Watch film</span></div></a>
+      <a class="v2-tile" href="#work"><img src="assets/thumb-2.png" alt=""><div class="cap"><h4>ExperienceCo</h4><span class="tag">Brand film  ·  2025</span><span class="watch"><b>▶</b>Watch film</span></div></a>
+      <a class="v2-tile" href="#work"><img src="assets/thumb-3.png" alt=""><div class="cap"><h4>Bacardí</h4><span class="tag">TVC  ·  2024</span><span class="watch"><b>▶</b>Watch film</span></div></a>
+    </div>
+  </div>
+</section>
+<div class="m-div"></div>
+
+<!-- 05 Services -->
+<section class="ctr v2-services" id="services">
+  <p class="eyebrow">[ Services ]</p>
+  <h2 class="h48">At Ascent Films, we bring <span class="hl">adventure to life</span> with renowned outdoor expertise and our <span class="hl">Based Media Strategy</span>. We deliver stories that move culture.</h2>
+</section>
+
+<!-- 06 How we work -->
+<section class="ctr v2-how tinted" id="process">
+  <div class="head center">
+    <p class="eyebrow">[ How we work ]</p>
+    <h2 class="h48">Three steps. One crew.</h2>
+  </div>
+  <div class="v2-steps">
+    <div class="v2-step"><p class="eyebrow n">[ 01 ]</p><h4>Discovery &amp; game plan</h4><ul><li>No-pressure discovery call</li><li>Goals, audience and message</li><li>Shoot plan and shot list</li></ul></div>
+    <div class="v2-vd"></div>
+    <div class="v2-step"><p class="eyebrow n">[ 02 ]</p><h4>Full package production</h4><ul><li>Concept, script and casting</li><li>On land, on water, in the air</li><li>Edit, grade and sound</li></ul></div>
+    <div class="v2-vd"></div>
+    <div class="v2-step"><p class="eyebrow n">[ 03 ]</p><h4>Delivery &amp; expansion</h4><ul><li>Cut-downs for every platform</li><li>Launch-ready files</li><li>Ongoing retainer content</li></ul></div>
+  </div>
+</section>
+<div class="m-div"></div>
+
+<!-- 07 Testimonial -->
+<section class="ctr v2-quote">
+  <p class="eyebrow">[ Client words ]</p>
+  <h2 class="h48">“The crew <span class="hl">got our product</span> and the lifestyle around it.”</h2>
+  <p class="body18">[ From the first call they understood what we were selling and who we were selling it to. The content kept working long after launch. ]</p>
+  <div class="v2-person">
+    <img src="assets/v2-avatar.png" alt="">
+    <div><b>Client name</b><span class="eyebrow">Role, Company</span></div>
+  </div>
+  <div class="v2-ctl"><button type="button" aria-label="Previous">←</button><button type="button" aria-label="Next">→</button></div>
+</section>
+<div class="m-div"></div>
+
+<!-- 08 FAQ -->
+<section class="v2-faq">
+  <div class="v2-faq-head">
+    <p class="eyebrow">[ FAQ ]</p>
+    <h2 class="h48">Questions, <span class="hl">answered.</span></h2>
+    <p class="body18">[ Anything else? Book a call and we'll talk it through ]</p>
+    <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+  </div>
+  <div class="v2-faq-list">
+    <details open><summary>What does a project with Ascent look like?</summary><p>It starts with a no-pressure discovery call. We build a game plan, run the full production, then deliver cut-downs for every platform.</p></details>
+    <details><summary>Do you only film outdoor and adventure brands?</summary><p>Adventure is our home turf, but the same crew shoots products, events and brand stories for any business with something worth showing.</p></details>
+    <details><summary>Can you keep content coming after the first shoot?</summary><p>Yes — our ongoing retainer keeps fresh content flowing so you stay visible between campaigns.</p></details>
+    <details><summary>Where are you based?</summary><p>Burleigh Heads, QLD, Australia — and we travel for shoots on land, on water and in the air.</p></details>
+    <details><summary>How much does it cost?</summary><p>Every package is built around your goals. Book a call and we'll scope it together.</p></details>
+  </div>
+</section>
+<div class="m-div"></div>
+
+<!-- 09 Connect -->
+<section class="ctr v2-connect tinted">
+  <p class="eyebrow">[ Connect with us ]</p>
+  <h2 class="h56">Book with the crew who <span class="hl">live and breathe media.</span></h2>
+  <p class="body18">[ We take the time to understand your needs, starting with a no-pressure discovery call. Then we build a custom package for your goals. Book with the crew who live and breathe media. ]</p>
+  <div class="v2-actions">
+    <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+    <a class="btn btn-outline" href="#work">See our work</a>
+  </div>
+</section>
+
+<!-- 10 Footage strip -->
+<a class="v2-strip moto" href="#work">
+  <img src="assets/v3-footage.png" alt="">
+  <div class="cap"><h4>Behind the shot.</h4><span class="tag">Brand film  ·  Tracking-car rig</span><span class="watch"><b>▶</b>Watch film</span></div>
+</a>
+
+<!-- 11 Footer -->
+<footer class="v2-footer" id="contact">
+  <div class="v2-top">
+    <div class="v2-pitch">
+      <p class="eyebrow">[ Our details ]</p>
+      <h2 class="h56">Hit us up — we’d <span class="hl">love to hear from you.</span></h2>
+    </div>
+    <div class="v2-mail"><span class="eyebrow">Email us</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+  </div>
+  <div class="v2-hr"></div>
+  <div class="v2-cols">
+    <div class="c v2-details">
+      <div><span class="eyebrow">Location</span><span>Burleigh Heads, QLD, Australia</span></div>
+      <div class="em"><span class="eyebrow">Email</span><span>connect@ascent.film</span></div>
+      <div><span class="eyebrow">Phone</span><span>Message us to set up a call</span></div>
+    </div>
+    <div class="c v2-map">
+      <span class="eyebrow">Sitemap</span>
+      <a href="#top">Home</a><a href="#work">Work</a><a href="#process">About</a><a href="#contact">Contact</a>
+    </div>
+    <div class="c v2-soc">
+      <span class="eyebrow">Follow</span>
+      <div><a href="#">IG</a><a href="#">FB</a><a href="#">IN</a></div>
+    </div>
+    <form class="v2-form" onsubmit="return false">
+      <div class="two">
+        <label><span class="eyebrow">Name</span><input placeholder="Your name"></label>
+        <label><span class="eyebrow">Email *</span><input type="email" placeholder="you@brand.com"></label>
+      </div>
+      <div class="two">
+        <label><span class="eyebrow">Project type</span><select><option>Promotional, brand film…</option><option>Promotional</option><option>Brand film</option><option>Social content</option><option>Event</option></select></label>
+        <label><span class="eyebrow">Budget range</span><select><option>Select a range</option><option>Under $5k</option><option>$5k – $15k</option><option>$15k+</option></select></label>
+      </div>
+      <label><span class="eyebrow">Message</span><textarea placeholder="Tell us about the product, the audience and your timing."></textarea></label>
+      <div class="foot"><span>We reply within two working days.</span><button class="btn btn-primary" type="submit">Send enquiry</button></div>
+    </form>
+  </div>
+  <div class="v2-hr"></div>
+  <div class="v2-bottom">
+    <div class="l"><img class="logo" src="assets/v2-logo-foot.svg" alt=""><span class="eyebrow">© 2026 Ascent Films  ·  Burleigh Heads, QLD</span></div>
+    <a class="link21 v2-top-link top" href="#top">Back To Top ↑</a>
+  </div>
+</footer>
+
+<script src="site.js?v=20" defer></script>
+</body>
+</html>

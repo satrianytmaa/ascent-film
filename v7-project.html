@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Version 7 · Project</title>
+<link rel="stylesheet" href="style.css?v=23">
+<style>
+  .pj-head { gap: 16px; }
+  .pj-head .lead { max-width: 720px; }
+  .pj-wrap { display: flex; flex-direction: column; gap: 64px; }
+  .muted { color: var(--muted); }
+  .t-accent { color: var(--accent); }
+
+  /* hero */
+  .pj-hero { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; gap: 32px; padding: 420px var(--margin) 56px; }
+  .pj-hero > video, .pj-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .pj-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(6,17,25,0) 35%, rgba(6,17,25,.95)); }
+  .pj-hero .display { margin: 0; }
+  .pj-hero .lead { max-width: 720px; }
+  .pj-hero .head { width: 100%; gap: 16px; }
+  .pj-hero .case-details { width: 100%; border-top-color: var(--border); }
+  .pj-hero .meta { gap: 16px 48px; }
+
+  /* overview */
+  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .trio > div { border-top: 1px solid var(--border); padding-top: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .trio p:last-child { color: var(--text-2); }
+
+  /* the shot */
+  .shot { display: flex; gap: 32px; align-items: flex-start; }
+  .shot > img { flex: 1; min-width: 0; height: 600px; border-radius: 8px; object-fit: cover; }
+  .specs { flex: none; width: min(400px, 36%); }
+  .specs > div { border-bottom: 1px solid var(--border); padding: 18px 0; display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow.m { color: var(--muted); }
+  .stills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .ph { display: flex; flex-direction: column; gap: 12px; }
+  .ph-box { height: 260px; display: grid; place-items: center; background: var(--card); border: 1px dashed var(--border); border-radius: 8px; text-align: center; padding: 0 12px; }
+
+  /* behind the scenes */
+  .bts-grid { display: flex; gap: 32px; align-items: flex-start; }
+  .bts-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .bts-main img { width: 100%; height: 520px; border-radius: 8px; object-fit: cover; }
+  .bts-side { flex: none; width: min(440px, 36%); display: flex; flex-direction: column; gap: 32px; }
+  .bts-side .ph-box { height: 244px; }
+
+  /* deliverables + results */
+  .dr { display: flex; gap: 64px; align-items: flex-start; }
+  .dr > div { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 32px; display: flex; flex-direction: column; gap: 8px; }
+  .stat-card b { font: 500 120px/1 Archivo, sans-serif; color: var(--accent); }
+  .stat-card p { color: var(--text-2); }
+
+  /* credits */
+  .credits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px 32px; }
+  .credits > div { border-top: 1px solid var(--border); padding-top: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .credits b { font: 500 20px/1.5 Inter, sans-serif; }
+
+  .mail a { text-transform: uppercase; }
+  .next-wrap { padding-bottom: 0; }
+
+  /* next project */
+  .next { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; height: 520px; padding: 48px; border-radius: 8px; }
+  .next > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(6,17,25,0) 30%, rgba(6,17,25,.9)); }
+  .next h3 { font-size: 64px; letter-spacing: -.02em; }
+  .next .foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .next .foot span:first-child { color: var(--text-2); }
+
+  @media (max-width: 900px) {
+    .nav { padding-top: 18px; padding-bottom: 18px; }
+    .mail a { font-size: 24px; }
+    .eyebrow { font-size: 12px; }
+    h2, .pj-head h2 { font-size: 32px; letter-spacing: -.02em; }
+    .pj-wrap { gap: 40px; }
+    .pj-head { gap: 12px; }
+
+    .pj-hero { padding: 300px var(--margin) 32px; gap: 24px; }
+    .pj-hero .display { font-size: 36px; letter-spacing: -.04em; }
+    .pj-hero .head { gap: 12px; }
+    .pj-hero .lead, .pj-wrap .lead { font-size: 16px; }
+    .pj-hero .link { font-size: 16px; }
+    .pj-hero .case-details { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .pj-hero .meta { flex-direction: column; gap: 16px; }
+
+    .trio { grid-template-columns: 1fr; gap: 24px; }
+    .trio > div { gap: 12px; }
+    h4 { font-size: 24px; letter-spacing: -.02em; }
+
+    .shot { flex-direction: column; gap: 24px; width: 100%; }
+    .shot > img { width: 100%; flex: none; height: 260px; }
+    .specs { width: 100%; }
+    .stills { grid-template-columns: 1fr; gap: 24px; }
+    .stills .ph:nth-child(3) { display: none; }
+    .ph-box { height: 200px; }
+
+    .bts-grid { flex-direction: column; gap: 24px; width: 100%; }
+    .bts-main { width: 100%; }
+    .bts-main img { height: 240px; }
+    .bts-side { width: 100%; flex-direction: row; gap: 24px; }
+    .bts-side .ph { flex: 1; min-width: 0; }
+    .bts-side .ph-box { height: 160px; }
+
+    .dr { flex-direction: column; gap: 40px; }
+    .dr > div { width: 100%; flex: none; gap: 24px; }
+    .stat-card b { font-size: 72px; }
+
+    .credits { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .credits b { font-size: 18px; }
+
+    .next { height: 360px; padding: 24px; }
+    .next h3 { font-size: 34px; letter-spacing: -.02em; }
+    .next .foot { font-size: 16px; }
+    .next .foot .link { font-size: 16px; }
+  }
+  @media (max-width: 420px) {
+    .ph-box .eyebrow { font-size: 11px; }
+  }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="side"><a href="v7-home.html"><img class="logo" src="assets/logo-icon-nav.svg" alt="Ascent Film"></a></div>
+  <div class="nav-links">
+    <a href="v7-work.html">Portfolio</a>
+    <a href="v7-home.html#services">Services</a>
+    <a href="v7-about.html">About</a>
+    <a href="v7-home.html#contact">Contact</a>
+    <div class="menu-foot"><div class="socials"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+  </div>
+  <div class="side end"><a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><i></i></button></div>
+</nav>
+
+<!-- 01 Hero -->
+<header class="pj-hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true"><source src="assets/hero.mp4" type="video/mp4"></video>
+  <a class="link" href="v7-work.html">← All projects</a>
+  <div class="head">
+    <p class="eyebrow hl">[ Promotional · 2026 ]</p>
+    <h1 class="display">Skydive Australia</h1>
+    <p class="lead">[ One-line summary — what the film is and who it’s for. ]</p>
+  </div>
+  <div class="case-details">
+    <div class="meta">
+      <div><span class="eyebrow m">Client</span><span>Skydive Australia</span></div>
+      <div><span class="eyebrow m">Type</span><span>Promotional film</span></div>
+      <div><span class="eyebrow m">Year</span><span>2026</span></div>
+      <div><span class="eyebrow m">Deliverables</span><span>[ to confirm ]</span></div>
+    </div>
+    <a class="btn btn-primary btn-play" href="#shot" data-showreel="assets/hero.mp4"><span class="tri" aria-hidden="true"></span>Watch film</a>
+  </div>
+  <div class="reel"><i></i></div>
+</header>
+
+<!-- 02 Overview -->
+<section class="section pj-wrap">
+  <div class="head pj-head">
+    <p class="eyebrow">[ The project ]</p>
+    <h2>Goal, concept, story.</h2>
+  </div>
+  <div class="trio">
+    <div><p class="eyebrow hl">[ 01 ]</p><h4>Goal</h4><p>[ What Skydive Australia needed, and why — one or two sentences. ]</p></div>
+    <div><p class="eyebrow hl">[ 02 ]</p><h4>Concept</h4><p>[ The creative idea behind the film, in one or two sentences. ]</p></div>
+    <div><p class="eyebrow hl">[ 03 ]</p><h4>Story</h4><p>[ How the film unfolds — the set-up, the jump, the payoff. ]</p></div>
+  </div>
+</section>
+
+<!-- 03 The shot -->
+<section class="section raised pj-wrap" id="shot">
+  <div class="head pj-head">
+    <p class="eyebrow">[ The shot ]</p>
+    <h2>The shot.</h2>
+    <p class="lead">[ The key shot and how it was captured. ]</p>
+  </div>
+  <div class="shot">
+    <img src="assets/featured-case.png" alt="">
+    <div class="specs">
+      <div><span class="eyebrow m">Location</span><span>[ to confirm ]</span></div>
+      <div><span class="eyebrow m">Rig + gear</span><span>[ to confirm ]</span></div>
+      <div><span class="eyebrow m">Conditions</span><span>[ to confirm ]</span></div>
+      <div><span class="eyebrow m">Crew</span><span>[ to confirm ]</span></div>
+    </div>
+  </div>
+  <div class="stills">
+    <div class="ph"><div class="ph-box"><span class="eyebrow m">[ Still from the film ]</span></div><p class="small">[ Caption ]</p></div>
+    <div class="ph"><div class="ph-box"><span class="eyebrow m">[ Still from the film ]</span></div><p class="small">[ Caption ]</p></div>
+    <div class="ph"><div class="ph-box"><span class="eyebrow m">[ Still from the film ]</span></div><p class="small">[ Caption ]</p></div>
+  </div>
+</section>
+
+<!-- 04 Behind the scenes -->
+<section class="section pj-wrap">
+  <div class="head pj-head">
+    <p class="eyebrow">[ Behind the scenes ]</p>
+    <h2>Behind the scenes.</h2>
+    <p class="lead">[ A short note from the crew about the shoot day. ]</p>
+  </div>
+  <div class="bts-grid">
+    <div class="bts-main"><img src="assets/behind-the-scenes.png" alt=""><p class="small">[ Caption ]</p></div>
+    <div class="bts-side">
+      <div class="ph"><div class="ph-box"><span class="eyebrow m">[ BTS photo ]</span></div><p class="small">[ Caption ]</p></div>
+      <div class="ph"><div class="ph-box"><span class="eyebrow m">[ BTS photo ]</span></div><p class="small">[ Caption ]</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 Deliverables + results -->
+<section class="section raised">
+  <div class="dr">
+    <div>
+      <div class="head pj-head">
+        <p class="eyebrow">[ Deliverables ]</p>
+        <h2>What we delivered.</h2>
+      </div>
+      <div class="chips" style="display:flex;flex-wrap:wrap;gap:8px"><span class="chip">[ Hero film ]</span><span class="chip">[ Cut-downs ]</span><span class="chip">[ Stills ]</span></div>
+    </div>
+    <div>
+      <div class="head pj-head">
+        <p class="eyebrow">[ Results ]</p>
+        <h2>What it did.</h2>
+      </div>
+      <div class="stat-card"><b>—</b><p>[ Add real campaign numbers, or remove this block. ]</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 Credits -->
+<section class="section pj-wrap">
+  <div class="head pj-head">
+    <p class="eyebrow">[ Credits ]</p>
+    <h2>The crew.</h2>
+  </div>
+  <div class="credits">
+    <div><span class="eyebrow m">Director</span><b>[ Name ]</b></div>
+    <div><span class="eyebrow m">Director of photography</span><b>[ Name ]</b></div>
+    <div><span class="eyebrow m">Editor</span><b>[ Name ]</b></div>
+    <div><span class="eyebrow m">Producer</span><b>[ Name ]</b></div>
+  </div>
+</section>
+
+<!-- 07 Next project -->
+<section class="section raised next-wrap">
+  <a class="next" href="v7-project.html">
+    <img src="assets/thumb-1.png" alt="">
+    <p class="eyebrow hl">[ Next project ]</p>
+    <h3>Dekunu</h3>
+    <div class="foot"><span>Social content · 2025</span><span class="link">View project →</span></div>
+  </a>
+</section>
+
+<!-- 08 CTA -->
+<section class="section raised stack center cta">
+  <p class="eyebrow">[ Connect with us ]</p>
+  <h2 class="display">Book with the crew who <span class="hl">live and breathe media.</span></h2>
+  <p class="lead">We take the time to understand your needs, starting with a no-pressure discovery call — then build a custom package around your goals.</p>
+  <div class="actions" style="justify-content:center">
+    <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+    <a class="btn btn-outline" href="v7-work.html">See our work</a>
+  </div>
+  <div class="reassure eyebrow"><span>✓ No-pressure discovery call</span><span>✓ Custom package for your goals</span><span>✓ One crew — land, water and air</span></div>
+</section>
+
+<!-- 09 Contact + footer -->
+<footer class="section footer" id="contact">
+  <div class="pitch">
+    <div class="head">
+      <p class="eyebrow">[ Our details ]</p>
+      <h2>Hit us up — we'd <span class="hl">love to hear from you.</span></h2>
+    </div>
+    <div class="mail"><span class="eyebrow">Email us</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+  </div>
+  <div class="footer-body">
+    <div class="details">
+      <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><span>Australia</span></div>
+      <div><span class="eyebrow">Contact</span><span>connect@ascent.film</span><span>Message us to set up a call</span></div>
+      <div><span class="eyebrow">Follow</span><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      <div><span class="eyebrow">Sitemap</span><a href="v7-work.html">Portfolio</a><a href="v7-home.html#services">Services</a><a href="v7-about.html">About</a><a href="v7-home.html#contact">Contact</a></div>
+    </div>
+    <form class="form" onsubmit="return false">
+      <div class="two">
+        <label><span class="eyebrow">Name</span><input name="name" autocomplete="name" placeholder="Your name"></label>
+        <label><span class="eyebrow">Email</span><input type="email" name="email" autocomplete="email" placeholder="you@brand.com"></label>
+      </div>
+      <div class="two">
+        <label><span class="eyebrow">Project type</span><select name="project"><option>Brand film, social, event…</option><option>Brand film</option><option>Social content</option><option>Event</option></select></label>
+        <label><span class="eyebrow">Budget range</span><select name="budget"><option>Select a range</option><option>Under $5k</option><option>$5k – $15k</option><option>$15k+</option></select></label>
+      </div>
+      <label><span class="eyebrow">Message</span><textarea name="message" placeholder="Tell us about the product, the audience and your timing."></textarea></label>
+      <div class="form-foot"><span class="small">We reply within two working days.</span><button class="btn btn-primary" type="submit">Send enquiry</button></div>
+    </form>
+  </div>
+  <div class="bottom">
+    <div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films</span></div>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="site.js?v=20" defer></script>
+</body>
+</html>

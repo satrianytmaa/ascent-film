@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Version 4</title>
+<link rel="stylesheet" href="style.css?v=23">
+<style>
+  .hero-content { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+  .hero h1 { font-size: 96px; line-height: .92; letter-spacing: -.04em; }
+  .proof-card { width: 360px; flex: none; background: rgba(6,17,25,.6); border: 1px solid rgba(250,250,250,.14); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .proof-card .num { display: flex; gap: 32px; }
+  .proof-card .num div { display: flex; flex-direction: column; gap: 4px; }
+  .proof-card b { font: 700 32px/1 Archivo, sans-serif; letter-spacing: -.02em; text-transform: uppercase; }
+  .trusted { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .trusted .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; width: 100%; font: 700 20px/1.1 Archivo, sans-serif; letter-spacing: -.01em; text-transform: uppercase; color: var(--muted); }
+  .statement { display: flex; gap: 40px; border-top: 1px solid var(--card); padding-top: 64px; margin-top: 96px; }
+  .statement .eyebrow { width: 320px; flex: none; }
+  .statement p:last-child { font: 700 40px/1.2 Archivo, sans-serif; letter-spacing: -.02em; }
+  .stats4 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 96px; }
+  .stats4 > div { border-top: 1px solid var(--border); padding-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .stats4 b { font: 500 72px/1 Archivo, sans-serif; }
+  .stats4 span { font: 700 20px/1.1 Archivo, sans-serif; letter-spacing: -.01em; text-transform: uppercase; }
+  .stats4 p { color: var(--muted); }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 40px 0 16px; }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .tiles { display: grid; gap: 24px; margin-top: 24px; }
+  .tiles.two { grid-template-columns: repeat(2, 1fr); }
+  .tiles.three { grid-template-columns: repeat(3, 1fr); }
+  /* while a filter is active, both rows merge into one 3-up grid so no half-empty rows remain */
+  .tile-grid.is-filtered { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
+  .tile-grid.is-filtered .tiles { display: contents; }
+  .tile-grid.is-filtered .tile { height: 520px; }
+  .tile { position: relative; isolation: isolate; height: 560px; border-radius: 4px; overflow: hidden; padding: 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .tiles.three .tile { height: 520px; }
+  .tile > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; transition: transform .4s; }
+  .tile:hover > img { transform: scale(1.04); }
+  .tile::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(6,17,25,0) 45%, rgba(6,17,25,.9)); }
+  .tile div { display: flex; flex-direction: column; gap: 8px; text-transform: uppercase; }
+  .tile b { font: 700 24px/1.1 Archivo, sans-serif; letter-spacing: -.02em; }
+  .tile .eyebrow { color: var(--text-2); }
+  .tile .watch { background: var(--bg); color: var(--text); padding: 8px 12px; border-radius: 999px; flex: none; }
+  .svc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+  .svc article { background: var(--raised); border: 1px solid var(--card); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+  .svc img { height: 280px; width: 100%; object-fit: cover; }
+  .svc .in { padding: 32px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
+  .svc .in .lead { font-size: 16px; color: var(--text-2); }
+  .svc ul { list-style: none; padding: 16px 0 0; border-top: 1px solid var(--card); display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+  .svc .link { margin-top: auto; }
+  .quote-c { align-items: center; text-align: center; gap: 48px; }
+  .quote-c blockquote { font: 700 44px/1.18 Archivo, sans-serif; letter-spacing: -.02em; max-width: 1080px; }
+  .pager { display: flex; align-items: center; gap: 24px; }
+  .pager > span:first-child { display: flex; gap: 12px; }
+  .row-head > .link { white-space: nowrap; }
+  .pager span.arr { width: 48px; height: 48px; border: 1px solid var(--border); border-radius: 50%; display: grid; place-items: center; margin-right: -12px; }
+  .faq-row { gap: 80px; }
+  .producer { background: #0e2130; border-radius: 8px; padding: 24px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; width: 100%; }
+  .producer .person img { width: 44px; height: 44px; }
+  .faq-list summary { font-size: 21px; line-height: 1.4; }
+  .step .num { color: var(--accent); }
+  .h48 { font-size: 48px; }
+  .cta .display { font-size: 72px; }
+  .footer { padding-block: 96px 120px; }
+  .statement p:last-child, .svc .lead, .step p { max-width: 65ch; }
+  /* focus */
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .form input:focus-visible, .form select:focus-visible, .form textarea:focus-visible { border-color: var(--accent); }
+  /* motion */
+  .tile, .svc article, .proof-card { transition: transform .3s ease, border-color .3s ease; }
+  .tile:hover, .svc article:hover { transform: translateY(-4px); }
+  .svc article:hover { border-color: var(--border); }
+  .svc img { transition: transform .4s; }
+  .svc article:hover img { transform: scale(1.04); }
+  .nav-links a { position: relative; padding: 8px 0; }
+  .nav-links a::after { content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+  .nav-links a:hover::after, .nav-links a:focus-visible::after { transform: scaleX(1); }
+  .faq-list details > p { animation: fade .3s ease both; }
+  @keyframes fade { from { opacity: 0; transform: translateY(-4px); } }
+  .footer .details a, .bottom a { display: inline-block; padding: 2px 0; }
+  @media (max-width: 900px) {
+    .h48 { font-size: 32px; }
+    .cta .display { font-size: 44px; }
+    .footer { padding-block: 72px 96px; }
+    .footer .details a, .bottom a { padding: 8px 0; }
+    .hero h1 { font-size: 48px; }
+    .hero-content { flex-direction: column; align-items: stretch; gap: 24px; }
+    .proof-card { width: 100%; }
+    .trusted .row { justify-content: center; font-size: 16px; }
+    .statement { flex-direction: column; gap: 16px; padding-top: 40px; margin-top: 56px; }
+    .statement .eyebrow { width: auto; }
+    .statement p:last-child { font-size: 26px; }
+    .stats4 { grid-template-columns: 1fr; gap: 28px; margin-top: 56px; }
+    .stats4 b { font-size: 56px; }
+    .tiles.two, .tiles.three, .svc, .tile-grid.is-filtered { grid-template-columns: 1fr; }
+    .tile-grid.is-filtered .tile { height: 360px; }
+    .tile, .tiles.three .tile { height: 360px; }
+    .svc { margin-top: 40px; }
+    .svc .in { padding: 24px; }
+    .quote-c blockquote { font-size: 26px; }
+    .faq-row { gap: 40px; }
+    .faq-list summary { font-size: 18px; }
+    .reassure { align-items: center; }
+  }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<header class="hero">
+  <div class="hero-bg"><video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true"><source src="assets/hero.mp4" type="video/mp4"></video></div>
+  <nav class="nav">
+    <div class="side"><img class="logo" src="assets/logo-icon-nav.svg" alt="Ascent Film"></div>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <div class="menu-foot"><div class="socials"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+    </div>
+    <div class="side end"><a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><i></i></button></div>
+  </nav>
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="eyebrow">[ Adventure &amp; brand film studio — Gold Coast, AU ]</p>
+      <h1 class="display">Speed, precision and impact.</h1>
+      <p class="lead">Promotional content and branded films for adventure, lifestyle and event brands — shot on land, on water and in the air.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+        <a class="btn btn-tonal" href="#work">Watch showreel</a>
+      </div>
+    </div>
+    <aside class="proof-card">
+      <p class="eyebrow">[ Trusted by ]</p>
+      <p>Skydive Australia · Bacardí · Dekunu · ExperienceCo · Splendour in the Grass</p>
+      <div class="divider" style="background:var(--border)"></div>
+      <div class="num">
+        <div><b>50+</b><span class="eyebrow">Campaigns</span></div>
+        <div><b>5M+</b><span class="eyebrow">Views</span></div>
+      </div>
+    </aside>
+  </div>
+  <div class="reel"><i></i></div>
+</header>
+
+<section class="section" id="about">
+  <div class="trusted">
+    <p class="eyebrow">[ Trusted by ]</p>
+    <div class="row"><span>Skydive Australia</span><span>Bacardí</span><span>Cairns Canyoning</span><span>High Fly</span><span>Dekunu</span><span>Lifecykel</span><span>Mara</span><span>Mask</span></div>
+  </div>
+  <div class="statement">
+    <p class="eyebrow">[ Who we are ]</p>
+    <p>We create high-impact <span class="hl">promotional content</span> and <span class="hl">branded films</span> that blend <span class="hl">awe-inspiring emotion</span> with strategic product integration.</p>
+  </div>
+  <div class="stats4">
+    <div><b>50+</b><span>Campaigns delivered</span><p>Brand films, launches and always-on social series.</p></div>
+    <div><b>30+</b><span>Brands partnered</span><p>From local operators to global drinks labels.</p></div>
+    <div><b>5M+</b><span>Collective views</span><p>Across Instagram, TikTok and YouTube.</p></div>
+  </div>
+</section>
+
+<section class="section" id="work" style="padding-top:0">
+  <div class="row-head">
+    <div class="head" style="max-width:900px">
+      <p class="eyebrow">[ Selected work ]</p>
+      <h3 class="h48">Content that <span class="hl">gets watched,</span> not skipped.</h3>
+    </div>
+    <a class="link" href="#work">View all work →</a>
+  </div>
+  <div class="filters" role="group" aria-label="Filter work" data-filters="#v4-work">
+    <button class="chip on" type="button" data-filter="all" aria-pressed="true">All (5)</button><button class="chip" type="button" data-filter="brand" aria-pressed="false">Brand films</button><button class="chip" type="button" data-filter="social" aria-pressed="false">Social</button><button class="chip" type="button" data-filter="events" aria-pressed="false">Events</button><button class="chip" type="button" data-filter="adventure" aria-pressed="false">Adventure</button>
+  </div>
+  <div class="tile-grid" id="v4-work">
+  <div class="tiles two" style="margin-top:0">
+    <a class="tile" href="#work" data-cursor="Play" data-tags="brand"><img src="assets/thumb-1.png" alt=""><div><b>Dekunu</b><span class="eyebrow">Brand film · 2026</span></div><span class="eyebrow watch">▶ Watch</span></a>
+    <a class="tile" href="#work" data-cursor="Play" data-tags="events"><img src="assets/v4-tile-splendour.png" alt=""><div><b>Splendour in the Grass</b><span class="eyebrow">Event recap · 2025</span></div><span class="eyebrow watch">▶ Watch</span></a>
+  </div>
+  <div class="tiles three">
+    <a class="tile" href="#work" data-cursor="Play" data-tags="adventure"><img src="assets/v4-tile-skydive.png" alt=""><div><b>Skydive Australia</b><span class="eyebrow">Campaign · 2026</span></div><span class="eyebrow watch">▶ Watch</span></a>
+    <a class="tile" href="#work" data-cursor="Play" data-tags="social adventure"><img src="assets/thumb-2.png" alt=""><div><b>ExperienceCo</b><span class="eyebrow">Social series · 2025</span></div><span class="eyebrow watch">▶ Watch</span></a>
+    <a class="tile" href="#work" data-cursor="Play" data-tags="brand"><img src="assets/thumb-3.png" alt=""><div><b>Bacardí</b><span class="eyebrow">Product film · 2025</span></div><span class="eyebrow watch">▶ Watch</span></a>
+  </div>
+  </div>
+</section>
+
+<section class="section raised" id="services">
+  <div class="row-head">
+    <div class="head" style="max-width:800px">
+      <p class="eyebrow">[ Services ]</p>
+      <h3 class="h48">Three ways we tell <span class="hl">your story.</span></h3>
+    </div>
+    <p class="lead" style="width:440px">One crew, every format. Book a single service or bundle all three into one campaign shoot.</p>
+  </div>
+  <div class="svc">
+    <article>
+      <img src="assets/thumb-1.png" alt="">
+      <div class="in">
+        <p class="eyebrow hl">[ 01 ]</p><h5>Brand films</h5>
+        <p class="lead">Cinematic hero films that put your product in the moment it was made for.</p>
+        <ul><li>— Hero &amp; launch films</li><li>— Product integration</li><li>— Director-led storytelling</li></ul>
+        <a class="link" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Explore brand films →</a>
+      </div>
+    </article>
+    <article>
+      <img src="assets/thumb-2.png" alt="">
+      <div class="in">
+        <p class="eyebrow hl">[ 02 ]</p><h5>Social content</h5>
+        <p class="lead">Short-form series built for the feed — shot once, cut for every platform.</p>
+        <ul><li>— Reels, TikTok &amp; Shorts</li><li>— Monthly content retainers</li><li>— Cut-downs in every ratio</li></ul>
+        <a class="link" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Explore social content →</a>
+      </div>
+    </article>
+    <article>
+      <img src="assets/v4-tile-skydive.png" alt="">
+      <div class="in">
+        <p class="eyebrow hl">[ 03 ]</p><h5>Adventure &amp; events</h5>
+        <p class="lead">Land, water and air coverage for events, athletes and experiences.</p>
+        <ul><li>— Aerial &amp; water filming</li><li>— Event recaps &amp; highlights</li><li>— Athlete &amp; creator content</li></ul>
+        <a class="link" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Explore adventure &amp; events →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section stack center" id="process">
+  <div class="head center" style="max-width:760px">
+    <p class="eyebrow">[ How we work ]</p>
+    <h2>Three steps. <span class="hl">One crew.</span></h2>
+    <p class="lead">Same team from the first call to the final file — so nothing gets lost in hand-offs.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="rail"><img src="assets/node.svg" alt=""><i></i></div>
+      <p class="eyebrow num">[ 01 · Week 1 ]</p>
+      <h5>Discovery &amp; game plan</h5>
+      <p>A no-pressure call to lock goals, audience and message — then a shoot plan and shot list.</p>
+      <ul><li>— No-pressure discovery call</li><li>— Goals, audience and message</li><li>— Shoot plan and shot list</li></ul>
+    </div>
+    <div class="step">
+      <div class="rail"><img src="assets/node.svg" alt=""><i></i></div>
+      <p class="eyebrow num">[ 02 · Weeks 2–3 ]</p>
+      <h5>Full package production</h5>
+      <p>Concept, casting, locations and permits handled. We shoot on land, on water and in the air.</p>
+      <ul><li>— Concept, script and casting</li><li>— On land, on water, in the air</li><li>— Edit, grade and sound</li></ul>
+    </div>
+    <div class="step">
+      <div class="rail"><img src="assets/node.svg" alt=""><i></i></div>
+      <p class="eyebrow num">[ 03 · Week 4+ ]</p>
+      <h5>Delivery &amp; expansion</h5>
+      <p>Launch-ready masters plus cut-downs for every platform — and a plan for what comes next.</p>
+      <ul><li>— Cut-downs for every platform</li><li>— Launch-ready files</li><li>— Ongoing retainer content</li></ul>
+    </div>
+  </div>
+  <a class="btn btn-primary" style="margin-top:72px" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Start with a discovery call</a>
+</section>
+
+<section class="section raised stack quote-c">
+  <p class="eyebrow">[ Client words ]</p>
+  <blockquote>“The crew <span class="hl">got our product and the lifestyle around it.</span> From the first call they knew what we were selling — and who to.”</blockquote>
+  <div class="person">
+    <img src="assets/avatar.png" alt="">
+    <div style="text-align:left"><b>Client name</b><span class="eyebrow">Role, Company</span></div>
+  </div>
+  <div class="pager"><span><span class="arr">←</span> <span class="arr">→</span></span><span class="eyebrow">01 / 03</span></div>
+</section>
+
+<section class="section">
+  <div class="faq-row">
+    <div class="faq-head">
+      <p class="eyebrow">[ FAQ ]</p>
+      <h3 class="h48">Questions, <span class="hl">answered.</span></h3>
+      <div class="producer">
+        <div class="person"><img src="assets/v4-producer.png" alt=""><div><b style="font-size:20px">Talk to a producer</b><span class="eyebrow">Usually replies same day</span></div></div>
+        <p>Still unsure? A 20-minute call — no pitch, just answers.</p>
+        <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+      </div>
+    </div>
+    <div class="faq-list">
+      <details open><summary>What does a project with Ascent look like?</summary><p>It starts with a no-pressure discovery call. We build a game plan, run the full production, then deliver cut-downs for every platform.</p></details>
+      <details><summary>Do you only film outdoor and adventure brands?</summary><p>Adventure is our home turf, but the same crew shoots products, events and brand stories for any business with something worth showing.</p></details>
+      <details><summary>Can you keep content coming after the first shoot?</summary><p>Yes — our ongoing retainer keeps fresh content flowing so you stay visible between campaigns.</p></details>
+      <details><summary>Where are you based?</summary><p>Burleigh Heads, QLD, Australia — and we travel for shoots on land, on water and in the air.</p></details>
+      <details><summary>How much does it cost?</summary><p>Every package is built around your goals. Book a call and we'll scope it together.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="section raised stack center cta">
+  <p class="eyebrow">[ Connect with us ]</p>
+  <h2 class="display">Book with the crew who <span class="hl">live and breathe media.</span></h2>
+  <p class="lead">We take the time to understand your needs, starting with a no-pressure discovery call — then build a custom package around your goals.</p>
+  <div class="actions" style="justify-content:center">
+    <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a>
+    <a class="btn btn-outline" href="#work">See our work</a>
+  </div>
+  <div class="reassure eyebrow"><span>✓ Free 20-min discovery call</span><span>✓ Clear quote before booking</span><span>✓ Reply within 2 working days</span></div>
+</section>
+
+<footer class="section footer" id="contact">
+  <div class="pitch">
+    <div class="head">
+      <p class="eyebrow">[ Our details ]</p>
+      <h2>Hit us up — we'd <span class="hl">love to hear from you.</span></h2>
+    </div>
+    <div class="mail"><span class="eyebrow">Email us</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+  </div>
+  <div class="footer-body">
+    <div class="details">
+      <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><span>Australia</span></div>
+      <div><span class="eyebrow">Contact</span><span>connect@ascent.film</span><span>Message us to set up a call</span></div>
+      <div><span class="eyebrow">Follow</span><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">YouTube</a><a href="#">LinkedIn</a></div>
+      <div><span class="eyebrow">Sitemap</span><a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></div>
+    </div>
+    <form class="form" onsubmit="return false">
+      <div class="two">
+        <label><span class="eyebrow">Name</span><input placeholder="Your name"></label>
+        <label><span class="eyebrow">Email</span><input type="email" placeholder="you@brand.com"></label>
+      </div>
+      <div class="two">
+        <label><span class="eyebrow">Project type</span><select><option>Brand film, social, event…</option><option>Brand film</option><option>Social content</option><option>Event</option></select></label>
+        <label><span class="eyebrow">Budget range</span><select><option>Select a range</option><option>Under $5k</option><option>$5k – $15k</option><option>$15k+</option></select></label>
+      </div>
+      <label><span class="eyebrow">Message</span><textarea placeholder="Tell us about the product, the audience and your timing."></textarea></label>
+      <div class="form-foot"><span class="small">We reply within two working days.</span><button class="btn btn-primary" type="submit">Send enquiry</button></div>
+    </form>
+  </div>
+  <div class="bottom">
+    <div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films · Privacy · Terms</span></div>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="site.js?v=20" defer></script>
+</body>
+</html>
