@@ -54,4 +54,4 @@ if __name__ == "__main__":
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     print(f"Serving on http://localhost:{port}/index.html")
-    ThreadingHTTPServer(("", port), RangeHandler).serve_forever()
+    ThreadingHTTPServer(("127.0.0.1", port), RangeHandler).serve_forever()
