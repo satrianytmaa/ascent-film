@@ -25,8 +25,9 @@
 .wa { display: flex; gap: 12px; height: 520px; }
 .wa-p { position: relative; isolation: isolate; flex: 1; min-width: 0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 28px; transition: flex-grow .7s var(--e); }
 .wa:hover .wa-p:hover, .wa:not(:hover) .wa-p:first-child { flex-grow: 2.6; }
-.wa-p .more { max-width: 440px; display: flex; flex-direction: column; gap: 14px; opacity: 0; translate: 0 16px; transition: opacity .3s, translate .3s; }
-.wa:hover .wa-p:hover .more, .wa:not(:hover) .wa-p:first-child .more { opacity: 1; translate: 0; transition: opacity .5s .3s, translate .5s .3s; }
+.wa-p .more { max-width: 440px; display: grid; grid-template-rows: 0fr; opacity: 0; margin-top: -12px; transition: grid-template-rows .6s var(--e), opacity .3s, margin-top .6s var(--e); }
+.wa-p .more > div { overflow: hidden; display: flex; flex-direction: column; gap: 14px; min-width: 300px; }
+.wa:hover .wa-p:hover .more, .wa:not(:hover) .wa-p:first-child .more { grid-template-rows: 1fr; opacity: 1; margin-top: 0; transition: grid-template-rows .6s var(--e) .15s, opacity .5s .35s, margin-top .6s var(--e) .15s; }
 .wa-p h3 { font-size: clamp(24px, 2vw, 30px); }
 
 /* O — Height accordion: rows share a fixed height; the hovered row opens tall, the others slim down */
@@ -54,16 +55,20 @@
 .bn-t.cta::before { display: none; }
 .bn-t.cta p, .bn-t.cta .n { color: var(--on-accent); }
 
-/* Q — Pill to card: compact pills that grow in both width and height into a full card with photo and details */
-.pl { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; min-height: 440px; }
-.pl-i { position: relative; isolation: isolate; width: 360px; height: 76px; border-radius: 40px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; gap: 14px; padding: 20px 28px; outline: none; transition: width .7s var(--e), height .7s var(--e), border-radius .7s var(--e), border-color .4s; }
-.pl-i:hover, .pl-i:focus-within { width: 520px; height: 420px; border-radius: 10px; border-color: transparent; }
-.pl-i .cover { opacity: 0; transition: opacity .5s .15s; filter: brightness(.5); }
-.pl-i:is(:hover, :focus-within) .cover { opacity: 1; }
-.pl-i .top { display: flex; align-items: center; gap: 16px; white-space: nowrap; }
-.pl-i .top h3 { font-size: 24px; }
-.pl-i .more { margin-top: auto; display: flex; flex-direction: column; gap: 14px; opacity: 0; transition: opacity .25s; }
-.pl-i:is(:hover, :focus-within) .more { opacity: 1; transition: opacity .5s .4s; }
+/* Q — Hover to open: equal, muted panels with a vertical label; hovering one widens it, brings back its colour and lays the title down to reveal the details */
+.ho { display: flex; gap: 12px; height: 540px; }
+.ho-p { position: relative; isolation: isolate; flex: 1; min-width: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); outline: none; transition: flex-grow .7s var(--e), border-color .4s; }
+.ho-p:is(:hover, :focus-visible) { flex-grow: 2.4; border-color: transparent; }
+.ho-p .cover { filter: grayscale(1) brightness(.35); scale: 1.08; transition: filter .7s, scale 1.2s var(--e); }
+.ho-p:is(:hover, :focus-visible) .cover { filter: grayscale(0) brightness(.6); scale: 1; }
+.ho-p .n { position: absolute; top: 28px; left: 28px; }
+.ho-p .plus { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); display: grid; place-items: center; font-size: 20px; transition: rotate .5s var(--e), background .4s, color .4s, border-color .4s; }
+.ho-p:is(:hover, :focus-visible) .plus { rotate: 45deg; background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.ho-p .v { position: absolute; left: 24px; bottom: 28px; writing-mode: vertical-rl; rotate: 180deg; white-space: nowrap; font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(24px, 2.4vw, 34px); text-transform: uppercase; transition: opacity .3s, translate .5s var(--e); }
+.ho-p:is(:hover, :focus-visible) .v { opacity: 0; translate: 0 -24px; }
+.ho-p .body { position: absolute; left: 28px; bottom: 28px; width: min(440px, calc(100% - 56px)); min-width: 300px; display: flex; flex-direction: column; gap: 14px; opacity: 0; translate: 0 32px; pointer-events: none; transition: opacity .25s, translate .25s; }
+.ho-p:is(:hover, :focus-visible) .body { opacity: 1; translate: 0; transition: opacity .5s .35s, translate .6s var(--e) .3s; }
+.ho:hover .ho-p:not(:hover) .v { opacity: .5; }
 
 /* R — Content roll: the title rolls up letter by letter into the description; the photo grows from a circle to the full frame */
 .rl3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -91,8 +96,8 @@
 .st-r:is(:hover, :focus-visible) .side { color: var(--text); }
 
 @media (hover: none) { /* touch: show each layout's open state where it would otherwise be hidden */
-  .wa-p .more, .ha-r p { opacity: 1; translate: 0; }
-  .pl-i { width: 100%; height: 420px; border-radius: 10px; } .pl-i .cover, .pl-i .more { opacity: 1; }
+  .wa-p .more { grid-template-rows: 1fr; opacity: 1; margin-top: 0; } .ha-r p { opacity: 1; }
+  .ho-p .body { opacity: 1; translate: 0; } .ho-p .v { display: none; } .ho-p .cover { filter: brightness(.55); }
   .st-r .gap { width: 1.8em; } .st-r h3 { gap: .2em; }
 }
 @media (max-width: 900px) {
@@ -102,7 +107,7 @@
   .bn { grid-template-columns: 1fr !important; grid-template-rows: none !important; height: auto; } .bn-t { min-height: 260px; }
   .rl3 { grid-template-columns: 1fr; } .rc { height: 400px; }
   .st-r .side { display: none; }
-  .pl-i .top { white-space: normal; }
+  .ho { flex-direction: column; height: auto; } .ho-p { min-height: 340px; flex: none; } .ho-p .body { min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .zx * { transition-duration: .01s !important; } }
 </style>
@@ -121,9 +126,9 @@
 <section class="section zx">
   <div class="zx-tag"><span><b>N</b> · Width accordion</span><span>The hovered panel widens and reveals its details</span></div>
   <div class="wa">
-    <article class="wa-p shade"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><h3>Promotional content</h3><div class="more"><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></article>
-    <article class="wa-p shade"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><h3>Tailored video</h3><div class="more"><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></article>
-    <article class="wa-p shade"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><h3>Media strategy</h3><div class="more"><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></article>
+    <article class="wa-p shade"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><h3>Promotional content</h3><div class="more"><div><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></article>
+    <article class="wa-p shade"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><h3>Tailored video</h3><div class="more"><div><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></article>
+    <article class="wa-p shade"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><h3>Media strategy</h3><div class="more"><div><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></article>
   </div>
 </section>
 
@@ -148,13 +153,13 @@
   </div>
 </section>
 
-<!-- Q — Pill to card -->
+<!-- Q — Hover to open -->
 <section class="section zx">
-  <div class="zx-tag"><span><b>Q</b> · Pill to card</span><span>A compact pill grows into a full card with photo and details</span></div>
-  <div class="pl">
-    <article class="pl-i" tabindex="0"><img class="cover" src="assets/thumb-1.png" alt=""><div class="top"><span class="n">01</span><h3>Promotional content</h3></div><div class="more"><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></article>
-    <article class="pl-i" tabindex="0"><img class="cover" src="assets/thumb-3.png" alt=""><div class="top"><span class="n">02</span><h3>Tailored video</h3></div><div class="more"><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></article>
-    <article class="pl-i" tabindex="0"><img class="cover" src="assets/media.png" alt=""><div class="top"><span class="n">03</span><h3>Media strategy</h3></div><div class="more"><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></article>
+  <div class="zx-tag"><span><b>Q</b> · Hover to open</span><span>Nothing shows until you hover: the panel widens, gets its colour back and reveals the details</span></div>
+  <div class="ho">
+    <article class="ho-p" tabindex="0"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><span class="plus" aria-hidden="true">+</span><span class="v" aria-hidden="true">Promotional</span><div class="body"><h3>Promotional content</h3><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></article>
+    <article class="ho-p" tabindex="0"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><span class="plus" aria-hidden="true">+</span><span class="v" aria-hidden="true">Tailored video</span><div class="body"><h3>Tailored video solutions</h3><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></article>
+    <article class="ho-p" tabindex="0"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><span class="plus" aria-hidden="true">+</span><span class="v" aria-hidden="true">Strategy</span><div class="body"><h3>Based Media Strategy</h3><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></article>
   </div>
 </section>
 
