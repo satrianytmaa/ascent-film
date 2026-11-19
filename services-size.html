@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Services: Size lab</title>
+<link rel="stylesheet" href="style.css?v=24">
+<style>
+/* Six services layouts whose hover effect changes size, width, height or the content itself. */
+.zx-intro { padding-bottom: 0; }
+.zx-intro h1 { font-size: clamp(48px, 8vw, 104px); line-height: .95; margin-top: 16px; }
+.zx { border-top: 1px solid var(--border); }
+.zx-tag { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 40px; font-family: "IBM Plex Mono", monospace; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
+.zx-tag b { color: var(--accent); font-weight: 400; }
+.n { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--accent); }
+.zx h3 { font-size: clamp(26px, 2.4vw, 36px); line-height: 1.05; }
+.zx p { color: var(--text-2); line-height: 1.6; }
+.cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.shade::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 35%, rgba(6,17,25,.92)); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+:root { --e: cubic-bezier(.65,0,.2,1); }
+
+/* N — Width accordion: the hovered panel takes most of the row; its details fade in once it's wide */
+.wa { display: flex; gap: 12px; height: 520px; }
+.wa-p { position: relative; isolation: isolate; flex: 1; min-width: 0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 28px; transition: flex-grow .7s var(--e); }
+.wa:hover .wa-p:hover, .wa:not(:hover) .wa-p:first-child { flex-grow: 2.6; }
+.wa-p .more { max-width: 440px; display: flex; flex-direction: column; gap: 14px; opacity: 0; translate: 0 16px; transition: opacity .3s, translate .3s; }
+.wa:hover .wa-p:hover .more, .wa:not(:hover) .wa-p:first-child .more { opacity: 1; translate: 0; transition: opacity .5s .3s, translate .5s .3s; }
+.wa-p h3 { font-size: clamp(24px, 2vw, 30px); }
+
+/* O — Height accordion: rows share a fixed height; the hovered row opens tall, the others slim down */
+.ha { display: flex; flex-direction: column; height: 720px; border-top: 1px solid var(--border); }
+.ha-r { position: relative; isolation: isolate; flex: 1; min-height: 0; overflow: hidden; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 80px 1fr 1fr; gap: 24px; align-items: center; transition: flex-grow .7s var(--e); }
+.ha:hover .ha-r:hover, .ha:not(:hover) .ha-r:first-child { flex-grow: 2.6; }
+.ha-r .cover { opacity: 0; scale: 1.1; transition: opacity .6s, scale 1.2s var(--e); filter: brightness(.45); }
+.ha:hover .ha-r:hover .cover, .ha:not(:hover) .ha-r:first-child .cover { opacity: 1; scale: 1; }
+.ha-r h3 { font-size: clamp(28px, 3vw, 44px); }
+.ha-r p { opacity: 0; transition: opacity .3s; max-width: 420px; }
+.ha:hover .ha-r:hover p, .ha:not(:hover) .ha-r:first-child p { opacity: 1; transition: opacity .5s .3s; }
+.ha-r .n { padding-left: 4px; }
+
+/* P — Bento focus: a 2x2 grid whose rows and columns re-balance toward the hovered tile */
+.bn { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; height: 620px; transition: grid-template-columns .7s var(--e), grid-template-rows .7s var(--e); }
+.bn:has(.t1:hover) { grid-template-columns: 1.8fr 1fr; grid-template-rows: 1.8fr 1fr; }
+.bn:has(.t2:hover) { grid-template-columns: 1fr 1.8fr; grid-template-rows: 1.8fr 1fr; }
+.bn:has(.t3:hover) { grid-template-columns: 1.8fr 1fr; grid-template-rows: 1fr 1.8fr; }
+.bn:has(.t4:hover) { grid-template-columns: 1fr 1.8fr; grid-template-rows: 1fr 1.8fr; }
+.bn-t { position: relative; isolation: isolate; min-width: 0; min-height: 0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; padding: 28px; color: var(--text); text-decoration: none; }
+.bn-t .cover { transition: filter .5s; }
+.bn:hover .bn-t:not(:hover) .cover { filter: grayscale(.8) brightness(.5); }
+.bn-t p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.bn-t.cta { background: var(--accent); color: var(--on-accent); }
+.bn-t.cta::before { display: none; }
+.bn-t.cta p, .bn-t.cta .n { color: var(--on-accent); }
+
+/* Q — Pill to card: compact pills that grow in both width and height into a full card with photo and details */
+.pl { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; min-height: 440px; }
+.pl-i { position: relative; isolation: isolate; width: 360px; height: 76px; border-radius: 40px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; gap: 14px; padding: 20px 28px; outline: none; transition: width .7s var(--e), height .7s var(--e), border-radius .7s var(--e), border-color .4s; }
+.pl-i:hover, .pl-i:focus-within { width: 520px; height: 420px; border-radius: 10px; border-color: transparent; }
+.pl-i .cover { opacity: 0; transition: opacity .5s .15s; filter: brightness(.5); }
+.pl-i:is(:hover, :focus-within) .cover { opacity: 1; }
+.pl-i .top { display: flex; align-items: center; gap: 16px; white-space: nowrap; }
+.pl-i .top h3 { font-size: 24px; }
+.pl-i .more { margin-top: auto; display: flex; flex-direction: column; gap: 14px; opacity: 0; transition: opacity .25s; }
+.pl-i:is(:hover, :focus-within) .more { opacity: 1; transition: opacity .5s .4s; }
+
+/* R — Content roll: the title rolls up letter by letter into the description; the photo grows from a circle to the full frame */
+.rl3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.rc { position: relative; height: 480px; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; padding: 28px; isolation: isolate; color: var(--text); text-decoration: none; }
+.rc .cover { clip-path: circle(56px at calc(100% - 84px) 84px); transition: clip-path .8s var(--e), filter .6s; }
+.rc:is(:hover, :focus-visible) .cover { clip-path: circle(80% at 50% 50%); filter: brightness(.45); }
+.rc .slot { margin-top: auto; position: relative; height: 150px; overflow: hidden; }
+.rc .slot > * { position: absolute; left: 0; right: 0; bottom: 0; transition: translate .6s var(--e), opacity .6s; }
+.rc .slot .b { translate: 0 110%; opacity: 0; display: flex; flex-direction: column; gap: 12px; }
+.rc:is(:hover, :focus-visible) .slot .b { translate: 0 0; opacity: 1; transition-delay: .15s; }
+.rc h3 .w { display: inline-block; white-space: nowrap; }
+.rc h3 .ch { display: inline-block; transition: translate .5s var(--e), opacity .5s; transition-delay: calc(var(--i) * 18ms); }
+.rc:is(:hover, :focus-visible) h3 .ch { translate: 0 -140%; opacity: 0; }
+.rc .b p { color: var(--text); }
+
+/* S — Stretch text: a photo opens up inside the headline and pushes the words apart */
+.st { border-top: 1px solid var(--border); }
+.st-r { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--border); color: var(--text); text-decoration: none; }
+.st-r h3 { display: flex; align-items: center; gap: .14em; font-size: clamp(32px, 5.6vw, 84px); line-height: 1; white-space: nowrap; transition: gap .7s var(--e); }
+.st-r .gap { display: inline-block; width: 0; height: .78em; border-radius: 99px; overflow: hidden; transition: width .7s var(--e); }
+.st-r .gap img { width: 4em; height: 100%; object-fit: cover; }
+.st-r:is(:hover, :focus-visible) h3 { gap: .3em; }
+.st-r:is(:hover, :focus-visible) .gap { width: 2.6em; }
+.st-r .side { text-align: right; max-width: 260px; color: var(--text-2); font-size: 14px; line-height: 1.5; transition: color .4s; }
+.st-r:is(:hover, :focus-visible) .side { color: var(--text); }
+
+@media (hover: none) { /* touch: show each layout's open state where it would otherwise be hidden */
+  .wa-p .more, .ha-r p { opacity: 1; translate: 0; }
+  .pl-i { width: 100%; height: 420px; border-radius: 10px; } .pl-i .cover, .pl-i .more { opacity: 1; }
+  .st-r .gap { width: 1.8em; } .st-r h3 { gap: .2em; }
+}
+@media (max-width: 900px) {
+  .zx-tag { flex-direction: column; gap: 6px; }
+  .wa { flex-direction: column; height: auto; } .wa-p { min-height: 320px; flex: none; }
+  .ha { height: auto; } .ha-r { grid-template-columns: 1fr; gap: 10px; padding: 24px 16px; min-height: 260px; } .ha-r .cover { opacity: 1; } .ha-r .n { padding: 0; }
+  .bn { grid-template-columns: 1fr !important; grid-template-rows: none !important; height: auto; } .bn-t { min-height: 260px; }
+  .rl3 { grid-template-columns: 1fr; } .rc { height: 400px; }
+  .st-r .side { display: none; }
+  .pl-i .top { white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) { .zx * { transition-duration: .01s !important; } }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<header class="section zx-intro">
+  <p class="eyebrow">[ Services variants N–S · Size lab ]</p>
+  <h1>Size &amp; content</h1>
+  <p class="lead" style="max-width:560px;margin-top:20px">Six more Our Services sections. This time the hover changes the layout itself: width, height, shape, or what the card says.</p>
+</header>
+
+<!-- N — Width accordion -->
+<section class="section zx">
+  <div class="zx-tag"><span><b>N</b> · Width accordion</span><span>The hovered panel widens and reveals its details</span></div>
+  <div class="wa">
+    <article class="wa-p shade"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><h3>Promotional content</h3><div class="more"><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></article>
+    <article class="wa-p shade"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><h3>Tailored video</h3><div class="more"><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></article>
+    <article class="wa-p shade"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><h3>Media strategy</h3><div class="more"><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></article>
+  </div>
+</section>
+
+<!-- O — Height accordion -->
+<section class="section zx">
+  <div class="zx-tag"><span><b>O</b> · Height accordion</span><span>The hovered row opens tall with its photo behind</span></div>
+  <div class="ha">
+    <article class="ha-r"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><h3>Promotional content</h3><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p></article>
+    <article class="ha-r"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><h3>Tailored video solutions</h3><p>Legitimise your business or translate complex ideas into easily digestible content.</p></article>
+    <article class="ha-r"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><h3>Based Media Strategy</h3><p>Message and visuals aligned, then a retainer that keeps you visible.</p></article>
+  </div>
+</section>
+
+<!-- P — Bento focus -->
+<section class="section zx">
+  <div class="zx-tag"><span><b>P</b> · Bento focus</span><span>The grid re-balances its rows and columns toward the hovered tile</span></div>
+  <div class="bn">
+    <article class="bn-t t1 shade"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><h3>Promotional content</h3><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p></article>
+    <article class="bn-t t2 shade"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><h3>Tailored video solutions</h3><p>Legitimise your business or translate complex ideas into easily digestible content.</p></article>
+    <article class="bn-t t3 shade"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><h3>Based Media Strategy</h3><p>Message and visuals aligned, then a retainer that keeps you visible.</p></article>
+    <a class="bn-t t4 shade cta" href="v7-home.html#contact"><span class="n">→</span><h3>Not sure which fits?</h3><p>Book a 20-minute call and we’ll map it out together.</p></a>
+  </div>
+</section>
+
+<!-- Q — Pill to card -->
+<section class="section zx">
+  <div class="zx-tag"><span><b>Q</b> · Pill to card</span><span>A compact pill grows into a full card with photo and details</span></div>
+  <div class="pl">
+    <article class="pl-i" tabindex="0"><img class="cover" src="assets/thumb-1.png" alt=""><div class="top"><span class="n">01</span><h3>Promotional content</h3></div><div class="more"><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></article>
+    <article class="pl-i" tabindex="0"><img class="cover" src="assets/thumb-3.png" alt=""><div class="top"><span class="n">02</span><h3>Tailored video</h3></div><div class="more"><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></article>
+    <article class="pl-i" tabindex="0"><img class="cover" src="assets/media.png" alt=""><div class="top"><span class="n">03</span><h3>Media strategy</h3></div><div class="more"><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></article>
+  </div>
+</section>
+
+<!-- R — Content roll -->
+<section class="section zx">
+  <div class="zx-tag"><span><b>R</b> · Content roll</span><span>The title rolls away into the details; the photo grows from a circle</span></div>
+  <div class="rl3">
+    <a class="rc" href="v7-home.html#contact"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><div class="slot"><div class="a"><h3 data-split>Promotional content</h3></div><div class="b"><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></a>
+    <a class="rc" href="v7-home.html#contact"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><div class="slot"><div class="a"><h3 data-split>Tailored video solutions</h3></div><div class="b"><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></a>
+    <a class="rc" href="v7-home.html#contact"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><div class="slot"><div class="a"><h3 data-split>Based Media Strategy</h3></div><div class="b"><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></a>
+  </div>
+</section>
+
+<!-- S — Stretch text -->
+<section class="section zx">
+  <div class="zx-tag"><span><b>S</b> · Stretch text</span><span>A photo opens inside the headline and pushes the words apart</span></div>
+  <div class="st">
+    <a class="st-r" href="v7-home.html#contact"><h3>Promo<span class="gap"><img src="assets/thumb-1.png" alt=""></span>content</h3><span class="side">Content that gets watched, not skipped.</span></a>
+    <a class="st-r" href="v7-home.html#contact"><h3>Tailored<span class="gap"><img src="assets/thumb-3.png" alt=""></span>video</h3><span class="side">Complex ideas, made simple.</span></a>
+    <a class="st-r" href="v7-home.html#contact"><h3>Media<span class="gap"><img src="assets/media.png" alt=""></span>strategy</h3><span class="side">A retainer that keeps you visible.</span></a>
+  </div>
+</section>
+
+<script>
+// R: wrap each letter so the title can roll away one character after another
+document.querySelectorAll('[data-split]').forEach(function (h) {
+  h.setAttribute('aria-label', h.textContent);
+  var i = 0; // words stay unbroken; each letter keeps its own delay
+  h.innerHTML = h.textContent.split(' ').map(function (w) {
+    return '<span class="w" aria-hidden="true">' + w.split('').map(function (c) { return '<span class="ch" style="--i:' + (i++) + '">' + c + '</span>'; }).join('') + '</span>';
+  }).join(' ');
+});
+</script>
+<script src="site.js?v=20" defer></script>
+</body>
+</html>
