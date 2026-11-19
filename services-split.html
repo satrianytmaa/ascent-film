@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Services: Sticky split</title>
+<link rel="stylesheet" href="style.css?v=24">
+<style>
+/* Image stays pinned on the left and crossfades per service while the text scrolls on the right. */
+.sp-head { padding-bottom: 0; }
+.sp { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; padding-top: 48px; }
+.sp-media { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; }
+.sp-frame { position: relative; width: 100%; height: 78vh; border-radius: 8px; overflow: hidden; }
+.sp-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; scale: 1.08; transition: opacity .7s, scale 1.4s cubic-bezier(.2,.7,.2,1); }
+.sp-frame img.on { opacity: 1; scale: 1; }
+.sp-bar { position: absolute; left: 24px; right: 24px; bottom: 24px; display: flex; gap: 8px; }
+.sp-bar i { flex: 1; height: 3px; border-radius: 2px; background: rgba(250,250,250,.25); transition: background .4s; }
+.sp-bar i.on { background: var(--accent); }
+.sp-step { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 20px; opacity: .3; transition: opacity .5s; }
+.sp-step.on { opacity: 1; }
+.sp-step .n { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--accent); }
+.sp-step h3 { font-size: clamp(36px, 4.5vw, 64px); line-height: 1; }
+.sp-step p { color: var(--text-2); line-height: 1.6; font-size: 18px; max-width: 460px; }
+.sp-step .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.sp-step .thumb-m { display: none; }
+
+@media (max-width: 900px) {
+  .sp { grid-template-columns: 1fr; gap: 0; }
+  .sp-media { display: none; }
+  .sp-step { min-height: 0; padding: 40px 0; opacity: 1; }
+  .sp-step .thumb-m { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 6px; }
+  .sp-step p { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .sp-frame img, .sp-step { transition: none; } }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<header class="section sp-head">
+  <div class="row-head">
+    <div class="head">
+      <p class="eyebrow">[ Services variant · Sticky split ]</p>
+      <h2>Services</h2>
+    </div>
+    <p class="lead lead-side">At Ascent Films, we bring adventure to life with renowned outdoor expertise and our Based Media Strategy.</p>
+  </div>
+</header>
+
+<section class="section sp" id="services">
+  <div class="sp-media" aria-hidden="true">
+    <div class="sp-frame">
+      <img class="on" src="assets/thumb-1.png" alt=""><img src="assets/thumb-3.png" alt=""><img src="assets/media.png" alt="">
+      <div class="sp-bar"><i class="on"></i><i></i><i></i></div>
+    </div>
+  </div>
+  <div class="sp-steps">
+    <article class="sp-step on">
+      <img class="thumb-m" src="assets/thumb-1.png" alt="">
+      <span class="n">01 / 03</span>
+      <h3>Promotional content</h3>
+      <p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p>
+      <div class="chips"><span class="chip">Sales-focused creative</span><span class="chip">True to your brand</span><span class="chip">Made for today’s audiences</span></div>
+    </article>
+    <article class="sp-step">
+      <img class="thumb-m" src="assets/thumb-3.png" alt="">
+      <span class="n">02 / 03</span>
+      <h3>Tailored video solutions</h3>
+      <p>Quality media isn’t just a marketing add-on — legitimise your business or translate complex ideas into easily digestible content.</p>
+      <div class="chips"><span class="chip">Brand and explainer films</span><span class="chip">Complex ideas, made simple</span><span class="chip">Built around your needs</span></div>
+    </article>
+    <article class="sp-step">
+      <img class="thumb-m" src="assets/media.png" alt="">
+      <span class="n">03 / 03</span>
+      <h3>Based Media Strategy</h3>
+      <p>Strategy is the art of setting yourself up to win: message and visuals aligned, then a retainer that keeps you visible.</p>
+      <div class="chips"><span class="chip">Custom-built media strategy</span><span class="chip">Message and visuals aligned</span><span class="chip">Ongoing retainer content</span></div>
+      <a class="btn btn-primary btn-arrow" href="v7-home.html#contact" style="align-self:flex-start">Book a call <span aria-hidden="true">→</span></a>
+    </article>
+  </div>
+</section>
+
+<script>
+(function () { // whichever step crosses the middle of the screen drives the pinned image
+  var steps = document.querySelectorAll('.sp-step'), imgs = document.querySelectorAll('.sp-frame img'), bars = document.querySelectorAll('.sp-bar i');
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var i = [].indexOf.call(steps, e.target);
+      [steps, imgs, bars].forEach(function (list) { list.forEach(function (el, j) { el.classList.toggle('on', j === i); }); });
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  steps.forEach(function (s) { io.observe(s); });
+})();
+</script>
+<script src="site.js?v=20" defer></script>
+</body>
+</html>

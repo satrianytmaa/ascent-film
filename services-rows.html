@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Services: Expand rows</title>
+<link rel="stylesheet" href="style.css?v=24">
+<style>
+/* Thin film-strip rows; clicking one opens its clip and details. Native <details name> keeps one open at a time. */
+:root { interpolate-size: allow-keywords; }
+.er { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 48px; }
+.er-list { border-top: 1px solid var(--border); }
+.er-row { border-bottom: 1px solid var(--border); }
+.er-row summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 80px 1fr auto; gap: 24px; align-items: center; padding: 28px 0; }
+.er-row summary::-webkit-details-marker { display: none; }
+.er-row .n { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--muted); transition: color .3s; }
+.er-row h3 { font-size: clamp(28px, 4vw, 52px); line-height: 1; transition: color .3s; }
+.er-row .plus { width: 48px; height: 48px; border: 1px solid var(--border); border-radius: 50%; display: grid; place-items: center; font-size: 22px; transition: transform .4s cubic-bezier(.2,.7,.2,1), background .3s, color .3s, border-color .3s; }
+.er-row summary:hover h3 { color: var(--accent); }
+.er-row[open] .n { color: var(--accent); }
+.er-row[open] .plus { transform: rotate(45deg); background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.er-row::details-content { block-size: 0; overflow: hidden; transition: block-size .6s cubic-bezier(.2,.7,.2,1), content-visibility .6s allow-discrete; }
+.er-row[open]::details-content { block-size: auto; }
+.er-body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; padding: 0 0 40px 104px; }
+.er-body :is(img, video) { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; }
+.er-body .txt { display: flex; flex-direction: column; justify-content: flex-end; gap: 20px; }
+.er-body p { color: var(--text-2); line-height: 1.6; font-size: 18px; }
+.er-body .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.er-body .go { font-family: "IBM Plex Mono", monospace; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); text-decoration: none; }
+
+@media (max-width: 900px) {
+  .er-row summary { grid-template-columns: 1fr auto; gap: 16px; padding: 22px 0; }
+  .er-row .n { display: none; }
+  .er-row .plus { width: 40px; height: 40px; }
+  .er-body { grid-template-columns: 1fr; gap: 20px; padding: 0 0 28px; }
+  .er-body p { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .er-row::details-content, .er-row .plus { transition: none; } }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<section class="section er" id="services">
+  <div class="row-head">
+    <div class="head">
+      <p class="eyebrow">[ Services variant · Expand rows ]</p>
+      <h2>Services</h2>
+    </div>
+    <p class="lead lead-side">At Ascent Films, we bring adventure to life with renowned outdoor expertise and our Based Media Strategy.</p>
+  </div>
+  <div class="er-list">
+    <details class="er-row" name="svc" open>
+      <summary><span class="n">01</span><h3>Promotional content</h3><span class="plus" aria-hidden="true">+</span></summary>
+      <div class="er-body">
+        <img src="assets/thumb-1.png" alt="">
+        <div class="txt">
+          <p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p>
+          <div class="chips"><span class="chip">Sales-focused creative</span><span class="chip">True to your brand</span><span class="chip">Made for today’s audiences</span></div>
+          <a class="go" href="v7-home.html#contact">Start a project →</a>
+        </div>
+      </div>
+    </details>
+    <details class="er-row" name="svc">
+      <summary><span class="n">02</span><h3>Tailored video solutions</h3><span class="plus" aria-hidden="true">+</span></summary>
+      <div class="er-body">
+        <video autoplay muted loop playsinline preload="none" poster="assets/thumb-3.png" aria-hidden="true"><source src="assets/bts.mp4" type="video/mp4"></video>
+        <div class="txt">
+          <p>Quality media isn’t just a marketing add-on — legitimise your business or translate complex ideas into easily digestible content.</p>
+          <div class="chips"><span class="chip">Brand and explainer films</span><span class="chip">Complex ideas, made simple</span><span class="chip">Built around your needs</span></div>
+          <a class="go" href="v7-home.html#contact">Start a project →</a>
+        </div>
+      </div>
+    </details>
+    <details class="er-row" name="svc">
+      <summary><span class="n">03</span><h3>Based Media Strategy</h3><span class="plus" aria-hidden="true">+</span></summary>
+      <div class="er-body">
+        <img src="assets/media.png" alt="">
+        <div class="txt">
+          <p>Strategy is the art of setting yourself up to win: message and visuals aligned, then a retainer that keeps you visible.</p>
+          <div class="chips"><span class="chip">Custom-built media strategy</span><span class="chip">Message and visuals aligned</span><span class="chip">Ongoing retainer content</span></div>
+          <a class="go" href="v7-home.html#contact">Start a project →</a>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<script src="site.js?v=20" defer></script>
+</body>
+</html>

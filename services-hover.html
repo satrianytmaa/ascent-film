@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Services: Hover list</title>
+<link rel="stylesheet" href="style.css?v=24">
+<style>
+/* Big type-only list; hovering a row shows a floating preview that follows the cursor. */
+.hl { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 48px; }
+.hl-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.hl-row { display: grid; grid-template-columns: 80px 1fr minmax(0, 360px); gap: 32px; align-items: center; padding: 36px 0; border-bottom: 1px solid var(--border); color: var(--text); text-decoration: none; }
+.hl-row .n { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--muted); transition: color .3s; }
+.hl-row h3 { font-size: clamp(32px, 4.4vw, 64px); line-height: 1; transition: transform .5s cubic-bezier(.2,.7,.2,1), color .3s; }
+.hl-row p { color: var(--text-2); line-height: 1.6; transition: opacity .3s; }
+.hl-row .thumb-m { display: none; }
+/* the list dims everything except the row under the cursor */
+.hl-list:hover .hl-row:not(:hover) :is(h3, p) { color: var(--muted); opacity: .45; }
+.hl-row:is(:hover, :focus-visible) h3 { transform: translateX(24px); }
+.hl-row:is(:hover, :focus-visible) .n { color: var(--accent); }
+
+.hl-float { position: fixed; left: 0; top: 0; z-index: 30; width: 280px; aspect-ratio: 4/5; border-radius: 8px; overflow: hidden; pointer-events: none; opacity: 0; scale: .85; transition: opacity .35s, scale .5s cubic-bezier(.2,.7,.2,1); }
+.hl-float.on { opacity: 1; scale: 1; }
+.hl-float img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .35s; }
+.hl-float img.on { opacity: 1; }
+
+@media (hover: none), (max-width: 900px) {
+  .hl-row { grid-template-columns: 1fr; gap: 16px; padding: 28px 0; }
+  .hl-row .thumb-m { display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 6px; }
+  .hl-row h3 { font-size: 36px; }
+  .hl-float { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .hl-row h3, .hl-float { transition: none; } }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<section class="section hl" id="services">
+  <div class="row-head">
+    <div class="head">
+      <p class="eyebrow">[ Services variant · Hover list ]</p>
+      <h2>Services</h2>
+    </div>
+    <p class="lead lead-side">At Ascent Films, we bring adventure to life with renowned outdoor expertise and our Based Media Strategy.</p>
+  </div>
+  <ul class="hl-list">
+    <li><a class="hl-row" href="v7-home.html#contact" data-img="0">
+      <span class="n">01</span>
+      <h3>Promotional content</h3>
+      <img class="thumb-m" src="assets/thumb-1.png" alt="">
+      <p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p>
+    </a></li>
+    <li><a class="hl-row" href="v7-home.html#contact" data-img="1">
+      <span class="n">02</span>
+      <h3>Tailored video solutions</h3>
+      <img class="thumb-m" src="assets/thumb-3.png" alt="">
+      <p>Legitimise your business or translate complex ideas into easily digestible content.</p>
+    </a></li>
+    <li><a class="hl-row" href="v7-home.html#contact" data-img="2">
+      <span class="n">03</span>
+      <h3>Based Media Strategy</h3>
+      <img class="thumb-m" src="assets/media.png" alt="">
+      <p>Message and visuals aligned, then a retainer that keeps you visible.</p>
+    </a></li>
+  </ul>
+</section>
+
+<div class="hl-float" aria-hidden="true">
+  <img src="assets/thumb-1.png" alt=""><img src="assets/thumb-3.png" alt=""><img src="assets/media.png" alt="">
+</div>
+
+<script>
+(function () {
+  var box = document.querySelector('.hl-float'), imgs = box.querySelectorAll('img');
+  var x = 0, y = 0, cx = 0, cy = 0, raf = 0;
+  function tick() { // ease toward the cursor so the preview trails it slightly
+    cx += (x - cx) * .15; cy += (y - cy) * .15;
+    box.style.transform = 'translate(' + (cx + 32) + 'px,' + (cy - box.offsetHeight / 2) + 'px)';
+    raf = Math.abs(x - cx) + Math.abs(y - cy) > .5 ? requestAnimationFrame(tick) : 0;
+  }
+  document.querySelectorAll('.hl-row').forEach(function (row) {
+    row.addEventListener('mouseenter', function (e) {
+      if (!box.classList.contains('on')) { cx = x = e.clientX; cy = y = e.clientY; tick(); }
+      imgs.forEach(function (im, i) { im.classList.toggle('on', i == row.dataset.img); });
+      box.classList.add('on');
+    });
+    row.addEventListener('mouseleave', function () { box.classList.remove('on'); });
+  });
+  addEventListener('mousemove', function (e) { x = e.clientX; y = e.clientY; if (!raf) raf = requestAnimationFrame(tick); });
+})();
+</script>
+<script src="site.js?v=20" defer></script>
+</body>
+</html>
