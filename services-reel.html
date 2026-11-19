@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Services: Showreel cut</title>
+<link rel="stylesheet" href="style.css?v=24">
+<style>
+/* One full-screen background that hard-cuts to a new clip for each service as you scroll, like an edit. */
+.rl { position: relative; }
+.rl-bg { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.rl-bg > :is(video, img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+.rl-bg > .on { opacity: 1; animation: rl-cut .5s cubic-bezier(.2,.7,.2,1); }
+.rl-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,17,25,.88), rgba(6,17,25,.35) 70%), linear-gradient(180deg, rgba(6,17,25,.4), transparent 30%); }
+@keyframes rl-cut { from { transform: scale(1.06); filter: brightness(1.8); } }
+.rl-hud { position: absolute; top: 104px; left: var(--margin); right: var(--margin); z-index: 1; display: flex; justify-content: space-between; font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-2); }
+.rl-hud .rec::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: #e5484d; animation: rl-blink 1.2s steps(2) infinite; }
+@keyframes rl-blink { 50% { opacity: 0; } }
+.rl-steps { position: relative; margin-top: -100vh; }
+.rl-step { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 20px; padding: 0 var(--margin); max-width: calc(620px + var(--margin)); }
+.rl-step .n { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--accent); }
+.rl-step h2 { font-size: clamp(44px, 6vw, 88px); line-height: .95; }
+.rl-step p { color: var(--text-2); line-height: 1.6; font-size: 18px; }
+.rl-step .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.rl-step.intro h2 { font-size: clamp(56px, 9vw, 120px); }
+
+@media (max-width: 900px) {
+  .rl-bg::after { background: linear-gradient(180deg, rgba(6,17,25,.55), rgba(6,17,25,.85)); }
+  .rl-hud { top: 88px; }
+  .rl-step p { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .rl-bg > .on { animation: none; } .rl-hud .rec::before { animation: none; } }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<section class="rl" id="services">
+  <div class="rl-bg" aria-hidden="true">
+    <video class="on" muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg"><source src="assets/hero.mp4" type="video/mp4"></video>
+    <img src="assets/thumb-1.png" alt="">
+    <video muted loop playsinline preload="metadata" poster="assets/thumb-3.png"><source src="assets/bts.mp4" type="video/mp4"></video>
+    <img src="assets/media.png" alt="">
+    <div class="rl-hud"><span class="rec">Rec</span><span class="tc">Reel 00 · Services</span></div>
+  </div>
+  <div class="rl-steps">
+    <article class="rl-step intro" data-tc="Reel 00 · Services">
+      <p class="eyebrow">[ Services variant · Showreel cut ]</p>
+      <h2>What we do</h2>
+      <p>At Ascent Films, we bring adventure to life with renowned outdoor expertise and our Based Media Strategy. Keep scrolling — every service gets its own cut.</p>
+    </article>
+    <article class="rl-step" data-tc="Reel 01 · Promotional">
+      <span class="n">01 / 03</span>
+      <h2>Promotional content</h2>
+      <p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p>
+      <div class="chips"><span class="chip">Sales-focused creative</span><span class="chip">True to your brand</span><span class="chip">Made for today’s audiences</span></div>
+    </article>
+    <article class="rl-step" data-tc="Reel 02 · Tailored">
+      <span class="n">02 / 03</span>
+      <h2>Tailored video solutions</h2>
+      <p>Quality media isn’t just a marketing add-on — legitimise your business or translate complex ideas into easily digestible content.</p>
+      <div class="chips"><span class="chip">Brand and explainer films</span><span class="chip">Complex ideas, made simple</span><span class="chip">Built around your needs</span></div>
+    </article>
+    <article class="rl-step" data-tc="Reel 03 · Strategy">
+      <span class="n">03 / 03</span>
+      <h2>Based Media Strategy</h2>
+      <p>Strategy is the art of setting yourself up to win: message and visuals aligned, then a retainer that keeps you visible.</p>
+      <div class="chips"><span class="chip">Custom-built media strategy</span><span class="chip">Message and visuals aligned</span><span class="chip">Ongoing retainer content</span></div>
+      <a class="btn btn-primary btn-arrow" href="v7-home.html#contact" style="align-self:flex-start">Book a call <span aria-hidden="true">→</span></a>
+    </article>
+  </div>
+</section>
+
+<script>
+(function () { // the step crossing mid-screen picks the clip; only the visible video plays
+  var steps = document.querySelectorAll('.rl-step'), shots = document.querySelectorAll('.rl-bg > :is(video, img)'), tc = document.querySelector('.rl-hud .tc');
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function cut(i) {
+    shots.forEach(function (s, j) {
+      s.classList.toggle('on', j === i);
+      if (s.tagName === 'VIDEO') { if (j === i && !still) s.play().catch(function () {}); else s.pause(); }
+    });
+    tc.textContent = steps[i].dataset.tc;
+  }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) cut([].indexOf.call(steps, e.target)); });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  steps.forEach(function (s) { io.observe(s); });
+  cut(0);
+})();
+</script>
+<script src="site.js?v=20" defer></script>
+</body>
+</html>

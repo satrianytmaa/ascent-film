@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Services: Stacked deck</title>
+<link rel="stylesheet" href="style.css?v=24">
+<style>
+/* Cards pin one after another and pile up; the ones underneath shrink back and darken like a deck of photos. */
+.dk-list { display: flex; flex-direction: column; gap: 10vh; padding-bottom: 20vh; margin-top: 56px; }
+.dk-card { position: sticky; top: calc(96px + var(--i) * 20px); height: 72vh; border-radius: 10px; overflow: hidden; isolation: isolate; display: grid; grid-template-columns: 1.3fr 1fr; background: var(--raised); border: 1px solid var(--border); transform-origin: 50% 0; will-change: transform; }
+.dk-card img { width: 100%; height: 100%; object-fit: cover; }
+.dk-card .txt { display: flex; flex-direction: column; justify-content: flex-end; gap: 18px; padding: 40px; }
+.dk-card .n { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--accent); }
+.dk-card h3 { font-size: clamp(32px, 3.6vw, 52px); line-height: 1; }
+.dk-card p { color: var(--text-2); line-height: 1.6; }
+.dk-card .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.dk-card::after { content: ""; position: absolute; inset: 0; background: #000; opacity: var(--dim, 0); pointer-events: none; }
+
+@media (max-width: 900px) {
+  .dk-card { grid-template-columns: 1fr; grid-template-rows: 45% 1fr; top: calc(80px + var(--i) * 12px); height: 76vh; }
+  .dk-card .txt { padding: 24px; justify-content: flex-start; gap: 12px; }
+}
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<section class="section" id="services">
+  <div class="row-head">
+    <div class="head">
+      <p class="eyebrow">[ Services variant · Stacked deck ]</p>
+      <h2>Services</h2>
+    </div>
+    <p class="lead lead-side">At Ascent Films, we bring adventure to life with renowned outdoor expertise and our Based Media Strategy.</p>
+  </div>
+  <div class="dk-list">
+    <article class="dk-card" style="--i:0">
+      <img src="assets/thumb-1.png" alt="">
+      <div class="txt">
+        <span class="n">01 / 03</span>
+        <h3>Promotional content</h3>
+        <p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p>
+        <div class="chips"><span class="chip">Sales-focused creative</span><span class="chip">True to your brand</span><span class="chip">Made for today’s audiences</span></div>
+      </div>
+    </article>
+    <article class="dk-card" style="--i:1">
+      <img src="assets/thumb-3.png" alt="">
+      <div class="txt">
+        <span class="n">02 / 03</span>
+        <h3>Tailored video solutions</h3>
+        <p>Quality media isn’t just a marketing add-on — legitimise your business or translate complex ideas into easily digestible content.</p>
+        <div class="chips"><span class="chip">Brand and explainer films</span><span class="chip">Complex ideas, made simple</span><span class="chip">Built around your needs</span></div>
+      </div>
+    </article>
+    <article class="dk-card" style="--i:2">
+      <img src="assets/media.png" alt="">
+      <div class="txt">
+        <span class="n">03 / 03</span>
+        <h3>Based Media Strategy</h3>
+        <p>Strategy is the art of setting yourself up to win: message and visuals aligned, then a retainer that keeps you visible.</p>
+        <div class="chips"><span class="chip">Custom-built media strategy</span><span class="chip">Message and visuals aligned</span><span class="chip">Ongoing retainer content</span></div>
+        <a class="btn btn-primary btn-arrow" href="v7-home.html#contact" style="align-self:flex-start">Book a call <span aria-hidden="true">→</span></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script>
+(function () { // as the next card slides over, the one beneath scales down and darkens
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cards = [].slice.call(document.querySelectorAll('.dk-card')), raf = 0;
+  function draw() {
+    raf = 0;
+    cards.forEach(function (c, i) {
+      var next = cards[i + 1]; if (!next) return;
+      var a = c.getBoundingClientRect(), b = next.getBoundingClientRect();
+      var p = Math.min(1, Math.max(0, (a.bottom - b.top) / a.height)); // 0 = next card not over it yet, 1 = fully covered
+      var depth = cards.length - 1 - i;
+      c.style.transform = 'scale(' + (1 - p * .05 * depth) + ')';
+      c.style.setProperty('--dim', (p * .5).toFixed(3));
+    });
+  }
+  function req() { if (!raf) raf = requestAnimationFrame(draw); }
+  addEventListener('scroll', req, { passive: true }); addEventListener('resize', req); draw();
+})();
+</script>
+<script src="site.js?v=20" defer></script>
+</body>
+</html>
