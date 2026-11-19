@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — Services: Hover lab</title>
+<link rel="stylesheet" href="style.css?v=24">
+<style>
+/* Six static services layouts, each built around a different hover effect. Nothing pins or needs scrolling. */
+.hx-intro { padding-bottom: 0; }
+.hx-intro h1 { font-size: clamp(48px, 8vw, 104px); line-height: .95; margin-top: 16px; }
+.hx { border-top: 1px solid var(--border); }
+.hx-tag { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 40px; font-family: "IBM Plex Mono", monospace; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
+.hx-tag b { color: var(--accent); font-weight: 400; }
+.g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.n { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--accent); }
+.hx h3 { font-size: clamp(26px, 2.4vw, 34px); line-height: 1.05; }
+.hx p { color: var(--text-2); line-height: 1.6; }
+.cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* H — Spotlight: a torch-like circle follows the cursor and reveals the photo under the dark card */
+@property --r { syntax: "<length>"; inherits: true; initial-value: 0px; }
+.sl { position: relative; isolation: isolate; height: 460px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: var(--raised); display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 32px; --x: 50%; --y: 50%; --r: 0px; transition: --r .5s cubic-bezier(.2,.7,.2,1); }
+.sl .cover { z-index: -1; opacity: .85; -webkit-mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 40%, transparent); mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 40%, transparent); }
+.sl:hover { --r: 220px; }
+
+/* I — Tilt: the card leans toward the cursor in 3D with a moving glare; the photo floats on its own layer */
+.tl-wrap { perspective: 1000px; }
+.tl { position: relative; isolation: isolate; height: 460px; border-radius: 8px; overflow: hidden; transform: rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg)); transition: transform .6s cubic-bezier(.2,.7,.2,1); display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 32px; }
+.tl.live { transition: transform .1s linear; }
+.tl .cover { z-index: -2; scale: 1.12; translate: calc(var(--px, 0) * -14px) calc(var(--py, 0) * -14px); transition: translate .3s; }
+.tl::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 35%, rgba(6,17,25,.9)); }
+.tl::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255,255,255,.22), transparent 45%); opacity: 0; transition: opacity .4s; pointer-events: none; }
+.tl:hover::after { opacity: 1; }
+
+/* J — Curtain: the photo wipes up from the bottom behind the text */
+.ct { position: relative; isolation: isolate; height: 460px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 32px; color: var(--text); text-decoration: none; }
+.ct .cover { z-index: -1; clip-path: inset(100% 0 0 0); scale: 1.15; filter: brightness(.55); transition: clip-path .7s cubic-bezier(.7,0,.2,1), scale 1.2s cubic-bezier(.2,.7,.2,1); }
+.ct:is(:hover, :focus-visible) .cover { clip-path: inset(0); scale: 1; }
+.ct .go { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border); display: grid; place-items: center; align-self: flex-end; transition: background .4s, border-color .4s, color .4s, rotate .5s cubic-bezier(.2,.7,.2,1); }
+.ct:is(:hover, :focus-visible) .go { background: var(--accent); border-color: var(--accent); color: var(--on-accent); rotate: -45deg; }
+.ct .body { display: flex; flex-direction: column; gap: 12px; }
+
+/* K — Flip: front shows the photo and name, the back holds the details */
+.fp { height: 460px; perspective: 1200px; outline: none; }
+.fp-in { position: relative; height: 100%; transform-style: preserve-3d; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+.fp:is(:hover, :focus-within) .fp-in { transform: rotateY(180deg); }
+.fp-face { position: absolute; inset: 0; border-radius: 8px; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 32px; isolation: isolate; }
+.fp-face::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 40%, rgba(6,17,25,.9)); }
+.fp-face .cover { z-index: -2; }
+.fp-back { transform: rotateY(180deg); background: var(--accent); color: var(--on-accent); justify-content: space-between; }
+.fp-back::before { display: none; }
+.fp-back p, .fp-back .n { color: var(--on-accent); }
+.fp-back .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.fp-back .chip { border-color: rgba(6,17,25,.3); color: var(--on-accent); }
+
+/* L — Play on hover: a still that rolls footage when hovered, with a cursor-following "Play" label */
+.pv { position: relative; isolation: isolate; height: 460px; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 32px; cursor: none; }
+.pv .cover { z-index: -2; transition: opacity .5s, scale 1.2s cubic-bezier(.2,.7,.2,1); }
+.pv video.cover { opacity: 0; }
+.pv:hover video.cover { opacity: 1; }
+.pv:hover .cover { scale: 1.05; }
+.pv::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 40%, rgba(6,17,25,.9)); }
+.pv .tag { position: absolute; left: 0; top: 0; padding: 10px 18px; border-radius: 99px; background: var(--accent); color: var(--on-accent); font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; pointer-events: none; translate: var(--x, 50%) var(--y, 50%); scale: 0; transition: scale .3s cubic-bezier(.2,.7,.2,1); }
+.pv:hover .tag { scale: 1; }
+.pv .frame { position: absolute; inset: 14px; border: 1px solid rgba(250,250,250,0); border-radius: 4px; transition: border-color .4s; pointer-events: none; }
+.pv:hover .frame { border-color: rgba(250,250,250,.35); }
+
+/* M — Marquee rows: hovering a row swaps it for a scrolling ticker of the name and photos; row height never changes */
+.mr-list { border-top: 1px solid var(--border); }
+.mr { position: relative; display: block; height: 120px; overflow: hidden; border-bottom: 1px solid var(--border); color: var(--text); text-decoration: none; }
+.mr .still, .mr .run { position: absolute; inset: 0; display: flex; align-items: center; transition: translate .5s cubic-bezier(.7,0,.2,1); }
+.mr .still { justify-content: space-between; gap: 24px; }
+.mr .still h3 { font-size: clamp(32px, 4.4vw, 60px); }
+.mr .run { translate: 0 100%; background: var(--accent); color: var(--on-accent); }
+.mr:is(:hover, :focus-visible) .still { translate: 0 -100%; }
+.mr:is(:hover, :focus-visible) .run { translate: 0 0; }
+.mr .tape { display: flex; align-items: center; gap: 32px; padding-right: 32px; white-space: nowrap; animation: mr 14s linear infinite; animation-play-state: paused; }
+.mr:is(:hover, :focus-visible) .tape { animation-play-state: running; }
+.mr .tape span { font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(32px, 4.4vw, 60px); text-transform: uppercase; }
+.mr .tape img { width: 120px; height: 72px; object-fit: cover; border-radius: 40px; }
+@keyframes mr { to { transform: translateX(-50%); } }
+
+/* Touch screens get each layout's revealed state up front */
+@media (hover: none) {
+  .sl { --r: 9999px; } .sl .cover { opacity: .5; }
+  .ct .cover { clip-path: inset(0); scale: 1; }
+  .pv video.cover, .pv .tag { display: none; }
+}
+@media (max-width: 900px) {
+  .g3 { grid-template-columns: 1fr; }
+  .hx-tag { flex-direction: column; gap: 6px; }
+  .sl, .tl, .ct, .fp, .pv { height: 380px; }
+  .mr { height: 88px; }
+  .mr .still p { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tl { transform: none !important; } .tl .cover { translate: none !important; }
+  .fp-in { transition: none; } .mr .tape { animation: none; }
+}
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<header class="section hx-intro">
+  <p class="eyebrow">[ Services variants H–M · Hover lab ]</p>
+  <h1>Six hover ideas</h1>
+  <p class="lead" style="max-width:560px;margin-top:20px">Each block below is a complete Our Services section that sits still on the page. Hover the cards to see each effect.</p>
+</header>
+
+<!-- H — Spotlight -->
+<section class="section hx">
+  <div class="hx-tag"><span><b>H</b> · Spotlight</span><span>A torch follows the cursor and reveals the photo</span></div>
+  <div class="g3">
+    <article class="sl"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><h3>Promotional content</h3><p>Content that gets watched, not skipped — sales-focused and true to your brand.</p></article>
+    <article class="sl"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><h3>Tailored video solutions</h3><p>Legitimise your business or make complex ideas easy to digest.</p></article>
+    <article class="sl"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><h3>Based Media Strategy</h3><p>Message and visuals aligned, then a retainer that keeps you visible.</p></article>
+  </div>
+</section>
+
+<!-- I — Tilt -->
+<section class="section hx">
+  <div class="hx-tag"><span><b>I</b> · 3D tilt</span><span>The card leans toward the cursor with a moving glare</span></div>
+  <div class="g3">
+    <div class="tl-wrap"><article class="tl"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><h3>Promotional content</h3><p>Content that gets watched, not skipped.</p></article></div>
+    <div class="tl-wrap"><article class="tl"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><h3>Tailored video solutions</h3><p>Complex ideas, made simple.</p></article></div>
+    <div class="tl-wrap"><article class="tl"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><h3>Based Media Strategy</h3><p>A retainer that keeps you visible.</p></article></div>
+  </div>
+</section>
+
+<!-- J — Curtain -->
+<section class="section hx">
+  <div class="hx-tag"><span><b>J</b> · Curtain wipe</span><span>The photo wipes up behind the text</span></div>
+  <div class="g3">
+    <a class="ct" href="v7-home.html#contact"><img class="cover" src="assets/thumb-1.png" alt=""><span class="go" aria-hidden="true">→</span><div class="body"><span class="n">01</span><h3>Promotional content</h3><p>Content that gets watched, not skipped — sales-focused and true to your brand.</p></div></a>
+    <a class="ct" href="v7-home.html#contact"><img class="cover" src="assets/thumb-3.png" alt=""><span class="go" aria-hidden="true">→</span><div class="body"><span class="n">02</span><h3>Tailored video solutions</h3><p>Legitimise your business or make complex ideas easy to digest.</p></div></a>
+    <a class="ct" href="v7-home.html#contact"><img class="cover" src="assets/media.png" alt=""><span class="go" aria-hidden="true">→</span><div class="body"><span class="n">03</span><h3>Based Media Strategy</h3><p>Message and visuals aligned, then a retainer that keeps you visible.</p></div></a>
+  </div>
+</section>
+
+<!-- K — Flip -->
+<section class="section hx">
+  <div class="hx-tag"><span><b>K</b> · Flip card</span><span>The card turns over to show the details (tap on phones)</span></div>
+  <div class="g3">
+    <div class="fp" tabindex="0"><div class="fp-in">
+      <div class="fp-face"><img class="cover" src="assets/thumb-1.png" alt=""><span class="n">01</span><h3>Promotional content</h3></div>
+      <div class="fp-face fp-back"><span class="n">01</span><div><h3>Promotional content</h3><p style="margin:12px 0 16px">Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div>
+    </div></div>
+    <div class="fp" tabindex="0"><div class="fp-in">
+      <div class="fp-face"><img class="cover" src="assets/thumb-3.png" alt=""><span class="n">02</span><h3>Tailored video solutions</h3></div>
+      <div class="fp-face fp-back"><span class="n">02</span><div><h3>Tailored video solutions</h3><p style="margin:12px 0 16px">Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div>
+    </div></div>
+    <div class="fp" tabindex="0"><div class="fp-in">
+      <div class="fp-face"><img class="cover" src="assets/media.png" alt=""><span class="n">03</span><h3>Based Media Strategy</h3></div>
+      <div class="fp-face fp-back"><span class="n">03</span><div><h3>Based Media Strategy</h3><p style="margin:12px 0 16px">Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- L — Play on hover -->
+<section class="section hx">
+  <div class="hx-tag"><span><b>L</b> · Play on hover</span><span>The still rolls footage, with a Play label on the cursor</span></div>
+  <div class="g3">
+    <article class="pv"><img class="cover" src="assets/hero-poster.jpg" alt=""><video class="cover" muted loop playsinline preload="none"><source src="assets/hero.mp4" type="video/mp4"></video><span class="frame"></span><span class="tag">▶ Play</span><span class="n">01</span><h3>Promotional content</h3><p>Content that gets watched, not skipped.</p></article>
+    <article class="pv"><img class="cover" src="assets/thumb-3.png" alt=""><video class="cover" muted loop playsinline preload="none"><source src="assets/bts.mp4" type="video/mp4"></video><span class="frame"></span><span class="tag">▶ Play</span><span class="n">02</span><h3>Tailored video solutions</h3><p>Complex ideas, made simple.</p></article>
+    <article class="pv"><img class="cover" src="assets/media.png" alt=""><video class="cover" muted loop playsinline preload="none"><source src="assets/bts.mp4#t=12" type="video/mp4"></video><span class="frame"></span><span class="tag">▶ Play</span><span class="n">03</span><h3>Based Media Strategy</h3><p>A retainer that keeps you visible.</p></article>
+  </div>
+</section>
+
+<!-- M — Marquee rows -->
+<section class="section hx">
+  <div class="hx-tag"><span><b>M</b> · Marquee rows</span><span>The row flips into a scrolling ticker of the name and photos</span></div>
+  <div class="mr-list">
+    <a class="mr" href="v7-home.html#contact"><div class="still"><h3>Promotional content</h3><p>Sales-focused, true to your brand</p></div><div class="run" aria-hidden="true"><div class="tape"><span>Promotional content</span><img src="assets/thumb-1.png" alt=""><span>Promotional content</span><img src="assets/thumb-2.png" alt=""><span>Promotional content</span><img src="assets/thumb-1.png" alt=""><span>Promotional content</span><img src="assets/thumb-2.png" alt=""></div></div></a>
+    <a class="mr" href="v7-home.html#contact"><div class="still"><h3>Tailored video solutions</h3><p>Complex ideas, made simple</p></div><div class="run" aria-hidden="true"><div class="tape"><span>Tailored video</span><img src="assets/thumb-3.png" alt=""><span>Tailored video</span><img src="assets/featured-case.png" alt=""><span>Tailored video</span><img src="assets/thumb-3.png" alt=""><span>Tailored video</span><img src="assets/featured-case.png" alt=""></div></div></a>
+    <a class="mr" href="v7-home.html#contact"><div class="still"><h3>Based Media Strategy</h3><p>A retainer that keeps you visible</p></div><div class="run" aria-hidden="true"><div class="tape"><span>Based Media Strategy</span><img src="assets/media.png" alt=""><span>Based Media Strategy</span><img src="assets/hero-poster.jpg" alt=""><span>Based Media Strategy</span><img src="assets/media.png" alt=""><span>Based Media Strategy</span><img src="assets/hero-poster.jpg" alt=""></div></div></a>
+  </div>
+</section>
+
+<script>
+(function () {
+  if (!matchMedia('(hover: hover)').matches) return;
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function local(el, e) { var r = el.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, w: r.width, h: r.height }; }
+  // H: spotlight position
+  document.querySelectorAll('.sl').forEach(function (c) {
+    c.addEventListener('pointermove', function (e) { var p = local(c, e); c.style.setProperty('--x', p.x + 'px'); c.style.setProperty('--y', p.y + 'px'); });
+  });
+  // I: tilt, parallax and glare
+  if (!still) document.querySelectorAll('.tl').forEach(function (c) {
+    c.addEventListener('pointerenter', function () { setTimeout(function () { c.classList.add('live'); }, 300); });
+    c.addEventListener('pointermove', function (e) {
+      var p = local(c, e), nx = p.x / p.w - .5, ny = p.y / p.h - .5;
+      c.style.setProperty('--rx', (nx * 14) + 'deg'); c.style.setProperty('--ry', (-ny * 14) + 'deg');
+      c.style.setProperty('--px', nx * 2); c.style.setProperty('--py', ny * 2);
+      c.style.setProperty('--gx', p.x + 'px'); c.style.setProperty('--gy', p.y + 'px');
+    });
+    c.addEventListener('pointerleave', function () { c.classList.remove('live'); ['--rx', '--ry', '--px', '--py'].forEach(function (k) { c.style.removeProperty(k); }); });
+  });
+  // L: play footage and move the label
+  document.querySelectorAll('.pv').forEach(function (c) {
+    var v = c.querySelector('video'), tag = c.querySelector('.tag');
+    c.addEventListener('pointerenter', function () { v.play().catch(function () {}); });
+    c.addEventListener('pointerleave', function () { v.pause(); });
+    c.addEventListener('pointermove', function (e) { var p = local(c, e); tag.style.setProperty('--x', (p.x - tag.offsetWidth / 2) + 'px'); tag.style.setProperty('--y', (p.y - tag.offsetHeight / 2) + 'px'); });
+  });
+})();
+</script>
+<script src="site.js?v=20" defer></script>
+</body>
+</html>
