@@ -9,7 +9,7 @@
 <style>
   .hub { padding: 120px var(--margin); }
   .hub h1 { font-size: 64px; letter-spacing: -.03em; line-height: 1.05; margin: 16px 0; }
-  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 64px; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 56px; }
   .vcard { display: flex; flex-direction: column; background: var(--raised); border: 1px solid var(--card); border-radius: 4px; overflow: hidden; transition: border-color .2s, transform .2s; }
   .vcard:hover { border-color: var(--accent); transform: translateY(-4px); }
   .vcard.final { border-color: var(--accent); }
@@ -18,34 +18,56 @@
   .vcard h5 { font-size: 22px; }
   .vcard p.d { font-size: 15px; line-height: 1.6; color: var(--text-2); }
   .badge { margin-left: 10px; padding: 2px 10px; border-radius: 999px; background: var(--accent); color: var(--on-accent); }
-  @media (max-width: 900px) { .hub { padding: 64px var(--margin); } .hub h1 { font-size: 40px; } .grid { grid-template-columns: 1fr; } }
+  /* archive: older rounds kept for reference, folded away so they don't compete with the latest work */
+  .archive { margin-top: 96px; border-top: 1px solid var(--border); padding-top: 32px; }
+  .archive summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-family: "IBM Plex Mono", monospace; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
+  .archive summary::-webkit-details-marker { display: none; }
+  .archive summary::after { content: "+"; font-size: 22px; color: var(--accent); transition: rotate .3s; }
+  .archive[open] summary::after { rotate: 45deg; }
+  .archive h6 { margin: 40px 0 12px; font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+  .arch-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px; }
+  .arch-list a { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); color: var(--text); text-decoration: none; transition: color .2s; }
+  .arch-list a span { color: var(--muted); font-size: 14px; text-align: right; }
+  .arch-list a:hover { color: var(--accent); }
+  @media (max-width: 900px) { .hub { padding: 64px var(--margin); } .hub h1 { font-size: 40px; } .grid, .arch-list { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <main class="hub">
   <p class="eyebrow hl">[ Ascent Films · website demo ]</p>
-  <h1>Choose a version.</h1>
-  <p class="lead" style="font-size:15px">Click a version to open it. Every page has an "All versions" button to come back here.</p>
+  <h1>Latest work.</h1>
+  <p class="lead" style="font-size:15px">Open a card to view it. Every page has an "All versions" button to come back here.</p>
 
   <div class="grid">
-    <a class="vcard" href="v2-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 2</span><h5>Redesign</h5><p class="d">Portfolio, services, process, testimonial, FAQ and contact in one flow.</p></div></a>
-    <a class="vcard" href="v3-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 3</span><h5>Redesign + team feedback</h5><p class="d">Clearer headline, centred menu, bigger proof, real services, About page.</p></div></a>
-    <a class="vcard" href="v4-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 4</span><h5>Option A — Booking-first</h5><p class="d">Booking button and proof in the very first screen.</p></div></a>
-    <a class="vcard" href="v5-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 5</span><h5>Option B — Cinematic</h5><p class="d">Showreel-led opening; the work comes straight after.</p></div></a>
-    <a class="vcard" href="v6-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 6</span><h5>Option C — Story-first</h5><p class="d">The story and the team up top.</p></div></a>
-    <a class="vcard final" href="v7-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 7 <span class="badge">★ Final</span></span><h5>Final</h5><p class="d">Your chosen sections in one consistent style, with a project page.</p></div></a>
-    <a class="vcard" href="v8-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 8</span><h5>Stakeholder revisions</h5><p class="d">Testimonial slider on home; project page with highlight hero, challenges and lessons, palette, results stats and similar projects.</p></div></a>
-    <a class="vcard" href="v8-cta-footer-lab.html"><img src="assets/thumb-2.png" alt=""><div><span class="eyebrow">CTA + footer variants A–F</span><h5>CTA + footer lab</h5><p class="d">Six richer endings: footage band, marquee, booking card, work mosaic, round button and cyan block.</p></div></a>
-    <a class="vcard" href="services-scroll.html"><img src="assets/thumb-1.png" alt=""><div><span class="eyebrow">Services variant A</span><h5>Scroll expand</h5><p class="d">Each service grows to full screen as you scroll, then reveals its details.</p></div></a>
-    <a class="vcard" href="services-hover.html"><img src="assets/thumb-3.png" alt=""><div><span class="eyebrow">Services variant B</span><h5>Hover list</h5><p class="d">Big type-only list; a preview image follows the cursor on hover.</p></div></a>
-    <a class="vcard" href="services-split.html"><img src="assets/media.png" alt=""><div><span class="eyebrow">Services variant C</span><h5>Sticky split</h5><p class="d">Pinned image crossfades to each service while the text scrolls beside it.</p></div></a>
-    <a class="vcard" href="services-rows.html"><img src="assets/thumb-2.png" alt=""><div><span class="eyebrow">Services variant D</span><h5>Expand rows</h5><p class="d">Film-strip rows that open one at a time with a clip and details.</p></div></a>
-    <a class="vcard" href="services-track.html"><img src="assets/thumb-1.png" alt=""><div><span class="eyebrow">Services variant E</span><h5>Horizontal track</h5><p class="d">The section pins and scrolling slides the services sideways like a film strip.</p></div></a>
-    <a class="vcard" href="services-reel.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Services variant F</span><h5>Showreel cut</h5><p class="d">One full-screen background that cuts to a new clip for each service.</p></div></a>
-    <a class="vcard" href="services-deck.html"><img src="assets/thumb-3.png" alt=""><div><span class="eyebrow">Services variant G</span><h5>Stacked deck</h5><p class="d">Cards pile up as you scroll; the ones beneath shrink back like a deck of photos.</p></div></a>
-    <a class="vcard" href="services-hovers.html"><img src="assets/media.png" alt=""><div><span class="eyebrow">Services variants H–M</span><h5>Hover lab</h5><p class="d">Six static layouts on one page: spotlight, 3D tilt, curtain wipe, flip card, play on hover and marquee rows.</p></div></a>
-    <a class="vcard" href="services-size.html"><img src="assets/thumb-1.png" alt=""><div><span class="eyebrow">Services variants N–S</span><h5>Size lab</h5><p class="d">Hovers that change the layout: width and height accordions, bento grid, hover to open, content roll, stretch text.</p></div></a>
+    <a class="vcard final" href="v8-home.html"><img src="assets/hero-poster.jpg" alt=""><div><span class="eyebrow">Version 8 <span class="badge">★ Latest</span></span><h5>Full website</h5><p class="d">Stakeholder revisions: testimonial slider on home, plus the new project page with highlight hero, challenges and lessons, palette, results and similar projects.</p></div></a>
+    <a class="vcard" href="services-cards.html"><img src="assets/thumb-3.png" alt=""><div><span class="eyebrow">Services · new</span><h5>Card options 1–6</h5><p class="d">Six takes on the Height accordion: stacked cards, nothing open by default, images visible, and each card grows and plays its clip on hover.</p></div></a>
+    <a class="vcard" href="v8-cta-footer-lab.html"><img src="assets/thumb-2.png" alt=""><div><span class="eyebrow">CTA + footer</span><h5>Ending options A–F</h5><p class="d">Six richer endings for the bottom of the page: footage band, marquee, booking card, work mosaic, round button and cyan block.</p></div></a>
   </div>
+
+  <details class="archive">
+    <summary>Archive · earlier rounds (15 pages)</summary>
+    <h6>Earlier versions</h6>
+    <div class="arch-list">
+      <a href="v7-home.html">Version 7 <span>Previous final</span></a>
+      <a href="v6-home.html">Version 6 <span>Story-first</span></a>
+      <a href="v5-home.html">Version 5 <span>Cinematic</span></a>
+      <a href="v4-home.html">Version 4 <span>Booking-first</span></a>
+      <a href="v3-home.html">Version 3 <span>Team feedback</span></a>
+      <a href="v2-home.html">Version 2 <span>Redesign</span></a>
+    </div>
+    <h6>Services explorations</h6>
+    <div class="arch-list">
+      <a href="services-size.html">Size lab N–S <span>Height accordion is here</span></a>
+      <a href="services-hovers.html">Hover lab H–M <span>Six static hovers</span></a>
+      <a href="services-scroll.html">A · Scroll expand <span>Scroll</span></a>
+      <a href="services-hover.html">B · Hover list <span>Hover</span></a>
+      <a href="services-split.html">C · Sticky split <span>Scroll</span></a>
+      <a href="services-rows.html">D · Expand rows <span>Click</span></a>
+      <a href="services-track.html">E · Horizontal track <span>Scroll</span></a>
+      <a href="services-reel.html">F · Showreel cut <span>Scroll</span></a>
+      <a href="services-deck.html">G · Stacked deck <span>Scroll</span></a>
+    </div>
+  </details>
 </main>
 <script src="site.js?v=20" defer></script>
 </body>
