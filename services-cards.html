@@ -103,6 +103,67 @@
   .vc.wash::after, .o6 .vc::before, .o6 .fr { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .vc, .vc * { transition-duration: .01s !important; } }
+
+/* ===== Options 7–12: the image is the card's background from the start =====
+   At rest every card is a strip of footage with the title bottom-left; hovering makes it taller,
+   plays the clip, and lifts the title to reveal the details. Each option treats the image differently. */
+.bgc .vc { --h0: 200px; --h1: 480px; border-color: transparent; background: #000; }
+.bgc .media { top: 0; left: 0; width: 100%; height: 100%; border-radius: 0; transition: top .7s var(--e), left .7s var(--e), width .7s var(--e), height .7s var(--e), border-radius .7s var(--e), filter .7s, scale 1.2s var(--e); }
+.bgc .vc::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(0deg, rgba(6,17,25,.9), rgba(6,17,25,0) 65%); }
+.bgc .txt { left: 32px; right: 32px; bottom: 26px; width: auto; }
+.bgc .desc { display: grid; grid-template-rows: 0fr; max-width: 520px; translate: 0; margin-top: -10px; transition: grid-template-rows .6s var(--e), opacity .3s, margin-top .6s var(--e); }
+.bgc .desc > div { overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
+.bgc .vc:hover .desc { grid-template-rows: 1fr; margin-top: 0; transition: grid-template-rows .6s var(--e) .1s, opacity .5s .3s, margin-top .6s var(--e) .1s; }
+.bgc .desc p { color: var(--text); }
+.bgc .vc .media img { scale: 1.06; }
+.bgc .vc:hover .media img { scale: 1; }
+
+/* 7 — Dim to colour: muted black-and-white footage that comes alive in colour */
+.o7 .media { filter: grayscale(1) brightness(.5); }
+.o7 .vc:hover .media { filter: none; }
+
+/* 8 — Full bleed: the card widens past the content column to the screen edges as it grows */
+.o8 .vc { transition: height .7s var(--e), margin .7s var(--e), border-radius .7s var(--e); }
+.o8 .vc:hover { margin-inline: calc(-1 * var(--margin)); border-radius: 0; }
+.o8 .txt { transition: left .7s var(--e), right .7s var(--e); }
+.o8 .vc:hover .txt { left: var(--margin); right: var(--margin); }
+
+/* 9 — Letterbox: black cinema bars squeeze the footage to a thin strip, then pull back */
+.o9 .vc { --h0: 220px; }
+.o9 .bar { position: absolute; left: 0; right: 0; z-index: 1; height: 30%; background: #000; transition: height .7s var(--e); pointer-events: none; }
+.o9 .bar.t { top: 0; } .o9 .bar.b { bottom: 0; }
+.o9 .vc:hover .bar { height: 0; }
+.o9 .vc::after { opacity: 0; transition: opacity .6s; } .o9 .vc:hover::after { opacity: 1; }
+.o9 .txt { bottom: 18px; }
+
+/* 10 — Inset frame: the footage sits inside a thin frame, then grows out to the card edges */
+.o10 .vc { border: 1px solid var(--border); background: var(--raised); }
+.o10 .media { top: 14px; left: 14px; width: calc(100% - 28px); height: calc(100% - 28px); border-radius: 6px; }
+.o10 .vc:hover .media { top: 0; left: 0; width: 100%; height: 100%; border-radius: 0; }
+.o10 .vc::after { inset: 14px; border-radius: 6px; transition: inset .7s var(--e), border-radius .7s var(--e); }
+.o10 .vc:hover::after { inset: 0; border-radius: 0; }
+.o10 .txt { left: 44px; bottom: 38px; transition: left .7s var(--e), bottom .7s var(--e); }
+.o10 .vc:hover .txt { left: 32px; bottom: 26px; }
+
+/* 11 — Blur to sharp: soft, out-of-focus footage that pulls into focus */
+.o11 .media { filter: blur(10px) brightness(.6); scale: 1.08; }
+.o11 .vc:hover .media { filter: none; scale: 1; }
+
+/* 12 — Duotone: footage tinted in the brand cyan that turns to full colour */
+.o12 .media { filter: grayscale(1) contrast(1.1); }
+.o12 .vc:hover .media { filter: none; }
+.o12 .tint { position: absolute; inset: 0; z-index: 1; background: var(--accent); mix-blend-mode: multiply; opacity: .9; transition: opacity .7s; pointer-events: none; }
+.o12 .vc:hover .tint { opacity: 0; }
+
+/* Phones and touch: footage stays the background, details always showing */
+@media (hover: none), (max-width: 900px) {
+  .bgc .vc, .bgc .vc:hover { height: auto !important; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-end; margin-inline: 0 !important; }
+  .bgc .vc .media, .bgc .vc:hover .media { position: absolute; inset: 0 !important; width: 100% !important; height: 100% !important; aspect-ratio: auto; margin: 0; filter: none !important; scale: 1 !important; }
+  .bgc .vc .txt, .bgc .vc:hover .txt { position: relative; inset: auto !important; padding: 0 20px 24px; }
+  .bgc .desc { grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+  .bgc .vc::after { display: block !important; opacity: 1 !important; inset: 0 !important; border-radius: 0 !important; background: linear-gradient(0deg, rgba(6,17,25,.92), rgba(6,17,25,.5)); }
+  .o9 .bar, .o12 .tint { display: none; }
+}
 </style>
 </head>
 <body id="top">
@@ -110,7 +171,7 @@
 <a class="back" href="index.html">← All versions</a>
 
 <header class="section oc-intro">
-  <p class="eyebrow">[ Services · Height accordion, card options 1–6 ]</p>
+  <p class="eyebrow">[ Services · Height accordion, card options 1–12 ]</p>
   <h1>Card options</h1>
   <p class="lead" style="max-width:600px;margin-top:20px">Based on the Height accordion. Nothing is open by default, every card shows its image, and hovering a card makes it taller, opens the image wider and taller, and plays its clip.</p>
 </header>
@@ -172,6 +233,72 @@
     <article class="vc wash"><div class="media"><img src="assets/hero-poster.jpg" alt=""><video muted loop playsinline preload="none"><source src="assets/hero.mp4" type="video/mp4"></video></div><img class="fr b" src="assets/thumb-1.png" alt=""><img class="fr c" src="assets/thumb-2.png" alt=""><div class="txt"><span class="n">01</span><h3>Promotional content</h3><div class="desc"><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></article>
     <article class="vc wash"><div class="media"><img src="assets/thumb-3.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4" type="video/mp4"></video></div><img class="fr b" src="assets/featured-case.png" alt=""><img class="fr c" src="assets/thumb-1.png" alt=""><div class="txt"><span class="n">02</span><h3>Tailored video solutions</h3><div class="desc"><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></article>
     <article class="vc wash"><div class="media"><img src="assets/media.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4#t=12" type="video/mp4"></video></div><img class="fr b" src="assets/hero-poster.jpg" alt=""><img class="fr c" src="assets/thumb-3.png" alt=""><div class="txt"><span class="n">03</span><h3>Based Media Strategy</h3><div class="desc"><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></article>
+  </div>
+</section>
+
+<header class="section oc-intro" style="border-top:1px solid var(--border)">
+  <p class="eyebrow">[ Options 7–12 · Image as background ]</p>
+  <h2 style="font-size:clamp(36px,5vw,64px);margin-top:12px">Image as background</h2>
+  <p class="lead" style="max-width:600px;margin-top:16px">The footage fills each card from the start. Hover a card to make it taller, play the clip and reveal the details.</p>
+</header>
+
+<!-- 7 — Dim to colour -->
+<section class="section oc bgc o7">
+  <div class="oc-tag"><span><b>7</b> · Dim to colour</span><span>Muted black-and-white footage comes alive in colour</span></div>
+  <div class="stack">
+    <article class="vc"><div class="media"><img src="assets/hero-poster.jpg" alt=""><video muted loop playsinline preload="none"><source src="assets/hero.mp4" type="video/mp4"></video></div><div class="txt"><span class="n">01</span><h3>Promotional content</h3><div class="desc"><div><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/thumb-3.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4" type="video/mp4"></video></div><div class="txt"><span class="n">02</span><h3>Tailored video solutions</h3><div class="desc"><div><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/media.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4#t=12" type="video/mp4"></video></div><div class="txt"><span class="n">03</span><h3>Based Media Strategy</h3><div class="desc"><div><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></div></article>
+  </div>
+</section>
+
+<!-- 8 — Full bleed -->
+<section class="section oc bgc o8">
+  <div class="oc-tag"><span><b>8</b> · Full bleed</span><span>The card widens to the screen edges as it grows</span></div>
+  <div class="stack">
+    <article class="vc"><div class="media"><img src="assets/hero-poster.jpg" alt=""><video muted loop playsinline preload="none"><source src="assets/hero.mp4" type="video/mp4"></video></div><div class="txt"><span class="n">01</span><h3>Promotional content</h3><div class="desc"><div><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/thumb-3.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4" type="video/mp4"></video></div><div class="txt"><span class="n">02</span><h3>Tailored video solutions</h3><div class="desc"><div><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/media.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4#t=12" type="video/mp4"></video></div><div class="txt"><span class="n">03</span><h3>Based Media Strategy</h3><div class="desc"><div><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></div></article>
+  </div>
+</section>
+
+<!-- 9 — Letterbox -->
+<section class="section oc bgc o9">
+  <div class="oc-tag"><span><b>9</b> · Letterbox</span><span>Cinema bars squeeze the footage, then pull back</span></div>
+  <div class="stack">
+    <article class="vc"><div class="media"><img src="assets/hero-poster.jpg" alt=""><video muted loop playsinline preload="none"><source src="assets/hero.mp4" type="video/mp4"></video></div><span class="bar t"></span><span class="bar b"></span><div class="txt"><span class="n">01</span><h3>Promotional content</h3><div class="desc"><div><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/thumb-3.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4" type="video/mp4"></video></div><span class="bar t"></span><span class="bar b"></span><div class="txt"><span class="n">02</span><h3>Tailored video solutions</h3><div class="desc"><div><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/media.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4#t=12" type="video/mp4"></video></div><span class="bar t"></span><span class="bar b"></span><div class="txt"><span class="n">03</span><h3>Based Media Strategy</h3><div class="desc"><div><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></div></article>
+  </div>
+</section>
+
+<!-- 10 — Inset frame -->
+<section class="section oc bgc o10">
+  <div class="oc-tag"><span><b>10</b> · Inset frame</span><span>The footage grows out of a thin frame to the card edges</span></div>
+  <div class="stack">
+    <article class="vc"><div class="media"><img src="assets/hero-poster.jpg" alt=""><video muted loop playsinline preload="none"><source src="assets/hero.mp4" type="video/mp4"></video></div><div class="txt"><span class="n">01</span><h3>Promotional content</h3><div class="desc"><div><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/thumb-3.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4" type="video/mp4"></video></div><div class="txt"><span class="n">02</span><h3>Tailored video solutions</h3><div class="desc"><div><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/media.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4#t=12" type="video/mp4"></video></div><div class="txt"><span class="n">03</span><h3>Based Media Strategy</h3><div class="desc"><div><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></div></article>
+  </div>
+</section>
+
+<!-- 11 — Blur to sharp -->
+<section class="section oc bgc o11">
+  <div class="oc-tag"><span><b>11</b> · Blur to sharp</span><span>Out-of-focus footage pulls into focus</span></div>
+  <div class="stack">
+    <article class="vc"><div class="media"><img src="assets/hero-poster.jpg" alt=""><video muted loop playsinline preload="none"><source src="assets/hero.mp4" type="video/mp4"></video></div><div class="txt"><span class="n">01</span><h3>Promotional content</h3><div class="desc"><div><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/thumb-3.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4" type="video/mp4"></video></div><div class="txt"><span class="n">02</span><h3>Tailored video solutions</h3><div class="desc"><div><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/media.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4#t=12" type="video/mp4"></video></div><div class="txt"><span class="n">03</span><h3>Based Media Strategy</h3><div class="desc"><div><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></div></article>
+  </div>
+</section>
+
+<!-- 12 — Duotone -->
+<section class="section oc bgc o12">
+  <div class="oc-tag"><span><b>12</b> · Duotone</span><span>Cyan-tinted footage turns to full colour</span></div>
+  <div class="stack">
+    <article class="vc"><div class="media"><img src="assets/hero-poster.jpg" alt=""><video muted loop playsinline preload="none"><source src="assets/hero.mp4" type="video/mp4"></video></div><span class="tint"></span><div class="txt"><span class="n">01</span><h3>Promotional content</h3><div class="desc"><div><p>Create content that gets watched, not skipped — sales-focused, and true to your brand.</p><div class="chips"><span class="chip">Sales-focused</span><span class="chip">True to your brand</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/thumb-3.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4" type="video/mp4"></video></div><span class="tint"></span><div class="txt"><span class="n">02</span><h3>Tailored video solutions</h3><div class="desc"><div><p>Legitimise your business or translate complex ideas into easily digestible content.</p><div class="chips"><span class="chip">Brand films</span><span class="chip">Explainers</span></div></div></div></div></article>
+    <article class="vc"><div class="media"><img src="assets/media.png" alt=""><video muted loop playsinline preload="none"><source src="assets/bts.mp4#t=12" type="video/mp4"></video></div><span class="tint"></span><div class="txt"><span class="n">03</span><h3>Based Media Strategy</h3><div class="desc"><div><p>Message and visuals aligned, then a retainer that keeps you visible.</p><div class="chips"><span class="chip">Strategy</span><span class="chip">Retainer content</span></div></div></div></div></article>
   </div>
 </section>
 
