@@ -529,3 +529,44 @@ header:has(> .nav .menu-btn)::before { content: ""; flex: none; height: 94px; }
   .svc-body h3 { font-size: 24px; }
 }
 @media (prefers-reduced-motion: reduce) { .svc-card > img, .svc-card .more, .svc-card::after { transition: none; } .svc-card:hover > img { transform: none; } }
+
+/* V8: testimonial slider — small cards, three per view, arrows scroll one card (site.js [data-slider]) */
+.t-track { display: flex; gap: 24px; margin-top: 48px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; overscroll-behavior-x: contain; }
+.t-track::-webkit-scrollbar { display: none; }
+.t-card { flex: 0 0 calc((100% - 48px) / 3); margin: 0; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; gap: 32px; transition: border-color .25s; }
+.t-card:hover { border-color: var(--accent); }
+.t-card blockquote { font: 500 20px/1.45 Inter, sans-serif; color: var(--text); }
+.t-card .person img { width: 44px; height: 44px; }
+.t-card .person b { font-size: 16px; }
+.car-arrows button:disabled { opacity: .3; cursor: default; border-color: rgba(250,250,250,.3); color: var(--text); }
+@media (max-width: 900px) {
+  .t-track { gap: 12px; margin: 32px calc(-1 * var(--margin)) 0; padding: 0 var(--margin); scroll-padding-inline: var(--margin); }
+  .t-card { flex-basis: 86%; padding: 24px; }
+  .t-card blockquote { font-size: 17px; }
+  [data-slider] .row-head { flex-direction: row; align-items: flex-end; }
+}
+
+/* V8: CTA + footer, option E (round button). Picked from v8-cta-footer-lab.html */
+.f-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+.f-cols div { display: flex; flex-direction: column; gap: 4px; }
+.f-cols .eyebrow { margin-bottom: 8px; }
+.f-cols a:hover { color: var(--accent); }
+.e-cta { display: flex; align-items: center; justify-content: space-between; gap: 64px; }
+.e-cta .head { max-width: 640px; gap: 24px; }
+.e-btn { position: relative; flex: none; width: 280px; height: 280px; margin-right: 40px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: var(--accent); color: var(--on-accent); font: 700 28px/1.1 Archivo, sans-serif; text-transform: uppercase; transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s; box-shadow: 0 0 0 16px rgba(82,201,233,.1); }
+.e-btn:hover { transform: scale(1.06); box-shadow: 0 0 0 28px rgba(82,201,233,.12); }
+.e-btn svg { position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); animation: spin 18s linear infinite; }
+.e-btn text { font: 500 13px "IBM Plex Mono", monospace; letter-spacing: .3em; fill: var(--text-2); text-transform: uppercase; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.e-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; padding: 1px; background: var(--card); }
+.e-stats div { background: var(--bg); padding: 28px; display: flex; align-items: baseline; gap: 16px; }
+.e-stats b { font: 500 56px/1 Archivo, sans-serif; color: var(--accent); }
+.e-foot { position: relative; overflow: hidden; padding: 96px var(--margin) 40px; display: flex; flex-direction: column; gap: 56px; }
+.e-foot .mark { position: absolute; right: -80px; bottom: -120px; width: 520px; opacity: .05; pointer-events: none; }
+@media (max-width: 900px) {
+  .f-cols { grid-template-columns: 1fr 1fr; }
+  .e-cta { flex-direction: column; align-items: flex-start; }
+  .e-btn { width: 200px; height: 200px; font-size: 22px; align-self: center; margin: 40px 0; }
+  .e-stats { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .e-btn svg { animation: none; } }

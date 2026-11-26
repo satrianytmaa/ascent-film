@@ -370,3 +370,15 @@
   // decorative background videos stay still for reduced-motion users
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('.bg-video').forEach(function (v) { v.removeAttribute('autoplay'); v.pause(); });
 })();
+
+// V8 testimonial slider: [data-slider] holds .t-track (cards) and .prev/.next; arrows move one card, ends disable.
+(function () {
+  document.querySelectorAll('[data-slider]').forEach(function (s) {
+    var track = s.querySelector('.t-track'), prev = s.querySelector('.prev'), next = s.querySelector('.next');
+    function step() { var c = track.children[0]; return c.offsetWidth + parseFloat(getComputedStyle(track).columnGap || 0); }
+    function sync() { prev.disabled = track.scrollLeft < 4; next.disabled = track.scrollLeft > track.scrollWidth - track.clientWidth - 4; }
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
+    track.addEventListener('scroll', sync, { passive: true }); addEventListener('resize', sync); sync();
+  });
+})();

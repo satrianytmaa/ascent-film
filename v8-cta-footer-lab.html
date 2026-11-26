@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascent Film — V8 · CTA + footer lab (A–F)</title>
+<link rel="stylesheet" href="style.css?v=25">
+<style>
+  /* lab chrome */
+  .lab-nav { position: sticky; top: 0; z-index: 40; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 14px var(--margin); background: rgba(6,17,25,.85); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .lab-nav b { font: 700 16px/1 Archivo, sans-serif; text-transform: uppercase; margin-right: 12px; }
+  .opt { border-top: 6px solid var(--accent); }
+  .opt-label { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px var(--margin); background: #020a10; }
+  .opt-label .eyebrow:first-child { color: var(--accent); }
+  .opt + .opt { margin-top: 160px; }
+  .f-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .f-cols div { display: flex; flex-direction: column; gap: 4px; }
+  .f-cols .eyebrow { margin-bottom: 8px; }
+  .f-cols a:hover { color: var(--accent); }
+
+  /* A — footage band + giant wordmark */
+  .a-cta { position: relative; isolation: isolate; overflow: hidden; min-height: 720px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 32px; padding: var(--pad-y) var(--margin); }
+  .a-cta video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .a-cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at center, rgba(6,17,25,.55), rgba(6,17,25,.92)); }
+  .a-cta .display { font-size: clamp(48px, 7vw, 104px); max-width: 1100px; }
+  .a-foot { padding: 96px var(--margin) 0; display: flex; flex-direction: column; gap: 64px; overflow: hidden; }
+  .a-word { font: 700 clamp(80px, 21vw, 340px)/.8 Archivo, sans-serif; letter-spacing: -.05em; text-transform: uppercase; text-align: center; color: transparent; -webkit-text-stroke: 1px var(--border); margin-bottom: -.12em; transition: color .6s; }
+  .a-word:hover { color: var(--card); }
+
+  /* B — marquee + huge email */
+  .b-cta { padding: var(--pad-y) 0 0; display: flex; flex-direction: column; gap: 64px; }
+  .b-mq { overflow: hidden; border-block: 1px solid var(--border); padding: 28px 0; }
+  .b-mq .t { display: flex; width: max-content; gap: 48px; animation: mq 30s linear infinite; font: 700 clamp(56px, 8vw, 120px)/1 Archivo, sans-serif; text-transform: uppercase; letter-spacing: -.03em; white-space: nowrap; }
+  .b-mq .t span:nth-child(even) { color: transparent; -webkit-text-stroke: 1px var(--accent); }
+  .b-mail { padding: 0 var(--margin); display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+  .b-mail a.big { font: 700 clamp(32px, 5.5vw, 80px)/1 Archivo, sans-serif; text-transform: uppercase; letter-spacing: -.03em; background: linear-gradient(var(--accent), var(--accent)) left bottom / 0 4px no-repeat; transition: background-size .5s cubic-bezier(.2,.7,.2,1), color .3s; padding-bottom: 8px; overflow-wrap: anywhere; }
+  .b-mail a.big:hover { background-size: 100% 4px; color: var(--accent); }
+  .b-foot { padding: 96px var(--margin) 40px; display: flex; flex-direction: column; gap: 64px; }
+
+  /* C — split with booking card + live studio clock */
+  .c-cta { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
+  .c-cta .head { gap: 24px; }
+  .c-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 40px; display: flex; flex-direction: column; gap: 28px; box-shadow: 0 40px 80px rgba(0,0,0,.35); }
+  .c-steps { list-style: none; padding: 0; }
+  .c-steps li { display: grid; grid-template-columns: 32px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .c-steps li span:first-child { color: var(--accent); font: 500 13px/1.8 "IBM Plex Mono", monospace; }
+  .c-slots { display: flex; gap: 8px; flex-wrap: wrap; }
+  .c-slots .chip.on { border-color: var(--accent); color: var(--accent); }
+  .c-card .btn { justify-content: center; }
+  .c-foot { padding: 72px var(--margin) 40px; background: #040d13; display: flex; flex-direction: column; gap: 56px; }
+  .c-clock { display: flex; align-items: center; gap: 12px; }
+  .c-clock i { width: 8px; height: 8px; border-radius: 50%; background: #3ecf8e; box-shadow: 0 0 0 4px rgba(62,207,142,.18); }
+
+  /* D — fanned project mosaic behind the headline */
+  .d-cta { position: relative; overflow: hidden; padding: 200px var(--margin); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  .d-fan { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .d-fan img { position: absolute; width: 260px; height: 340px; object-fit: cover; border-radius: 8px; opacity: .55; box-shadow: 0 30px 60px rgba(0,0,0,.5); transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+  .d-fan img:nth-child(1) { left: 2%; top: 8%; transform: rotate(-12deg); }
+  .d-fan img:nth-child(2) { left: 14%; bottom: -8%; transform: rotate(8deg); }
+  .d-fan img:nth-child(3) { right: 3%; top: 4%; transform: rotate(10deg); }
+  .d-fan img:nth-child(4) { right: 15%; bottom: -10%; transform: rotate(-7deg); }
+  .d-cta:hover .d-fan img:nth-child(odd) { transform: rotate(-4deg) translateY(-12px); }
+  .d-cta:hover .d-fan img:nth-child(even) { transform: rotate(4deg) translateY(12px); }
+  .d-cta > :not(.d-fan) { position: relative; z-index: 1; }
+  .d-cta .display { max-width: 820px; text-shadow: 0 4px 40px rgba(6,17,25,.9); }
+  .d-foot { padding: 72px var(--margin) 40px; display: flex; flex-direction: column; gap: 48px; border-top: 1px solid var(--border); }
+  .d-pills { display: flex; gap: 12px; flex-wrap: wrap; }
+  .d-pills a { padding: 18px 28px; border: 1px solid var(--border); border-radius: 999px; font: 700 18px/1 Archivo, sans-serif; text-transform: uppercase; transition: background-color .25s, color .25s, border-color .25s; }
+  .d-pills a:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+
+  /* E — giant round button with rotating ring */
+  .e-cta { display: flex; align-items: center; justify-content: space-between; gap: 64px; }
+  .e-cta .head { max-width: 640px; gap: 24px; }
+  .e-btn { position: relative; flex: none; width: 280px; height: 280px; margin-right: 40px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: var(--accent); color: var(--on-accent); font: 700 28px/1.1 Archivo, sans-serif; text-transform: uppercase; transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s; box-shadow: 0 0 0 16px rgba(82,201,233,.1); }
+  .e-btn:hover { transform: scale(1.06); box-shadow: 0 0 0 28px rgba(82,201,233,.12); }
+  .e-btn svg { position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); animation: spin 18s linear infinite; }
+  .e-btn text { font: 500 13px "IBM Plex Mono", monospace; letter-spacing: .3em; fill: var(--text-2); text-transform: uppercase; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .e-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; padding: 1px; background: var(--card); }
+  .e-stats div { background: var(--bg); padding: 28px; display: flex; align-items: baseline; gap: 16px; }
+  .e-stats b { font: 500 56px/1 Archivo, sans-serif; color: var(--accent); }
+  .e-foot { position: relative; overflow: hidden; padding: 96px var(--margin) 40px; display: flex; flex-direction: column; gap: 56px; }
+  .e-foot .mark { position: absolute; right: -80px; bottom: -120px; width: 520px; opacity: .05; pointer-events: none; }
+
+  /* F — inverted cyan block + newsletter */
+  .f-wrap { padding-top: var(--pad-y); }
+  .f-cta { margin: 0 var(--margin); padding: 96px 64px; border-radius: 16px; background: var(--accent); color: var(--on-accent); display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: end; position: relative; overflow: hidden; }
+  .f-cta .display { font-size: clamp(44px, 6vw, 88px); }
+  .f-cta .eyebrow, .f-cta p { color: rgba(6,17,25,.75); }
+  .f-cta .btn-dark { background: var(--bg); color: var(--text); }
+  .f-cta .btn-line { border-color: rgba(6,17,25,.4); color: var(--bg); }
+  .f-cta::after { content: ""; position: absolute; width: 420px; height: 420px; right: -140px; top: -180px; border-radius: 50%; border: 1px solid rgba(6,17,25,.2); box-shadow: 0 0 0 60px rgba(6,17,25,.04), 0 0 0 120px rgba(6,17,25,.03); pointer-events: none; }
+  .f-foot { padding: 96px var(--margin) 40px; display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; }
+  .f-news { display: flex; flex-direction: column; gap: 16px; }
+  .f-news form { display: flex; gap: 8px; }
+  .f-news input { flex: 1; min-width: 0; color-scheme: dark; background: var(--raised); border: 1px solid var(--border); border-radius: 999px; padding: 14px 20px; color: var(--text); font: 400 16px Inter, sans-serif; }
+  .f-foot .bottom { grid-column: 1 / -1; }
+
+  @media (max-width: 900px) {
+    .f-cols, .f-foot .f-cols { grid-template-columns: 1fr 1fr !important; }
+    .a-cta { min-height: 560px; }
+    .c-cta, .f-cta, .f-foot { grid-template-columns: 1fr; }
+    .c-card { padding: 24px; }
+    .d-cta { padding: 140px var(--margin); }
+    .d-fan img { width: 140px; height: 190px; }
+    .e-cta { flex-direction: column; align-items: flex-start; }
+    .e-btn { width: 200px; height: 200px; font-size: 22px; align-self: center; margin: 40px 0; }
+    .e-stats { grid-template-columns: 1fr; }
+    .f-cta { padding: 48px 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .b-mq .t, .e-btn svg { animation: none; } }
+</style>
+</head>
+<body id="top">
+
+<a class="back" href="index.html">← All versions</a>
+
+<nav class="lab-nav" aria-label="Options">
+  <b>CTA + footer lab</b>
+  <a class="chip" href="#a">A · Footage band</a>
+  <a class="chip" href="#b">B · Marquee</a>
+  <a class="chip" href="#c">C · Booking card</a>
+  <a class="chip" href="#d">D · Work mosaic</a>
+  <a class="chip" href="#e">E · Round button</a>
+  <a class="chip" href="#f">F · Cyan block</a>
+</nav>
+
+<!-- ================= A ================= -->
+<div class="opt" id="a">
+  <div class="opt-label"><span class="eyebrow">Option A — Footage band</span><span class="eyebrow">Crew footage full-bleed behind the CTA · outlined giant wordmark closes the page</span></div>
+  <section class="a-cta">
+    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="assets/bts.mp4" type="video/mp4"></video>
+    <p class="eyebrow">[ Connect with us ]</p>
+    <h2 class="display">Your next film <span class="hl">starts with a call.</span></h2>
+    <p class="lead">A no-pressure discovery call, then a custom package built around your goals.</p>
+    <div class="actions" style="justify-content:center"><a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a><a class="btn btn-outline" href="v7-work.html">See our work</a></div>
+  </section>
+  <footer class="a-foot">
+    <div class="f-cols">
+      <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><span>Australia</span></div>
+      <div><span class="eyebrow">Contact</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+      <div><span class="eyebrow">Follow</span><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      <div><span class="eyebrow">Sitemap</span><a href="v7-work.html">Portfolio</a><a href="v8-home.html#services">Services</a><a href="v7-about.html">About</a></div>
+    </div>
+    <div class="bottom"><span class="eyebrow">© 2026 Ascent Films</span><a href="#top">Back to top ↑</a></div>
+    <div class="a-word" aria-hidden="true">Ascent</div>
+  </footer>
+</div>
+
+<!-- ================= B ================= -->
+<div class="opt" id="b">
+  <div class="opt-label"><span class="eyebrow">Option B — Marquee</span><span class="eyebrow">Scrolling headline strip · the email is the CTA, huge, underline grows on hover · client logos</span></div>
+  <section class="b-cta">
+    <div class="b-mq" aria-hidden="true"><div class="t"><span>Let’s make something worth watching</span><span>✦ Land, water, air ✦</span><span>Let’s make something worth watching</span><span>✦ Land, water, air ✦</span></div></div>
+    <div class="b-mail">
+      <div class="head"><p class="eyebrow">[ Start a project ]</p><a class="big" href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+      <a class="btn btn-primary btn-arrow" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Or book a call <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+  <footer class="b-foot">
+    <div class="logos">
+      <div><img src="assets/logo-skydive.png" alt="Skydive Australia"></div><div><img src="assets/logo-dekunu.png" alt="Dekunu"></div><div><img src="assets/logo-bacardi.png" alt="Bacardí"></div><div><img src="assets/logo-splendour.png" alt="Splendour in the Grass"></div><div><img src="assets/logo-experienceco.png" alt="ExperienceCo"></div><div><img src="assets/logo-highfly.png" alt="High Fly"></div>
+    </div>
+    <div class="f-cols">
+      <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><span>Australia</span></div>
+      <div><span class="eyebrow">Contact</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+      <div><span class="eyebrow">Follow</span><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      <div><span class="eyebrow">Sitemap</span><a href="v7-work.html">Portfolio</a><a href="v8-home.html#services">Services</a><a href="v7-about.html">About</a></div>
+    </div>
+    <div class="bottom"><div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films</span></div><a href="#top">Back to top ↑</a></div>
+  </footer>
+</div>
+
+<!-- ================= C ================= -->
+<div class="opt" id="c">
+  <div class="opt-label"><span class="eyebrow">Option C — Booking card</span><span class="eyebrow">Headline beside a “what happens next” card with open shoot months · live studio clock</span></div>
+  <section class="c-cta section raised">
+    <div class="head">
+      <p class="eyebrow">[ Connect with us ]</p>
+      <h2 class="display">Book with the crew who <span class="hl">live and breathe media.</span></h2>
+      <div class="reassure eyebrow" style="justify-content:flex-start"><span>✓ No-pressure call</span><span>✓ Custom package</span><span>✓ One crew</span></div>
+    </div>
+    <div class="c-card">
+      <p class="eyebrow">[ What happens next ]</p>
+      <ol class="c-steps">
+        <li><span>01</span><span>30-minute discovery call</span></li>
+        <li><span>02</span><span>Game plan and quote within 3 days</span></li>
+        <li><span>03</span><span>Shoot on land, water or air</span></li>
+      </ol>
+      <div><p class="eyebrow" style="margin-bottom:12px">Open shoot months</p><div class="c-slots"><span class="chip">Dec</span><span class="chip on">Jan</span><span class="chip on">Feb</span><span class="chip on">Mar</span></div></div>
+      <a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a discovery call</a>
+    </div>
+  </section>
+  <footer class="c-foot">
+    <div class="pitch"><h3>Hit us up — we’d <span class="hl">love to hear from you.</span></h3><div class="c-clock eyebrow"><i aria-hidden="true"></i>Burleigh Heads · <span data-clock>--:--</span> AEST</div></div>
+    <div class="f-cols">
+      <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><span>Australia</span></div>
+      <div><span class="eyebrow">Contact</span><a href="mailto:connect@ascent.film">connect@ascent.film</a><span class="small">Replies within two working days</span></div>
+      <div><span class="eyebrow">Follow</span><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      <div><span class="eyebrow">Sitemap</span><a href="v7-work.html">Portfolio</a><a href="v8-home.html#services">Services</a><a href="v7-about.html">About</a></div>
+    </div>
+    <div class="bottom"><div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films</span></div><a href="#top">Back to top ↑</a></div>
+  </footer>
+</div>
+
+<!-- ================= D ================= -->
+<div class="opt" id="d">
+  <div class="opt-label"><span class="eyebrow">Option D — Work mosaic</span><span class="eyebrow">Project stills fanned behind the headline, drift on hover · socials as big pills</span></div>
+  <section class="d-cta">
+    <div class="d-fan" aria-hidden="true"><img src="assets/featured-case.png" alt=""><img src="assets/thumb-1.png" alt=""><img src="assets/v3-tile-splendour.png" alt=""><img src="assets/thumb-3.png" alt=""></div>
+    <p class="eyebrow">[ Your turn ]</p>
+    <h2 class="display">Ready to be <span class="hl">the next one?</span></h2>
+    <p class="lead">Skydive Australia, Bacardí, Splendour in the Grass. Let’s add you to the list.</p>
+    <div class="actions" style="justify-content:center"><a class="btn btn-primary" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a><a class="btn btn-outline" href="v7-work.html">See our work</a></div>
+  </section>
+  <footer class="d-foot">
+    <div class="d-pills"><a href="#">Instagram ↗</a><a href="#">Facebook ↗</a><a href="#">LinkedIn ↗</a><a href="mailto:connect@ascent.film">Email ↗</a></div>
+    <div class="f-cols">
+      <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><span>Australia</span></div>
+      <div><span class="eyebrow">Contact</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+      <div><span class="eyebrow">Sitemap</span><a href="v7-work.html">Portfolio</a><a href="v8-home.html#services">Services</a><a href="v7-about.html">About</a></div>
+      <div><span class="eyebrow">Services</span><span>Promotional content</span><span>Tailored video</span><span>Media strategy</span></div>
+    </div>
+    <div class="bottom"><div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films</span></div><a href="#top">Back to top ↑</a></div>
+  </footer>
+</div>
+
+<!-- ================= E ================= -->
+<div class="opt" id="e">
+  <div class="opt-label"><span class="eyebrow">Option E — Round button</span><span class="eyebrow">One giant circular CTA with a spinning text ring · proof strip · logo watermark</span></div>
+  <section class="e-cta section raised">
+    <div class="head">
+      <p class="eyebrow">[ Connect with us ]</p>
+      <h2 class="display">Got a story? <span class="hl">We’ll shoot it.</span></h2>
+      <p class="lead">We take the time to understand your needs, starting with a no-pressure discovery call.</p>
+    </div>
+    <a class="e-btn" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book<br>a call
+      <svg viewBox="0 0 360 360" aria-hidden="true"><defs><path id="ring" d="M180,180 m-160,0 a160,160 0 1,1 320,0 a160,160 0 1,1 -320,0"/></defs><text><textPath href="#ring">No-pressure discovery call · Land · Water · Air · </textPath></text></svg>
+    </a>
+  </section>
+  <footer class="e-foot">
+    <img class="mark" src="assets/logo-icon.svg" alt="">
+    <div class="e-stats"><div><b>50+</b><span class="eyebrow">Campaigns</span></div><div><b>300+</b><span class="eyebrow">Happy clients</span></div><div><b>5M+</b><span class="eyebrow">Views</span></div></div>
+    <div class="f-cols">
+      <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><span>Australia</span></div>
+      <div><span class="eyebrow">Contact</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+      <div><span class="eyebrow">Follow</span><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+      <div><span class="eyebrow">Sitemap</span><a href="v7-work.html">Portfolio</a><a href="v8-home.html#services">Services</a><a href="v7-about.html">About</a></div>
+    </div>
+    <div class="bottom"><div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films</span></div><a href="#top">Back to top ↑</a></div>
+  </footer>
+</div>
+
+<!-- ================= F ================= -->
+<div class="opt" id="f">
+  <div class="opt-label"><span class="eyebrow">Option F — Cyan block</span><span class="eyebrow">Brand colour flipped into a solid CTA card · footer adds a newsletter sign-up</span></div>
+  <div class="f-wrap">
+    <section class="f-cta">
+      <div class="head"><p class="eyebrow">[ Connect with us ]</p><h2 class="display">Let’s get you off the ground.</h2></div>
+      <div class="head" style="gap:24px"><p>A no-pressure discovery call, then a custom package around your goals. One crew from the first call to the final cut.</p><div class="actions"><a class="btn btn-dark" href="https://calendly.com/connect-ascent" target="_blank" rel="noopener">Book a call</a><a class="btn btn-line" href="v7-work.html">See our work</a></div></div>
+    </section>
+    <footer class="f-foot">
+      <div class="f-news">
+        <p class="eyebrow">[ Behind the lens ]</p>
+        <h4>New films and shoot notes, once a month.</h4>
+        <form onsubmit="return false"><input type="email" placeholder="you@brand.com" aria-label="Email"><button class="btn btn-primary" type="submit">Subscribe</button></form>
+      </div>
+      <div class="f-cols" style="grid-template-columns:repeat(3,1fr)">
+        <div><span class="eyebrow">Studio</span><span>Burleigh Heads, QLD</span><a href="mailto:connect@ascent.film">connect@ascent.film</a></div>
+        <div><span class="eyebrow">Follow</span><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a></div>
+        <div><span class="eyebrow">Sitemap</span><a href="v7-work.html">Portfolio</a><a href="v8-home.html#services">Services</a><a href="v7-about.html">About</a></div>
+      </div>
+      <div class="bottom"><div class="l"><img class="logo" src="assets/logo-icon.svg" alt=""><span class="eyebrow">© 2026 Ascent Films</span></div><a href="#top">Back to top ↑</a></div>
+    </footer>
+  </div>
+</div>
+
+<script>
+  // Option C: live studio time in Burleigh Heads (QLD has no daylight saving)
+  (function tick() { document.querySelectorAll('[data-clock]').forEach(function (el) { el.textContent = new Date().toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Brisbane' }); }); setTimeout(tick, 30000); })();
+</script>
+<script src="site.js?v=21" defer></script>
+</body>
+</html>
