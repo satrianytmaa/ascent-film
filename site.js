@@ -382,3 +382,14 @@
     track.addEventListener('scroll', sync, { passive: true }); addEventListener('resize', sync); sync();
   });
 })();
+
+// V8 services cards: hover plays the card's clip; the still fades out only once footage is actually playing.
+(function () {
+  if (!matchMedia('(hover: hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.sv7-card').forEach(function (card) {
+    var v = card.querySelector('video'); if (!v) return;
+    v.addEventListener('playing', function () { card.classList.add('playing'); });
+    card.addEventListener('pointerenter', function () { v.play().catch(function () {}); });
+    card.addEventListener('pointerleave', function () { v.pause(); card.classList.remove('playing'); });
+  });
+})();

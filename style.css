@@ -570,3 +570,34 @@ header:has(> .nav .menu-btn)::before { content: ""; flex: none; height: 94px; }
   .e-stats { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .e-btn svg { animation: none; } }
+
+/* V8 services: stacked footage cards (services option 7 "Dim to colour").
+   Nothing open by default; hover makes a card taller, brings the footage to colour, plays its clip and lifts the title to reveal details. */
+.sv7-list { display: flex; flex-direction: column; gap: 12px; margin-top: 56px; }
+.sv7-card { --e: cubic-bezier(.65,0,.2,1); position: relative; isolation: isolate; display: block; height: 200px; border-radius: 10px; overflow: hidden; background: #000; color: var(--text); text-decoration: none; transition: height .7s var(--e); }
+.sv7-card:is(:hover, :focus-visible) { height: 480px; }
+.sv7-media { position: absolute; inset: 0; filter: grayscale(1) brightness(.5); transition: filter .7s; }
+.sv7-card:is(:hover, :focus-visible) .sv7-media { filter: none; }
+.sv7-media :is(img, video) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.sv7-media img { z-index: 1; scale: 1.06; transition: opacity .4s, scale 1.2s var(--e); }
+.sv7-card:is(:hover, :focus-visible) .sv7-media img { scale: 1; }
+.sv7-card.playing .sv7-media img { opacity: 0; }
+.sv7-card::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(0deg, rgba(6,17,25,.9), rgba(6,17,25,0) 65%); }
+.sv7-txt { position: absolute; z-index: 2; left: 32px; right: 32px; bottom: 26px; display: flex; flex-direction: column; gap: 10px; }
+.sv7-txt .n { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--accent); }
+.sv7-txt h3 { font-size: clamp(28px, 3vw, 44px); line-height: 1; }
+.sv7-desc { display: grid; grid-template-rows: 0fr; max-width: 520px; opacity: 0; margin-top: -10px; transition: grid-template-rows .6s var(--e), opacity .3s, margin-top .6s var(--e); }
+.sv7-desc > div { overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
+.sv7-card:is(:hover, :focus-visible) .sv7-desc { grid-template-rows: 1fr; opacity: 1; margin-top: 0; transition: grid-template-rows .6s var(--e) .1s, opacity .5s .3s, margin-top .6s var(--e) .1s; }
+.sv7-desc p { color: var(--text); line-height: 1.6; }
+.sv7-desc .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.sv7-desc .go { font-family: "IBM Plex Mono", monospace; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
+@media (hover: none), (max-width: 900px) {
+  .sv7-list { margin-top: 40px; }
+  .sv7-card, .sv7-card:is(:hover, :focus-visible) { height: auto; min-height: 360px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .sv7-media { filter: none; }
+  .sv7-card::after { background: linear-gradient(0deg, rgba(6,17,25,.92), rgba(6,17,25,.5)); }
+  .sv7-txt { position: relative; inset: auto; padding: 0 20px 24px; }
+  .sv7-desc { grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .sv7-card, .sv7-card * { transition-duration: .01s !important; } }
