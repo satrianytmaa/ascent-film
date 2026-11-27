@@ -393,3 +393,47 @@
     card.addEventListener('pointerleave', function () { v.pause(); card.classList.remove('playing'); });
   });
 })();
+
+// Edit-timeline "How we work": the playhead plays through the clips by itself (15 s loop) while the timeline is on screen.
+// Hovering a clip with a mouse jumps to it and pauses until the pointer leaves the timeline; a tap jumps and keeps playing.
+(function () {
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches, p2 = function (n) { return String(n).padStart(2, '0'); };
+  document.querySelectorAll('[data-tl]').forEach(function (tl) {
+    var clips = [].slice.call(tl.querySelectorAll('.clip')), panes = tl.querySelectorAll('.tl2-pane'), head = tl.querySelector('.playhead');
+    var lane = clips[0].parentNode, tc = tl.querySelector('.tl2-tc'), state = tl.querySelector('.tl2-state');
+    var T = 15000, t = 0, cur = -1, held = false, live = false, last = 0;
+    function show(i) {
+      if (i === cur) return; cur = i;
+      clips.forEach(function (c, j) { c.classList.toggle('on', j === i); });
+      panes.forEach(function (p, j) { p.classList.toggle('on', j === i); });
+    }
+    function place() {
+      var x = t / T; head.style.left = (x * 100) + '%';
+      if (tc) { var f = Math.floor(t / 40); tc.textContent = '00:00:' + p2(Math.floor(f / 25)) + ':' + p2(f % 25); }
+      var px = x * lane.offsetWidth, i = clips.length - 1;
+      for (var j = 0; j < clips.length; j++) if (px < clips[j].offsetLeft + clips[j].offsetWidth) { i = j; break; }
+      show(i);
+    }
+    function jump(i, hold) {
+      var c = clips[i]; t = (c.offsetLeft + c.offsetWidth * .5) / lane.offsetWidth * T;
+      head.classList.add('jump'); place(); held = hold; tl.classList.toggle('held', hold);
+      if (state) state.textContent = hold ? 'Paused' : 'Playing';
+    }
+    function frame(now) {
+      if (live && !held && !still) { t = (t + Math.min(now - last, 100)) % T; place(); }
+      last = now; requestAnimationFrame(frame);
+    }
+    clips.forEach(function (c, i) {
+      c.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') jump(i, true); });
+      c.addEventListener('click', function () { jump(i, matchMedia('(hover: hover)').matches); });
+    });
+    tl.addEventListener('pointerleave', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      held = false; tl.classList.remove('held'); if (state) state.textContent = 'Playing';
+      setTimeout(function () { head.classList.remove('jump'); }, 500);
+    });
+    new IntersectionObserver(function (es) { live = es[0].isIntersecting; }, { threshold: .3 }).observe(tl);
+    if (still) { jump(0, false); if (state) state.textContent = 'Paused'; tl.classList.add('held'); } else place();
+    requestAnimationFrame(frame);
+  });
+})();

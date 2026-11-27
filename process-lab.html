@@ -5,7 +5,7 @@
 <script>document.documentElement.classList.add("js")</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ascent Film — How we work: 10 options</title>
-<link rel="stylesheet" href="style.css?v=26">
+<link rel="stylesheet" href="style.css?v=27">
 <style>
 /* Ten ways to show the same three steps (Discovery & game plan, Full package production, Delivery & expansion),
    most of them borrowing from film-making itself so the section feels like Ascent's and nobody else's. */
@@ -34,24 +34,6 @@
 .slate .fields span { color: var(--muted); font-size: 10px; }
 .slate .fields strong { font-family: "Archivo", sans-serif; font-size: 22px; color: var(--text); font-weight: 800; }
 .slate .body { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
-
-/* 2 — Edit timeline: an editing-suite viewer and timeline; hovering a clip moves the playhead and changes the viewer */
-.tl2 { border: 1px solid var(--border); border-radius: 10px; background: #0b1419; overflow: hidden; }
-.tl2-view { display: grid; padding: 28px; }
-.tl2-pane { grid-area: 1 / 1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: center; opacity: 0; transition: opacity .4s; pointer-events: none; }
-.tl2-pane.on { opacity: 1; pointer-events: auto; }
-.tl2-pane img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; }
-.tl2-pane > div { display: flex; flex-direction: column; gap: 14px; }
-.tl2-time { border-top: 1px solid var(--border); padding: 14px 28px 24px; }
-.tl2-ruler { display: flex; justify-content: space-between; margin-left: 40px; color: var(--muted); font-size: 11px; }
-.trk { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
-.trk > span { width: 28px; color: var(--muted); font-size: 11px; }
-.lane { position: relative; flex: 1; display: flex; gap: 4px; height: 46px; }
-.clip { flex: var(--w); min-width: 0; display: flex; align-items: center; padding: 0 12px; border-radius: 4px; background: rgba(82,201,233,.14); border: 1px solid rgba(82,201,233,.35); color: var(--text); font-family: "IBM Plex Mono", monospace; font-size: 12px; white-space: nowrap; overflow: hidden; cursor: pointer; transition: background .3s, color .3s; }
-.clip.on { background: var(--accent); color: var(--on-accent); }
-.lane.a { height: 28px; background: repeating-linear-gradient(90deg, rgba(250,250,250,.25) 0 2px, transparent 2px 5px); -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 40px, rgba(0,0,0,.4) 40px 70px, #000 70px 120px); mask-image: repeating-linear-gradient(90deg, #000 0 40px, rgba(0,0,0,.4) 40px 70px, #000 70px 120px); border-radius: 4px; }
-.playhead { position: absolute; top: -34px; bottom: -48px; left: var(--x, 10%); width: 2px; background: #e5484d; transition: left .5s var(--e); pointer-events: none; z-index: 2; }
-.playhead::before { content: ""; position: absolute; top: 0; left: -6px; border: 7px solid transparent; border-top: 9px solid #e5484d; }
 
 /* 3 — Film strip: the steps as frames on a strip of film */
 .fs { position: relative; background: #000; border-radius: 6px; padding: 40px 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
@@ -171,8 +153,6 @@
 @media (max-width: 900px) {
   .px-tag { flex-direction: column; gap: 6px; }
   .g3, .fs { grid-template-columns: 1fr; }
-  .tl2-pane { grid-template-columns: 1fr; gap: 18px; }
-  .tl2-time { padding-inline: 16px; } .tl2-ruler { display: none; } .clip { font-size: 10px; padding: 0 6px; }
   .cs { padding: 22px; } .cs-top { flex-direction: column; align-items: flex-start; } .cs-top .mono { text-align: left; }
   .cs-row { grid-template-columns: 1fr; gap: 8px; } .cs-row.head { display: none; }
   .vf { aspect-ratio: 4 / 5; } .vf-shot .copy { left: 28px; right: 28px; bottom: 40px; } .vf-hud { left: 30px; right: 30px; top: 30px; font-size: 10px; }
@@ -207,17 +187,18 @@
 
 <!-- 2 — Edit timeline -->
 <section class="section px">
-  <div class="px-tag"><span><strong>2</strong> · Edit timeline</span><span>An editing-suite timeline; hover a clip to move the playhead</span></div>
+  <div class="px-tag"><span><strong>2</strong> · Edit timeline</span><span>An editing-suite timeline that plays by itself; hover a clip to jump and pause</span></div>
   <div class="tl2" data-tl>
     <div class="tl2-view">
-      <div class="tl2-pane on"><img src="assets/thumb-2.png" alt=""><div><span class="n mono" style="color:var(--accent)">Clip 01</span><h3>Discovery &amp; game plan</h3><p>A no-pressure call to lock goals, audience and message — then a shoot plan and shot list.</p><ul><li>No-pressure discovery call</li><li>Goals, audience and message</li><li>Shoot plan and shot list</li></ul></div></div>
-      <div class="tl2-pane"><img src="assets/thumb-3.png" alt=""><div><span class="n mono" style="color:var(--accent)">Clip 02</span><h3>Full package production</h3><p>Concept, script and casting — then we shoot on land, on water and in the air.</p><ul><li>Concept, script and casting</li><li>On land, on water, in the air</li><li>Edit, grade and sound</li></ul></div></div>
-      <div class="tl2-pane"><img src="assets/media.png" alt=""><div><span class="n mono" style="color:var(--accent)">Clip 03</span><h3>Delivery &amp; expansion</h3><p>Launch-ready masters plus cut-downs for every platform — and a plan for what comes next.</p><ul><li>Cut-downs for every platform</li><li>Launch-ready files</li><li>Ongoing retainer content</li></ul></div></div>
+      <div class="tl2-pane on"><img src="assets/thumb-2.png" alt=""><div><span class="tl2-k">Clip 01 · Discovery</span><h3>Discovery &amp; game plan</h3><p>A no-pressure call to lock goals, audience and message — then a shoot plan and shot list.</p><ul><li>No-pressure discovery call</li><li>Goals, audience and message</li><li>Shoot plan and shot list</li></ul></div></div>
+      <div class="tl2-pane"><img src="assets/thumb-3.png" alt=""><div><span class="tl2-k">Clip 02 · Production</span><h3>Full package production</h3><p>Concept, script and casting — then we shoot on land, on water and in the air.</p><ul><li>Concept, script and casting</li><li>On land, on water, in the air</li><li>Edit, grade and sound</li></ul></div></div>
+      <div class="tl2-pane"><img src="assets/media.png" alt=""><div><span class="tl2-k">Clip 03 · Delivery</span><h3>Delivery &amp; expansion</h3><p>Launch-ready masters plus cut-downs for every platform — and a plan for what comes next.</p><ul><li>Cut-downs for every platform</li><li>Launch-ready files</li><li>Ongoing retainer content</li></ul></div></div>
     </div>
     <div class="tl2-time">
-      <div class="tl2-ruler mono"><span>00:00:00</span><span>00:00:10</span><span>00:00:20</span><span>00:00:30</span><span>00:00:40</span><span>00:00:50</span></div>
-      <div class="trk mono"><span>V1</span><div class="lane"><button class="clip on" style="--w:2">01 · Discovery</button><button class="clip" style="--w:5">02 · Production</button><button class="clip" style="--w:3">03 · Delivery</button><i class="playhead"></i></div></div>
-      <div class="trk mono"><span>A1</span><div class="lane a"></div></div>
+      <div class="tl2-top tl2-k"><span class="tl2-tc">00:00:00:00</span><span class="tl2-state">Playing</span></div>
+      <div class="tl2-ruler tl2-k"><span>00:00:00</span><span>00:00:03</span><span>00:00:06</span><span>00:00:09</span><span>00:00:12</span><span>00:00:15</span></div>
+      <div class="trk tl2-k"><span>V1</span><div class="lane"><button class="clip on" style="--w:3">01 · Discovery</button><button class="clip" style="--w:4">02 · Production</button><button class="clip" style="--w:3">03 · Delivery</button><i class="playhead"></i></div></div>
+      <div class="trk tl2-k"><span>A1</span><div class="lane a"></div></div>
     </div>
   </div>
 </section>
@@ -333,17 +314,6 @@
 (function () {
   function pick(list, i) { list.forEach(function (el, j) { el.classList.toggle('on', j === i); }); }
 
-  // 2: timeline — hovering or tapping a clip moves the playhead and switches the viewer
-  document.querySelectorAll('[data-tl]').forEach(function (tl) {
-    var clips = tl.querySelectorAll('.clip'), panes = tl.querySelectorAll('.tl2-pane'), head = tl.querySelector('.playhead'), lane = clips[0].parentNode;
-    function go(i) {
-      pick(clips, i); pick(panes, i);
-      var c = clips[i]; head.style.setProperty('--x', ((c.offsetLeft + c.offsetWidth / 2) / lane.offsetWidth * 100) + '%');
-    }
-    clips.forEach(function (c, i) { c.addEventListener('mouseenter', function () { go(i); }); c.addEventListener('click', function () { go(i); }); });
-    go(0);
-  });
-
   // 5: viewfinder — cycles every 6 s (the tab's fill animation is the timer); hovering a tab jumps to it
   document.querySelectorAll('[data-vf]').forEach(function (vf) {
     var tabs = vf.querySelectorAll('.vf-tab'), shots = vf.querySelectorAll('.vf-shot'), tc = vf.querySelector('.tc'), cur = 0, f = 0;
@@ -370,6 +340,6 @@
   });
 })();
 </script>
-<script src="site.js?v=22" defer></script>
+<script src="site.js?v=23" defer></script>
 </body>
 </html>
